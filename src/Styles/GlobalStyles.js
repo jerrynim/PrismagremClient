@@ -12,18 +12,10 @@ const GlobalStyles = createGlobalStyle`
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         font-size:14px;
     }
-    svg{
-        fill:#262626;
-    }
-    input, textarea, button{
-        &:active,
-        &:focus{
-            outline:none;
-        }
-    }
+    
     a{
+        color:${(props) => props.theme.blueColor};
         text-decoration:none;
-        color:inherit;
     }
 `;
 
