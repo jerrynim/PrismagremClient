@@ -6,16 +6,26 @@ import GlobalStyles from "../Styles/GlobalStyles";
 import theme from "../Styles/theme";
 import { useQuery } from "react-apollo-hooks";
 import { APP_QUERIES } from "./AppQueries";
+import Footer from "./Footer";
+import styled from "styled-components";
+const Wrapper = styled.div`
+  margin: 0 auto;
+  max-width: 935px;
+  width: 100%;
+`;
 
 export default () => {
-  const { data } = useQuery(APP_QUERIES);
+  const {
+    data: { isLoggedIn }
+  } = useQuery(APP_QUERIES);
 
   return (
     <ThemeProvider theme={theme}>
-      <>
+      <Wrapper>
         <GlobalStyles />
-        <Router isLoggedIn={data} />
-      </>
+        <Router isLoggedIn={isLoggedIn} />
+        <Footer />
+      </Wrapper>
     </ThemeProvider>
   );
 };
