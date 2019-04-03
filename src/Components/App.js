@@ -8,6 +8,7 @@ import { useQuery } from "react-apollo-hooks";
 import { APP_QUERIES } from "./AppQueries";
 import Footer from "./Footer";
 import styled from "styled-components";
+import { ToastContainer, toast } from "react-toastify";
 const Wrapper = styled.div`
   margin: 0 auto;
   max-width: 935px;
@@ -25,6 +26,7 @@ export default () => {
         <GlobalStyles />
         <Router isLoggedIn={isLoggedIn} />
         <Footer />
+        <ToastContainer position={toast.POSITION.BOTTOM_LEFT} />
       </Wrapper>
     </ThemeProvider>
   );
