@@ -10,20 +10,14 @@ export default () => {
   const username = useInput("");
   const firstName = useInput("");
   const lastName = useInput("");
+  const secret = useInput("");
   const email = useInput("");
 
-  const requestSecret = useMutation(LOG_IN, {
-    update: (_, { data }) => {
-      const { requestSecret } = data;
-      if (!requestSecret) {
-        toast.error("You dont have an account yet, create one");
-        setTimeout(() => setAction("sginUp", 3000));
-      }
-    },
+  const requestSecretMutation = useMutation(LOG_IN, {
     variables: { email: email.value }
   });
 
-  const createAccount = useMutation(CREATE_ACCOUNT, {
+  const createAccountMutation = useMutation(CREATE_ACCOUNT, {
     variables: {
       email: email.value,
       username: username.value,
@@ -32,11 +26,24 @@ export default () => {
     }
   });
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     if (action === "logIn") {
       if (email.value !== "") {
-        requestSecret();
+        try {
+          const {
+            data: { requestSecret }
+          } = await requestSecretMutation();
+          if (!requestSecret) {
+            toast.error("you don't have an account ye, create one");
+            setTimeout(() => setAction("signUp"), 3000);
+          } else {
+            toast.success("Check your inbox for your login secret");
+            setAction("confirm");
+          }
+        } catch {
+          toast.error("cant request secret");
+        }
       } else {
         toast.error("Email is required");
       }
@@ -47,7 +54,20 @@ export default () => {
         firstName.value !== "" &&
         lastName.value !== ""
       ) {
-        createAccount();
+        try {
+          const {
+            data: { createAccount }
+          } = await createAccountMutation();
+
+          if (!createAccount) {
+            toast.error("cant crate account");
+          } else {
+            toast.success("account created! log in now");
+            setTimeout(() => setAction("logIn"), 3000);
+          }
+        } catch (e) {
+          toast.error(e.message);
+        }
       } else {
         toast.error("ALl field are required");
       }
@@ -62,6 +82,7 @@ export default () => {
       firstName={firstName}
       lastName={lastName}
       email={email}
+      secret={secret}
       onSubmit={onSubmit}
     />
   );
