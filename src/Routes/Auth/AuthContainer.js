@@ -93,10 +93,11 @@ export default () => {
           } = await confirmSecretMutation();
           if (token !== "" && token !== undefined) {
             localLogInMutation({ variables: { token } });
+            this.props.history.push({ path: "/" });
           } else {
             throw Error();
           }
-        } catch {
+        } catch (e) {
           toast.error("cant confirm secret,check again");
         }
       }
