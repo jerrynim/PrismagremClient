@@ -4,6 +4,7 @@ import { gql } from "apollo-boost";
 import { useQuery } from "react-apollo-hooks";
 import Loader from "../Components/Loader";
 import Post from "../Components/Post";
+import { Helmet } from "rl-react-helmet";
 
 const FEED_QUERY = gql`
   {
@@ -46,6 +47,10 @@ export default () => {
   const { data, loading } = useQuery(FEED_QUERY);
   return (
     <Wrapper>
+      <Helmet>
+        <title>Feed | Prismagram</title>
+      </Helmet>
+
       {loading && <Loader />}
       {!loading &&
         data &&

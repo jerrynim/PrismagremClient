@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Input from "../../Components/Input";
 import Button from "../../Components/Button";
-import Helmet from "react-helmet";
+import Helmet from "rl-react-helmet";
 
 const Wrapper = styled.div`
   min-height: 80vh;
@@ -87,6 +87,9 @@ export default ({
       )}
       {action === "confirm" && (
         <>
+          <Helmet>
+            <title>Confirm Secret | Prismagram</title>
+          </Helmet>
           <form onSubmit={onSubmit}>
             <Input placeholder="Paste your secret" required {...secret} />
             <Button text={"Confirm"} />
