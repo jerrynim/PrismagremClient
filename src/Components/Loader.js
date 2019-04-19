@@ -15,6 +15,8 @@ const Animation = keyframes`
 `;
 
 const Loader = styled.div`
+  width: 100%;
+  text-align: center;
   animation: ${Animation} 1s linear infinite;
 `;
 

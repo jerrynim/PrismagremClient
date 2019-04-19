@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import useInput from "../../Hooks/useInput";
 import PostPresenter from "./PostPresenter";
-import { toast } from "react-toastify";
 import { useMutation } from "react-apollo-hooks";
 import { TOGGLE_LIKE, ADD_COMMENT } from "./PostQueries";
+import { toast } from "react-toastify";
 
 const PostContainer = ({
   id,
@@ -21,25 +21,13 @@ const PostContainer = ({
   const [likeCountS, setLikeCount] = useState(likeCount);
   const [currentItem, setCurrentItem] = useState(0);
   const [selfComments, setSelfComments] = useState([]);
-
   const comment = useInput("");
-
   const toggleLikeMutation = useMutation(TOGGLE_LIKE, {
     variables: { postId: id }
   });
   const addCommentMutation = useMutation(ADD_COMMENT, {
     variables: { postId: id, text: comment.value }
   });
-
-  const onKeyPress = (e) => {
-    const { keyCode } = e;
-    if (keyCode === 13) {
-      comment.setValue("");
-      // addCommentMutation();
-    }
-    return;
-  };
-
   const slide = () => {
     const totalFiles = files.length;
     if (currentItem === totalFiles - 1) {
@@ -48,7 +36,6 @@ const PostContainer = ({
       setTimeout(() => setCurrentItem(currentItem + 1), 3000);
     }
   };
-
   useEffect(() => {
     slide();
   }, [currentItem]);
@@ -64,17 +51,22 @@ const PostContainer = ({
     }
   };
 
-  console.log(
-    id,
-    user,
-    files,
-    likeCount,
-    isLiked,
-    comments,
-    createdAt,
-    caption,
-    location
-  );
+  const onKeyPress = async (event) => {
+    const { which } = event;
+    if (which === 13) {
+      event.preventDefault();
+      try {
+        const {
+          data: { addComment }
+        } = await addCommentMutation();
+        setSelfComments([...selfComments, addComment]);
+        comment.setValue("");
+      } catch {
+        toast.error("Cant send comment");
+      }
+    }
+  };
+
   return (
     <PostPresenter
       user={user}
@@ -91,6 +83,7 @@ const PostContainer = ({
       currentItem={currentItem}
       toggleLike={toggleLike}
       onKeyPress={onKeyPress}
+      selfComments={selfComments}
     />
   );
 };

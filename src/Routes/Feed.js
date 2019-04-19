@@ -1,10 +1,10 @@
 import React from "react";
+import { Helmet } from "rl-react-helmet";
 import styled from "styled-components";
 import { gql } from "apollo-boost";
 import { useQuery } from "react-apollo-hooks";
 import Loader from "../Components/Loader";
 import Post from "../Components/Post";
-import { Helmet } from "rl-react-helmet";
 
 const FEED_QUERY = gql`
   {
@@ -50,7 +50,6 @@ export default () => {
       <Helmet>
         <title>Feed | Prismagram</title>
       </Helmet>
-
       {loading && <Loader />}
       {!loading &&
         data &&
