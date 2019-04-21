@@ -11,7 +11,7 @@ import {
 import { toast } from "react-toastify";
 
 export default () => {
-  const [action, setAction] = useState("logIn");
+  const [action, setAction] = useState("First");
   const username = useInput("");
   const firstName = useInput("");
   const lastName = useInput("");
