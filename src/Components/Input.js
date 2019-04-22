@@ -4,12 +4,23 @@ import styled from "styled-components";
 
 const Container = styled.input`
   border: 0;
-  border: ${(props) => props.theme.boxBorder};
+  border: 1px solid #efefef;
   border-radius: ${(props) => props.theme.borderRadius};
   background-color: ${(props) => props.theme.bgColor};
-  height: 35px;
+  padding: ${(props) =>
+    props.value === "" ? "9px 0 11px 8px" : "20px 0 11px 8px"};
+  width: 268px;
+  height: 39px;
   font-size: 12px;
-  padding: 0px 15px;
+  text-overflow: ellipsis;
+  margin-bottom: 5px;
+  ::placeholder {
+    color: #999999;
+  }
+  :focus {
+    border: 1px solid #999999;
+    border-radius: 4px;
+  }
 `;
 
 const Input = ({
@@ -22,7 +33,6 @@ const Input = ({
 }) => (
   <Container
     className={className}
-    placeholder={placeholder}
     required={required}
     value={value}
     onChange={onChange}
@@ -30,7 +40,6 @@ const Input = ({
   />
 );
 Input.propTypes = {
-  placeholder: PropTypes.string.isRequired,
   required: PropTypes.bool,
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
