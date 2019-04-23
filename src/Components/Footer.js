@@ -2,19 +2,27 @@ import React from "react";
 import styled from "styled-components";
 const Footer = styled.footer`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   text-transform: uppercase;
   font-weight: 600;
   font-size: 12px;
-  margin: 145px 250px 50px;
+  text-align: center;
+  padding: 130px 30px 50px;
+  @media (max-width: 900px) {
+    padding-top: 180px;
+    display: block;
+  }
 `;
 
 const List = styled.ul`
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 `;
 
 const ListItem = styled.li`
+  height: 30px;
   &:not(:last-child) {
     margin-right: 16px;
   }
@@ -25,7 +33,11 @@ const Link = styled.a`
 `;
 
 const Copyright = styled.span`
+  margin: 0px 0px 20px 130px;
   color: ${(props) => props.theme.darkGreyColor};
+  @media (max-width: 900px) {
+    margin: 0;
+  }
 `;
 
 export default () => (

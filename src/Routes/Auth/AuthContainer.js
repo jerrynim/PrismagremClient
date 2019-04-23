@@ -89,6 +89,8 @@ export default () => {
         const usernameCheck = /^[a-zA-Z0-9_]{4,16}$/.test(username.value);
         //username 확인
         if (!usernameCheck) {
+          console.log(username.value, usernameCheck);
+
           setErrorMessage(
             "사용자 이름에는 문자, 숫자, 밑줄 및 마침표만 사용할 수 있습니다."
           );

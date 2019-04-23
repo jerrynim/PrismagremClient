@@ -100,7 +100,6 @@ const SignUpButton = styled(FacebookButton)`
 const FirstForm = styled.div`
   border: 1px solid #e6e6e6;
   width: 350px;
-  height: 546px;
   margin: 0px 0px 10px;
   display: flex;
   flex-direction: column;
@@ -134,7 +133,7 @@ const SignUpText = styled.h2`
 `;
 
 const InfoText = styled.div`
-  padding: 18px 64px 18px;
+  padding: 18px 64px 38px;
   color: #999999;
   font-weight: 400;
   text-align: center;
@@ -256,6 +255,13 @@ const File = styled.div`
   transition: opacity 0.5s linear;
 `;
 
+const ErrorText = styled.div`
+  width: 268px;
+  color: #ed4956;
+  text-align: center;
+  margin: 20px 0px 0px;
+`;
+
 export default ({
   action,
   setAction,
@@ -331,7 +337,7 @@ export default ({
                   <Input type="password" {...secret} />
                 </div>
                 <SignUpButton>가입</SignUpButton>
-                {console.log(errorMessage)}
+                {errorMessage !== "" && <ErrorText>{errorMessage}</ErrorText>}
               </form>
               <InfoText>
                 가입하면 Instagram의
