@@ -23,17 +23,9 @@ const Container = styled.input`
   }
 `;
 
-const Input = ({
-  placeholder,
-  required = true,
-  value,
-  onChange,
-  type = "text",
-  className
-}) => (
+const Input = ({ placeholder, value, onChange, type = "text", className }) => (
   <Container
     className={className}
-    required={required}
     value={value}
     onChange={onChange}
     type={type}

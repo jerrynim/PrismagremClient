@@ -12,15 +12,17 @@ const Wrapper = styled.div`
 `;
 
 const PhoneImage = styled.div`
-  padding: 96px 370px 0px 0px;
-
+  width: 454px;
+  height: 618px;
+  margin: 96px 400px 0px 30px;
+  background-image: url("https://www.instagram.com/static/images/homepage/home-phones.png/43cc71bb1b43.png");
   @media (max-width: 900px) {
     display: none;
   }
 `;
 
 const LoginSection = styled.div`
-  padding: 88px 0px 0px 403px;
+  padding: 95px 0px 0px 403px;
   position: absolute;
 
   @media (max-width: 900px) {
@@ -75,6 +77,9 @@ const FacebookButton = styled.button`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  :focus {
+    outline: none;
+  }
 `;
 
 const SignUpButton = styled(FacebookButton)`
@@ -86,6 +91,9 @@ const SignUpButton = styled(FacebookButton)`
     pointer-events: none;
     color: #fafafa;
     background-color: #c0dff9;
+  }
+  :focus {
+    outline: none;
   }
 `;
 
@@ -181,7 +189,7 @@ const DownText = styled.div`
   margin: 19px 20px;
 `;
 
-const FacebookBox = styled.div`
+const FacebookBox = styled(Link)`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -236,15 +244,29 @@ const LogInText = styled.span`
   color: #999999;
 `;
 
+const File = styled.div`
+  width: 240px;
+  height: 427px;
+  position: absolute;
+  margin: 99px 0px 0px 151px;
+  background-image: url(${(props) => props.src}});
+  background-size: cover;
+  background-position: center;
+  opacity: ${(props) => (props.showing ? 1 : 0)};
+  transition: opacity 0.5s linear;
+`;
+
 export default ({
   action,
+  setAction,
   username,
-  firstName,
   lastName,
   email,
-  setAction,
+  secret,
   onSubmit,
-  secret
+  screenShots,
+  currentItem,
+  errorMessage
 }) => (
   <>
     <Helmet>
@@ -254,12 +276,192 @@ export default ({
       {action === "First" && (
         <InWrapper>
           <PhoneImage>
-            <img
-              src="https://www.instagram.com/static/images/homepage/home-phones.png/43cc71bb1b43.png"
-              alt=""
-            />
+            {screenShots.map((file, index) => (
+              <File
+                key={file.id}
+                src={file.src}
+                showing={index === currentItem}
+              />
+            ))}
           </PhoneImage>
           <LoginSection>
+            <FirstForm>
+              <Logo>
+                <img
+                  width="184px"
+                  height="67px"
+                  alt=""
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/2000px-Instagram_logo.svg.png"
+                />
+              </Logo>
+              <SignUpText>
+                친구들의 사진과 동영상을 보려면 가입하세요.
+              </SignUpText>
+              <FacebookButton>
+                <FacebookIcon>
+                  <img
+                    src={require("../../Components/Images/FacebookIcon16.png")}
+                    alt=""
+                  />
+                </FacebookIcon>
+                <FacebookText>Facebook으로 로그인</FacebookText>
+              </FacebookButton>
+              <Or>
+                <Line />
+                <OrText>또는</OrText>
+                <Line />
+              </Or>
+              <form onSubmit={onSubmit}>
+                <div>
+                  <InputLabel input={email}>
+                    휴대폰 번호 또는 이메일 주소
+                  </InputLabel>
+                  <Input {...email} />
+                </div>
+                <div>
+                  <InputLabel input={lastName}>성명</InputLabel>
+                  <Input {...lastName} />
+                </div>
+                <div>
+                  <InputLabel input={username}>사용자 이름</InputLabel>
+                  <Input {...username} />
+                </div>
+                <div>
+                  <InputLabel input={secret}>비밀번호</InputLabel>
+                  <Input type="password" {...secret} />
+                </div>
+                <SignUpButton>가입</SignUpButton>
+                {console.log(errorMessage)}
+              </form>
+              <InfoText>
+                가입하면 Instagram의
+                <InLink to="/"> 약관</InLink>,
+                <InLink to="/"> 데이터 정책 </InLink>및
+                <InLink to="/"> 쿠키 정책</InLink>에 동의하게 됩니다.
+              </InfoText>
+            </FirstForm>
+            <StateChanger>
+              {action === "logIn" ? (
+                <>
+                  계정이 없으신가요?
+                  <Link onClick={() => setAction("signUp")}>가입하기</Link>
+                </>
+              ) : (
+                <>
+                  <p>계정이 있으신가요?&nbsp;</p>
+                  <Link onClick={() => setAction("logIn")}> 로그인</Link>
+                </>
+              )}
+            </StateChanger>
+            <DownText>앱을 다운로드하세요.</DownText>
+            <AppLinks>
+              <Link to="/">
+                <img
+                  alt=""
+                  width="140"
+                  height="40"
+                  src="https://www.instagram.com/static/images/appstore-install-badges/badge_ios_english-en.png/180ae7a0bcf7.png"
+                />
+              </Link>
+              <Link to="/">
+                <img
+                  alt=""
+                  width="140"
+                  height="40"
+                  src="https://www.instagram.com/static/images/appstore-install-badges/badge_android_english-en.png/e9cd846dc748.png"
+                />
+              </Link>
+            </AppLinks>
+          </LoginSection>
+        </InWrapper>
+      )}
+      {action === "logIn" && (
+        <>
+          <Helmet>
+            <title>로그인 • Instagram</title>
+          </Helmet>
+          <Wrapper>
+            <LoginScreen>
+              <LoginForm>
+                <Logo>
+                  <img
+                    width="184px"
+                    height="67px"
+                    alt=""
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/2000px-Instagram_logo.svg.png"
+                  />
+                </Logo>
+                <Inputs>
+                  <div>
+                    <InputLabel input={email}>
+                      전화번호, 사용자 이름 또는 이메일
+                    </InputLabel>
+                    <Input {...email} />
+                  </div>
+                  <div>
+                    <InputLabel input={secret}>비밀번호</InputLabel>
+                    <Input {...secret} />
+                  </div>
+                </Inputs>
+                {email.value === "" || secret.value === "" ? (
+                  <SignUpButton disabled>로그인</SignUpButton>
+                ) : (
+                  <SignUpButton>로그인</SignUpButton>
+                )}
+                <Or>
+                  <Line />
+                  <OrText>또는</OrText>
+                  <Line />
+                </Or>
+                <FacebookBox>
+                  <img
+                    alt=""
+                    src={require("../../Components/Images/facebookIcon16-drakblue.png")}
+                  />
+                  <FacebookText2>Facebook으로 로그인</FacebookText2>
+                </FacebookBox>
+                <FindSecret>비밀번호를 잊으셨나요?</FindSecret>
+              </LoginForm>
+              <StateChanger>
+                {action === "logIn" ? (
+                  <>
+                    <LogInText> 계정이 없으신가요?&nbsp;</LogInText>
+                    <LogInLink onClick={() => setAction("signUp")}>
+                      가입하기
+                    </LogInLink>
+                  </>
+                ) : (
+                  <>
+                    <p>계정이 있으신가요?&nbsp;</p>
+                    <Link onClick={() => setAction("logIn")}> 로그인</Link>
+                  </>
+                )}
+              </StateChanger>
+              <DownText>앱을 다운로드하세요.</DownText>
+              <AppLinks>
+                <img
+                  alt=""
+                  width="140"
+                  height="40"
+                  src="https://www.instagram.com/static/images/appstore-install-badges/badge_ios_english-en.png/180ae7a0bcf7.png"
+                />
+                <img
+                  alt=""
+                  width="140"
+                  height="40"
+                  src="https://www.instagram.com/static/images/appstore-install-badges/badge_android_english-en.png/e9cd846dc748.png"
+                />
+              </AppLinks>
+            </LoginScreen>
+          </Wrapper>
+        </>
+      )}
+      {action === "signUp" && (
+        <>
+          <Helmet>
+            <title>가입하기 • Instagram</title>
+          </Helmet>
+          <SignUpSection>
             <FirstForm>
               <Logo>
                 <img
@@ -340,162 +542,8 @@ export default ({
                 src="https://www.instagram.com/static/images/appstore-install-badges/badge_android_english-en.png/e9cd846dc748.png"
               />
             </AppLinks>
-          </LoginSection>
-        </InWrapper>
-      )}
-      {action === "logIn" && (
-        <Wrapper>
-          <LoginScreen>
-            <LoginForm>
-              <Logo>
-                <img
-                  width="184px"
-                  height="67px"
-                  alt=""
-                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/2000px-Instagram_logo.svg.png"
-                />
-              </Logo>
-              <Inputs>
-                <div>
-                  <InputLabel input={email}>
-                    전화번호, 사용자 이름 또는 이메일
-                  </InputLabel>
-                  <Input {...email} />
-                </div>
-                <div>
-                  <InputLabel input={secret}>비밀번호</InputLabel>
-                  <Input {...secret} />
-                </div>
-              </Inputs>
-              <SignUpButton disabled>로그인</SignUpButton>
-              <Or>
-                <Line />
-                <OrText>또는</OrText>
-                <Line />
-              </Or>
-              <FacebookBox>
-                <img
-                  alt=""
-                  src={require("../../Components/Images/facebookIcon16-drakblue.png")}
-                />
-                <FacebookText2>Facebook으로 로그인</FacebookText2>
-              </FacebookBox>
-              <FindSecret>비밀번호를 잊으셨나요?</FindSecret>
-            </LoginForm>
-            <StateChanger>
-              {action === "logIn" ? (
-                <>
-                  <LogInText> 계정이 없으신가요?&nbsp;</LogInText>
-                  <LogInLink onClick={() => setAction("First")}>
-                    가입하기
-                  </LogInLink>
-                </>
-              ) : (
-                <>
-                  <p>계정이 있으신가요?&nbsp;</p>
-                  <Link onClick={() => setAction("logIn")}> 로그인</Link>
-                </>
-              )}
-            </StateChanger>
-            <DownText>앱을 다운로드하세요.</DownText>
-            <AppLinks>
-              <img
-                alt=""
-                width="134"
-                height="40"
-                src="https://www.instagram.com/static/images/appstore-install-badges/badge_ios_english-en.png/180ae7a0bcf7.png"
-              />
-              <img
-                alt=""
-                width="134"
-                height="40"
-                src="https://www.instagram.com/static/images/appstore-install-badges/badge_android_english-en.png/e9cd846dc748.png"
-              />
-            </AppLinks>
-          </LoginScreen>
-        </Wrapper>
-      )}
-      {action === "signUp" && (
-        <SignUpSection>
-          <FirstForm>
-            <Logo>
-              <img
-                width="184px"
-                height="67px"
-                alt=""
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/2000px-Instagram_logo.svg.png"
-              />
-            </Logo>
-            <SignUpText>친구들의 사진과 동영상을 보려면 가입하세요.</SignUpText>
-            <FacebookButton>
-              <FacebookIcon>
-                <img
-                  src={require("../../Components/Images/FacebookIcon16.png")}
-                  alt=""
-                />
-              </FacebookIcon>
-              <FacebookText>Facebook으로 로그인</FacebookText>
-            </FacebookButton>
-            <Or>
-              <Line />
-              <OrText>또는</OrText>
-              <Line />
-            </Or>
-            <div>
-              <InputLabel input={email}>
-                휴대폰 번호 또는 이메일 주소
-              </InputLabel>
-              <Input {...email} />
-            </div>
-            <div>
-              <InputLabel input={lastName}>성명</InputLabel>
-              <Input {...lastName} />
-            </div>
-            <div>
-              <InputLabel input={username}>사용자 이름</InputLabel>
-              <Input {...username} />
-            </div>
-            <div>
-              <InputLabel input={secret}>비밀번호</InputLabel>
-              <Input {...secret} />
-            </div>
-            <SignUpButton>가입</SignUpButton>
-            <InfoText>
-              가입하면 Instagram의
-              <InLink to="/"> 약관</InLink>,
-              <InLink to="/"> 데이터 정책 </InLink>및
-              <InLink to="/"> 쿠키 정책</InLink>에 동의하게 됩니다.
-            </InfoText>
-          </FirstForm>
-          <StateChanger>
-            {action === "logIn" ? (
-              <>
-                계정이 없으신가요?
-                <Link onClick={() => setAction("signUp")}>가입하기</Link>
-              </>
-            ) : (
-              <>
-                <p>계정이 있으신가요?&nbsp;</p>
-                <Link onClick={() => setAction("logIn")}> 로그인</Link>
-              </>
-            )}
-          </StateChanger>
-          <DownText>앱을 다운로드하세요.</DownText>
-          <AppLinks>
-            <img
-              alt=""
-              width="140"
-              height="40"
-              src="https://www.instagram.com/static/images/appstore-install-badges/badge_ios_english-en.png/180ae7a0bcf7.png"
-            />
-            <img
-              alt=""
-              width="140"
-              height="40"
-              src="https://www.instagram.com/static/images/appstore-install-badges/badge_android_english-en.png/e9cd846dc748.png"
-            />
-          </AppLinks>
-        </SignUpSection>
+          </SignUpSection>
+        </>
       )}
     </Wrapper>
   </>

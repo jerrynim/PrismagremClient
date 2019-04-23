@@ -7,7 +7,7 @@ const Footer = styled.footer`
   text-transform: uppercase;
   font-weight: 600;
   font-size: 12px;
-  margin: 50px 0px;
+  margin: 145px 250px 50px;
 `;
 
 const List = styled.ul`
@@ -32,39 +32,39 @@ export default () => (
   <Footer>
     <List>
       <ListItem>
-        <Link href="#">about us</Link>
+        <Link href="#">INSTAGRAM 정보</Link>
       </ListItem>
       <ListItem>
-        <Link href="#">support</Link>
+        <Link href="#">지원</Link>
       </ListItem>
       <ListItem>
-        <Link href="#">press</Link>
+        <Link href="#">홍보센터</Link>
       </ListItem>
       <ListItem>
-        <Link href="#">api</Link>
+        <Link href="#">API</Link>
       </ListItem>
       <ListItem>
-        <Link href="#">jobs</Link>
+        <Link href="#">채용 정보</Link>
       </ListItem>
       <ListItem>
-        <Link href="#">privacy</Link>
+        <Link href="#">개인정보처리방침</Link>
       </ListItem>
       <ListItem>
-        <Link href="#">terms</Link>
+        <Link href="#">약관</Link>
       </ListItem>
       <ListItem>
-        <Link href="#">directory</Link>
+        <Link href="#">디렉터리</Link>
       </ListItem>
       <ListItem>
-        <Link href="#">profiles</Link>
+        <Link href="#">프로필</Link>
       </ListItem>
       <ListItem>
-        <Link href="#">hashtags</Link>
+        <Link href="#">해시태그</Link>
       </ListItem>
       <ListItem>
-        <Link href="#">language</Link>
+        <Link href="#">언어</Link>
       </ListItem>
     </List>
-    <Copyright>Instaclone {new Date().getFullYear()} &copy;</Copyright>
+    <Copyright>@{new Date().getFullYear()} INSTAGRAM&copy;</Copyright>
   </Footer>
 );

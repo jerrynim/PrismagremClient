@@ -1,39 +1,68 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AuthPresenter from "./AuthPresenter";
 import useInput from "../../Hooks/useInput";
 import { useMutation } from "react-apollo-hooks";
-import {
-  LOG_IN,
-  CREATE_ACCOUNT,
-  LOCAL_LOG_IN,
-  CONFIRM_SECRET
-} from "./AuthQueries";
-import { toast } from "react-toastify";
+import { CREATE_ACCOUNT, LOCAL_LOG_IN } from "./AuthQueries";
+
+/*미구현 :input blur시 db에서 확인하는 기능 
+        랜덤한 사용자이름
+        비밀번호 표시
+*/
 
 export default () => {
-  const [action, setAction] = useState("signUp");
-  const username = useInput("");
-  const firstName = useInput("");
-  const lastName = useInput("");
-  const secret = useInput("");
+  const [action, setAction] = useState("First");
   const email = useInput("");
+  const lastName = useInput("");
+  const username = useInput("");
+  const secret = useInput("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const screenShots = [
+    {
+      id: 1,
+      src:
+        "https://www.instagram.com/static/images/homepage/screenshot2.jpg/6f03eb85463c.jpg"
+    },
+    {
+      id: 2,
+      src:
+        "https://www.instagram.com/static/images/homepage/screenshot5.jpg/0a2d3016f375.jpg"
+    },
+    {
+      id: 3,
+      src:
+        "https://www.instagram.com/static/images/homepage/screenshot3.jpg/f0c687aa6ec2.jpg"
+    },
+    {
+      id: 4,
+      src:
+        "https://www.instagram.com/static/images/homepage/screenshot1.jpg/d6bf0c928b5a.jpg"
+    },
+    {
+      id: 5,
+      src:
+        "https://www.instagram.com/static/images/homepage/screenshot4.jpg/842fe5699220.jpg"
+    }
+  ];
 
-  const requestSecretMutation = useMutation(LOG_IN, {
-    variables: { email: email.value }
-  });
+  const [currentItem, setCurrentItem] = useState(0);
+
+  const slide = () => {
+    const totalFiles = screenShots.length;
+    if (currentItem === totalFiles - 1) {
+      setTimeout(() => setCurrentItem(0), 3000);
+    } else {
+      setTimeout(() => setCurrentItem(currentItem + 1), 3000);
+    }
+  };
+  useEffect(() => {
+    slide();
+  }, [currentItem]);
 
   const createAccountMutation = useMutation(CREATE_ACCOUNT, {
     variables: {
       email: email.value,
       username: username.value,
-      firstName: firstName.value,
-      lastName: lastName.value
-    }
-  });
-
-  const confirmSecretMutation = useMutation(CONFIRM_SECRET, {
-    variables: {
-      email: email.value,
+      lastName: lastName.value,
       secret: secret.value
     }
   });
@@ -42,78 +71,58 @@ export default () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (action === "logIn") {
-      if (email.value !== "") {
-        try {
-          const {
-            data: { requestSecret }
-          } = await requestSecretMutation();
-          if (!requestSecret) {
-            toast.error("you don't have an account ye, create one");
-            setTimeout(() => setAction("signUp"), 3000);
-          } else {
-            toast.success("Check your inbox for your login secret");
-            setAction("confirm");
-          }
-        } catch {
-          toast.error("cant request secret");
-        }
-      } else {
-        toast.error("Email is required");
-      }
-    } else if (action === "signUp") {
+    if (action === "First") {
       if (
-        email.value !== "" &&
-        username.value !== "" &&
-        firstName.value !== "" &&
-        lastName.value !== ""
+        //빈칸인지 확인
+        email.value === "" &&
+        username.value === "" &&
+        lastName.value === "" &&
+        secret.value === ""
       ) {
-        try {
-          const {
-            data: { createAccount }
-          } = await createAccountMutation();
-
-          if (!createAccount) {
-            toast.error("cant crate account");
-          } else {
-            toast.success("account created! log in now");
-            setTimeout(() => setAction("logIn"), 3000);
-          }
-        } catch (e) {
-          toast.error(e.message);
-        }
+        setErrorMessage("This field is required.");
       } else {
-        toast.error("ALl field are required");
-      }
-    } else if (action === "confirm") {
-      if (secret.value !== "") {
-        try {
-          const {
-            data: { confirmSecret: token }
-          } = await confirmSecretMutation();
-          if (token !== "" && token !== undefined) {
-            localLogInMutation({ variables: { token } });
-            this.props.history.push({ path: "/" });
-          } else {
-            throw Error();
-          }
-        } catch (e) {
-          toast.error("cant confirm secret,check again");
+        //휴대폰 번호체크
+        const phoneCheck = /^\d{3}-\d{3,4}-\d{4}$/.test(email.value);
+        const emailCheck = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i.test(
+          email.value
+        );
+        const usernameCheck = /^[a-zA-Z0-9_]{4,16}$/.test(username.value);
+        //username 확인
+        if (!usernameCheck) {
+          setErrorMessage(
+            "사용자 이름에는 문자, 숫자, 밑줄 및 마침표만 사용할 수 있습니다."
+          );
+        }
+        //비밀번호가 6자리보다 작다면
+        if (secret.value.length < 6) {
+          setErrorMessage("6자 이상의 비밀번호를 만드세요.");
+        }
+
+        if (phoneCheck) {
+          //휴대폰이라면 문자전송 + action==="PhoneVerification"
+        } else if (emailCheck) {
+          //email발송 + action==="Cinfirm"
+        } else {
+          setErrorMessage("Enter a valid email address Or Phonenumber");
         }
       }
+    } else if (action === "logIn") {
+    } else if (action === "signUp") {
     }
   };
 
   return (
     <AuthPresenter
-      setAction={setAction}
       action={action}
+      setAction={setAction}
       username={username}
-      firstName={firstName}
       lastName={lastName}
       email={email}
       secret={secret}
       onSubmit={onSubmit}
+      screenShots={screenShots}
+      currentItem={currentItem}
+      errorMessage={errorMessage}
     />
   );
 };
