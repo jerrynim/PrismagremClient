@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import AuthPresenter from "./AuthPresenter";
 import useInput from "../../Hooks/useInput";
 import { useMutation } from "react-apollo-hooks";
-import { CREATE_ACCOUNT, LOCAL_LOG_IN } from "./AuthQueries";
+import { CREATE_ACCOUNT, LOCAL_LOG_IN, LOG_IN } from "./AuthQueries";
 
 /*미구현 :input blur시 db에서 확인하는 기능 
         랜덤한 사용자이름
@@ -10,11 +10,12 @@ import { CREATE_ACCOUNT, LOCAL_LOG_IN } from "./AuthQueries";
 */
 
 export default () => {
-  const [action, setAction] = useState("First");
+  const [action, setAction] = useState("phoneConfirm");
   const email = useInput("");
   const lastName = useInput("");
   const username = useInput("");
   const secret = useInput("");
+  const confirmKey = useInput("");
   const [errorMessage, setErrorMessage] = useState("");
   const screenShots = [
     {
@@ -67,11 +68,16 @@ export default () => {
     }
   });
 
+  const requestSecretMutation = useMutation(LOG_IN, {
+    variables: {
+      email: email.value
+    }
+  });
   const localLogInMutation = useMutation(LOCAL_LOG_IN);
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (action === "First") {
+    if (action === "First" || action === "signUp") {
       if (
         //빈칸인지 확인
         email.value === "" &&
@@ -89,8 +95,6 @@ export default () => {
         const usernameCheck = /^[a-zA-Z0-9_]{4,16}$/.test(username.value);
         //username 확인
         if (!usernameCheck) {
-          console.log(username.value, usernameCheck);
-
           setErrorMessage(
             "사용자 이름에는 문자, 숫자, 밑줄 및 마침표만 사용할 수 있습니다."
           );
@@ -103,13 +107,40 @@ export default () => {
         if (phoneCheck) {
           //휴대폰이라면 문자전송 + action==="PhoneVerification"
         } else if (emailCheck) {
-          //email발송 + action==="Cinfirm"
+          try {
+            //유저 생성
+            const {
+              data: { createAccount }
+            } = await createAccountMutation();
+
+            if (!createAccount) {
+              console.log("유저를 생성하지 못했습니다.");
+            } else {
+              //이메일 전송
+              try {
+                const {
+                  data: { requestSecret }
+                } = await requestSecretMutation();
+                if (!requestSecret) {
+                  setErrorMessage("이메일 전송에 실패했습니다.");
+                } else {
+                  setAction("confirm");
+                }
+              } catch (e) {
+                console.log(e.message);
+              }
+            }
+          } catch (e) {
+            console.log(e.message);
+          }
         } else {
+          //잘못된 Input
           setErrorMessage("Enter a valid email address Or Phonenumber");
         }
       }
     } else if (action === "logIn") {
-    } else if (action === "signUp") {
+      //email && secret 로 prisma mutation check후 token 으로 local로그인
+    } else if (action === "confirm") {
     }
   };
 
@@ -121,6 +152,7 @@ export default () => {
       lastName={lastName}
       email={email}
       secret={secret}
+      confirmKey={confirmKey}
       onSubmit={onSubmit}
       screenShots={screenShots}
       currentItem={currentItem}

@@ -272,7 +272,8 @@ export default ({
   onSubmit,
   screenShots,
   currentItem,
-  errorMessage
+  errorMessage,
+  confirmKey
 }) => (
   <>
     <Helmet>
@@ -550,6 +551,39 @@ export default ({
             </AppLinks>
           </SignUpSection>
         </>
+      )}
+      {action === "phoneConfirm" && (
+        <InWrapper>
+          <PhoneImage>
+            {screenShots.map((file, index) => (
+              <File
+                key={file.id}
+                src={file.src}
+                showing={index === currentItem}
+              />
+            ))}
+          </PhoneImage>
+          <LoginSection>
+            <FirstForm>
+              <Logo>
+                <img
+                  width="184px"
+                  height="67px"
+                  alt=""
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/2000px-Instagram_logo.svg.png"
+                />
+              </Logo>
+              <div>
+                마지막 단계입니다.{email.value}번으로 전송된 6자리 코드를
+                입력하세요.
+              </div>
+              <div>
+                <InputLabel input={confirmKey}>######</InputLabel>
+                <Input {...confirmKey} />
+              </div>
+            </FirstForm>
+          </LoginSection>
+        </InWrapper>
       )}
     </Wrapper>
   </>
