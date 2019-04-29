@@ -6,7 +6,8 @@ import {
   CREATE_ACCOUNT,
   LOCAL_LOG_IN,
   LOG_IN,
-  CONFIRM_SECRET
+  CONFIRM_SECRET,
+  LOGIN
 } from "./AuthQueries";
 
 /*미구현 :input blur시 db에서 확인하는 기능 
@@ -76,6 +77,13 @@ export default () => {
   const requestSecretMutation = useMutation(LOG_IN, {
     variables: {
       email: email.value
+    }
+  });
+
+  const loginMutation = useMutation(LOGIN, {
+    variables: {
+      email: email.value,
+      secret: secret.value
     }
   });
 
@@ -151,7 +159,27 @@ export default () => {
         }
       }
     } else if (action === "logIn") {
-      //email && secret 로 prisma mutation check후 token 으로 local로그인
+      if (
+        //빈칸인지 확인
+        email.value === "" &&
+        secret.value === ""
+      ) {
+        setErrorMessage("This field is required.");
+      } else {
+        try {
+          const {
+            data: { login: token }
+          } = await loginMutation();
+          if (token !== "" && token !== undefined) {
+            localLogInMutation({ variables: { token } });
+            this.props.history.push({ path: "/" });
+          } else {
+            throw Error();
+          }
+        } catch (e) {
+          console.log(e.message);
+        }
+      }
     } else if (action === "confirm") {
       try {
         const {

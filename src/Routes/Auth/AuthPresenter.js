@@ -110,7 +110,6 @@ const FirstForm = styled.div`
 const LoginForm = styled.div`
   border: 1px solid #e6e6e6;
   width: 350px;
-  height: 380px;
   margin: 0px 0px 10px;
   display: flex;
   flex-direction: column;
@@ -417,23 +416,25 @@ export default ({
                     src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/2000px-Instagram_logo.svg.png"
                   />
                 </Logo>
-                <Inputs>
-                  <div>
-                    <InputLabel input={email}>
-                      전화번호, 사용자 이름 또는 이메일
-                    </InputLabel>
-                    <Input {...email} />
-                  </div>
-                  <div>
-                    <InputLabel input={secret}>비밀번호</InputLabel>
-                    <Input {...secret} />
-                  </div>
-                </Inputs>
-                {email.value === "" || secret.value === "" ? (
-                  <SignUpButton disabled>로그인</SignUpButton>
-                ) : (
-                  <SignUpButton>로그인</SignUpButton>
-                )}
+                <form onSubmit={onSubmit}>
+                  <Inputs>
+                    <div>
+                      <InputLabel input={email}>
+                        전화번호, 사용자 이름 또는 이메일
+                      </InputLabel>
+                      <Input {...email} />
+                    </div>
+                    <div>
+                      <InputLabel input={secret}>비밀번호</InputLabel>
+                      <Input type="password" {...secret} />
+                    </div>
+                  </Inputs>
+                  {email.value === "" || secret.value === "" ? (
+                    <SignUpButton disabled>로그인</SignUpButton>
+                  ) : (
+                    <SignUpButton>로그인</SignUpButton>
+                  )}
+                </form>
                 <Or>
                   <Line />
                   <OrText>또는</OrText>
@@ -446,6 +447,9 @@ export default ({
                   />
                   <FacebookText2>Facebook으로 로그인</FacebookText2>
                 </FacebookBox>
+                <div>
+                  {errorMessage !== "" && <ErrorText>{errorMessage}</ErrorText>}
+                </div>
                 <FindSecret>비밀번호를 잊으셨나요?</FindSecret>
               </LoginForm>
               <StateChanger>
@@ -530,7 +534,7 @@ export default ({
               </div>
               <div>
                 <InputLabel input={secret}>비밀번호</InputLabel>
-                <Input {...secret} />
+                <Input type="password" {...secret} />
               </div>
               <SignUpButton>가입</SignUpButton>
               <InfoText>
