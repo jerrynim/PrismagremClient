@@ -2,7 +2,12 @@ import React, { useState, useEffect } from "react";
 import AuthPresenter from "./AuthPresenter";
 import useInput from "../../Hooks/useInput";
 import { useMutation } from "react-apollo-hooks";
-import { CREATE_ACCOUNT, LOCAL_LOG_IN, LOG_IN } from "./AuthQueries";
+import {
+  CREATE_ACCOUNT,
+  LOCAL_LOG_IN,
+  LOG_IN,
+  CONFIRM_SECRET
+} from "./AuthQueries";
 
 /*미구현 :input blur시 db에서 확인하는 기능 
         랜덤한 사용자이름
@@ -10,7 +15,7 @@ import { CREATE_ACCOUNT, LOCAL_LOG_IN, LOG_IN } from "./AuthQueries";
 */
 
 export default () => {
-  const [action, setAction] = useState("phoneConfirm");
+  const [action, setAction] = useState("First");
   const email = useInput("");
   const lastName = useInput("");
   const username = useInput("");
@@ -73,6 +78,14 @@ export default () => {
       email: email.value
     }
   });
+
+  const confirmSecretMutation = useMutation(CONFIRM_SECRET, {
+    variables: {
+      secret: confirmKey.value,
+      email: email.value
+    }
+  });
+
   const localLogInMutation = useMutation(LOCAL_LOG_IN);
 
   const onSubmit = async (e) => {
@@ -112,7 +125,6 @@ export default () => {
             const {
               data: { createAccount }
             } = await createAccountMutation();
-
             if (!createAccount) {
               console.log("유저를 생성하지 못했습니다.");
             } else {
@@ -141,6 +153,19 @@ export default () => {
     } else if (action === "logIn") {
       //email && secret 로 prisma mutation check후 token 으로 local로그인
     } else if (action === "confirm") {
+      try {
+        const {
+          data: { confirmSecret: token }
+        } = await confirmSecretMutation();
+        if (token !== "" && token !== undefined) {
+          localLogInMutation({ variables: { token } });
+          this.props.history.push({ path: "/" });
+        } else {
+          throw Error();
+        }
+      } catch (e) {
+        console.log(e.message);
+      }
     }
   };
 

@@ -262,6 +262,25 @@ const ErrorText = styled.div`
   margin: 20px 0px 0px;
 `;
 
+const InputWrapper = styled.div`
+  margin: 20px 0px 10px;
+`;
+
+const PhoneText = styled.div`
+  text-align: center;
+  padding: 0px 40px 0px;
+`;
+
+const PhoneFindLink = styled(Link)`
+  color: ${(props) => props.theme.blueColor};
+  font-weight: 600;
+`;
+
+const PhoneLinkWrapper = styled.div`
+  margin: 40px 40px;
+  text-align: center;
+`;
+
 export default ({
   action,
   setAction,
@@ -552,7 +571,7 @@ export default ({
           </SignUpSection>
         </>
       )}
-      {action === "phoneConfirm" && (
+      {action === "confirm" && (
         <InWrapper>
           <PhoneImage>
             {screenShots.map((file, index) => (
@@ -573,15 +592,56 @@ export default ({
                   src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/2000px-Instagram_logo.svg.png"
                 />
               </Logo>
-              <div>
+              <PhoneText>
                 마지막 단계입니다.{email.value}번으로 전송된 6자리 코드를
                 입력하세요.
-              </div>
-              <div>
-                <InputLabel input={confirmKey}>######</InputLabel>
-                <Input {...confirmKey} />
-              </div>
+              </PhoneText>
+              <form onSubmit={onSubmit}>
+                <InputWrapper>
+                  <InputLabel input={confirmKey}>######</InputLabel>
+                  <Input {...confirmKey} />
+                </InputWrapper>
+                <SignUpButton>확인</SignUpButton>
+              </form>
+              <PhoneLinkWrapper>
+                <PhoneFindLink>휴대폰 번호 변경 </PhoneFindLink>|
+                <PhoneFindLink> 새 코드 요청하기</PhoneFindLink>
+              </PhoneLinkWrapper>
             </FirstForm>
+            <StateChanger>
+              {action === "logIn" ? (
+                <>
+                  <LogInText> 계정이 없으신가요?&nbsp;</LogInText>
+                  <LogInLink onClick={() => setAction("signUp")}>
+                    가입하기
+                  </LogInLink>
+                </>
+              ) : (
+                <>
+                  <p>계정이 있으신가요?&nbsp;</p>
+                  <Link onClick={() => setAction("logIn")}> 로그인</Link>
+                </>
+              )}
+            </StateChanger>
+            <DownText>앱을 다운로드하세요.</DownText>
+            <AppLinks>
+              <Link to="/">
+                <img
+                  alt=""
+                  width="140"
+                  height="40"
+                  src="https://www.instagram.com/static/images/appstore-install-badges/badge_ios_english-en.png/180ae7a0bcf7.png"
+                />
+              </Link>
+              <Link to="/">
+                <img
+                  alt=""
+                  width="140"
+                  height="40"
+                  src="https://www.instagram.com/static/images/appstore-install-badges/badge_android_english-en.png/e9cd846dc748.png"
+                />
+              </Link>
+            </AppLinks>
           </LoginSection>
         </InWrapper>
       )}
