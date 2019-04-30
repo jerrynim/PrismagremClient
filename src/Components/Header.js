@@ -18,15 +18,17 @@ const Header = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 25px 0px;
   z-index: 2;
 `;
 
 const HeaderWrapper = styled.div`
+  padding: 26px 0px;
   width: 100%;
+  height: 77px;
   max-width: ${(props) => props.theme.maxWidth};
   display: flex;
   justify-content: center;
+  transition: height 0.2s;
 `;
 
 const HeaderColumn = styled.div`

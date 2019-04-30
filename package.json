@@ -11,6 +11,7 @@
     "react-apollo-hooks": "^0.4.4",
     "react-autosize-textarea": "^7.0.0",
     "react-dom": "^16.8.6",
+    "react-facebook-login": "^4.1.1",
     "react-helmet": "^5.2.0",
     "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.8",

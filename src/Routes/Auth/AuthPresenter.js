@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import Input from "../../Components/Input";
 import Helmet from "rl-react-helmet";
+import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
+import { FACEBOOK_APPID } from "../../keys";
 
 const Wrapper = styled.div`
   min-height: 80vh;
@@ -132,7 +134,7 @@ const SignUpText = styled.h2`
 `;
 
 const InfoText = styled.div`
-  padding: 18px 64px 38px;
+  padding: 18px 64px 20px;
   color: #999999;
   font-weight: 400;
   text-align: center;
@@ -147,6 +149,7 @@ const InLink = styled(Link)`
 
 const FacebookText = styled.div`
   margin-left: 8px;
+  color: white;
 `;
 
 const FacebookText2 = styled.span`
@@ -260,6 +263,12 @@ const ErrorText = styled.div`
   text-align: center;
   margin: 20px 0px 0px;
 `;
+const SignErrorText = styled.div`
+  width: 268px;
+  color: #ed4956;
+  text-align: center;
+  margin: 0px 0px 40px;
+`;
 
 const InputWrapper = styled.div`
   margin: 20px 0px 10px;
@@ -291,7 +300,8 @@ export default ({
   screenShots,
   currentItem,
   errorMessage,
-  confirmKey
+  confirmKey,
+  loginCallback
 }) => (
   <>
     <Helmet>
@@ -322,15 +332,25 @@ export default ({
               <SignUpText>
                 친구들의 사진과 동영상을 보려면 가입하세요.
               </SignUpText>
-              <FacebookButton>
-                <FacebookIcon>
-                  <img
-                    src={require("../../Components/Images/FacebookIcon16.png")}
-                    alt=""
-                  />
-                </FacebookIcon>
-                <FacebookText>Facebook으로 로그인</FacebookText>
-              </FacebookButton>
+              <FacebookLogin
+                appId={FACEBOOK_APPID}
+                autoLoad={false}
+                fields="name,first_name,last_name,email"
+                callback={loginCallback}
+                render={(renderProps) => (
+                  <Link onClick={renderProps.onClick}>
+                    <FacebookButton>
+                      <FacebookIcon>
+                        <img
+                          src={require("../../Components/Images/FacebookIcon16.png")}
+                          alt=""
+                        />
+                      </FacebookIcon>
+                      <FacebookText>Facebook으로 로그인</FacebookText>
+                    </FacebookButton>
+                  </Link>
+                )}
+              />
               <Or>
                 <Line />
                 <OrText>또는</OrText>
@@ -445,7 +465,17 @@ export default ({
                     alt=""
                     src={require("../../Components/Images/facebookIcon16-drakblue.png")}
                   />
-                  <FacebookText2>Facebook으로 로그인</FacebookText2>
+                  <FacebookLogin
+                    appId={FACEBOOK_APPID}
+                    autoLoad={false}
+                    fields="name,first_name,last_name,email"
+                    callback={loginCallback}
+                    render={(renderProps) => (
+                      <Link onClick={renderProps.onClick}>
+                        <FacebookText2>Facebook으로 로그인</FacebookText2>
+                      </Link>
+                    )}
+                  />
                 </FacebookBox>
                 <div>
                   {errorMessage !== "" && <ErrorText>{errorMessage}</ErrorText>}
@@ -504,45 +534,63 @@ export default ({
               <SignUpText>
                 친구들의 사진과 동영상을 보려면 가입하세요.
               </SignUpText>
-              <FacebookButton>
-                <FacebookIcon>
-                  <img
-                    src={require("../../Components/Images/FacebookIcon16.png")}
-                    alt=""
-                  />
-                </FacebookIcon>
-                <FacebookText>Facebook으로 로그인</FacebookText>
-              </FacebookButton>
+              <FacebookLogin
+                appId={FACEBOOK_APPID}
+                autoLoad={false}
+                fields="name,first_name,last_name,email"
+                callback={loginCallback}
+                render={(renderProps) => (
+                  <Link onClick={renderProps.onClick}>
+                    <FacebookButton>
+                      <FacebookIcon>
+                        <img
+                          src={require("../../Components/Images/FacebookIcon16.png")}
+                          alt=""
+                        />
+                      </FacebookIcon>
+                      <FacebookText>Facebook으로 로그인</FacebookText>
+                    </FacebookButton>
+                  </Link>
+                )}
+              />
+
               <Or>
                 <Line />
                 <OrText>또는</OrText>
                 <Line />
               </Or>
-              <div>
-                <InputLabel input={email}>
-                  휴대폰 번호 또는 이메일 주소
-                </InputLabel>
-                <Input {...email} />
-              </div>
-              <div>
-                <InputLabel input={lastName}>성명</InputLabel>
-                <Input {...lastName} />
-              </div>
-              <div>
-                <InputLabel input={username}>사용자 이름</InputLabel>
-                <Input {...username} />
-              </div>
-              <div>
-                <InputLabel input={secret}>비밀번호</InputLabel>
-                <Input type="password" {...secret} />
-              </div>
-              <SignUpButton>가입</SignUpButton>
+              <form onSubmit={onSubmit}>
+                <div>
+                  <InputLabel input={email}>
+                    휴대폰 번호 또는 이메일 주소
+                  </InputLabel>
+                  <Input {...email} />
+                </div>
+                <div>
+                  <InputLabel input={lastName}>성명</InputLabel>
+                  <Input {...lastName} />
+                </div>
+                <div>
+                  <InputLabel input={username}>사용자 이름</InputLabel>
+                  <Input {...username} />
+                </div>
+                <div>
+                  <InputLabel input={secret}>비밀번호</InputLabel>
+                  <Input type="password" {...secret} />
+                </div>
+                <SignUpButton>가입</SignUpButton>
+              </form>
               <InfoText>
                 가입하면 Instagram의
                 <InLink to="/"> 약관</InLink>,
                 <InLink to="/"> 데이터 정책 </InLink>및
                 <InLink to="/"> 쿠키 정책</InLink>에 동의하게 됩니다.
               </InfoText>
+              <div>
+                {errorMessage !== "" && (
+                  <SignErrorText>{errorMessage}</SignErrorText>
+                )}
+              </div>
             </FirstForm>
             <StateChanger>
               {action === "logIn" ? (
@@ -597,7 +645,7 @@ export default ({
                 />
               </Logo>
               <PhoneText>
-                마지막 단계입니다.{email.value}번으로 전송된 6자리 코드를
+                마지막 단계입니다.{email.value}으로 전송된 6자리 코드를
                 입력하세요.
               </PhoneText>
               <form onSubmit={onSubmit}>

@@ -7,8 +7,10 @@ import {
   LOCAL_LOG_IN,
   LOG_IN,
   CONFIRM_SECRET,
-  LOGIN
+  LOGIN,
+  FACEBOOK_LOGIN
 } from "./AuthQueries";
+import { toast } from "react-toastify";
 
 /*미구현 :input blur시 db에서 확인하는 기능 
         랜덤한 사용자이름
@@ -96,6 +98,41 @@ export default () => {
 
   const localLogInMutation = useMutation(LOCAL_LOG_IN);
 
+  const facebookLoginMutation = useMutation(FACEBOOK_LOGIN);
+
+  //facebook Login callback
+  const loginCallback = async (response) => {
+    const {
+      email,
+      first_name: firstName,
+      last_name: lastName,
+      name,
+      accessToken
+    } = response;
+    if (accessToken) {
+      try {
+        //facebookLogin token생성
+        const {
+          data: { facebookLogin: token }
+        } = await facebookLoginMutation({
+          variables: { email, firstName, lastName, name }
+        });
+        if (token !== "" && token !== undefined) {
+          localLogInMutation({ variables: { token } });
+          window.location = "/";
+        } else {
+          throw Error();
+        }
+      } catch (e) {
+        toast.error(e.message);
+      }
+
+      toast.success("Facebook login success");
+    } else {
+      toast.error("Facebook Connect error");
+    }
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
     if (action === "First" || action === "signUp") {
@@ -134,7 +171,7 @@ export default () => {
               data: { createAccount }
             } = await createAccountMutation();
             if (!createAccount) {
-              console.log("유저를 생성하지 못했습니다.");
+              setErrorMessage("유저를 생성하지 못했습니다.");
             } else {
               //이메일 전송
               try {
@@ -147,11 +184,11 @@ export default () => {
                   setAction("confirm");
                 }
               } catch (e) {
-                console.log(e.message);
+                toast.error(e.message);
               }
             }
           } catch (e) {
-            console.log(e.message);
+            toast.error(e.message);
           }
         } else {
           //잘못된 Input
@@ -172,12 +209,12 @@ export default () => {
           } = await loginMutation();
           if (token !== "" && token !== undefined) {
             localLogInMutation({ variables: { token } });
-            this.props.history.push({ path: "/" });
+            window.location = "/";
           } else {
             throw Error();
           }
         } catch (e) {
-          console.log(e.message);
+          toast.error(e.message);
         }
       }
     } else if (action === "confirm") {
@@ -187,12 +224,12 @@ export default () => {
         } = await confirmSecretMutation();
         if (token !== "" && token !== undefined) {
           localLogInMutation({ variables: { token } });
-          this.props.history.push({ path: "/" });
+          window.location = "/";
         } else {
           throw Error();
         }
       } catch (e) {
-        console.log(e.message);
+        toast.error(e.message);
       }
     }
   };
@@ -210,6 +247,7 @@ export default () => {
       screenShots={screenShots}
       currentItem={currentItem}
       errorMessage={errorMessage}
+      loginCallback={loginCallback}
     />
   );
 };

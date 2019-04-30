@@ -39,3 +39,19 @@ export const LOGIN = gql`
     login(email: $email, secret: $secret)
   }
 `;
+
+export const FACEBOOK_LOGIN = gql`
+  mutation facebookLogin(
+    $email: String!
+    $firstName: String!
+    $lastName: String!
+    $name: String!
+  ) {
+    facebookLogin(
+      email: $email
+      firstName: $firstName
+      lastName: $lastName
+      name: $name
+    )
+  }
+`;
