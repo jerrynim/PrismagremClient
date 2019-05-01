@@ -7,9 +7,11 @@ import { HeartFull, HeartEmpty, Comment as CommentIcon } from "../Icons";
 import { Link } from "react-router-dom";
 
 const Post = styled.div`
+  border-radius: 3px;
+  border: 1px solid #e6e6e6;
   ${(props) => props.theme.whiteBox};
   width: 100%;
-  max-width: 600px;
+  max-width: 614px;
   user-select: none;
   margin-bottom: 25px;
   a {

@@ -164,6 +164,8 @@ export default withRouter(({ history }) => {
   };
   //searchInput focus 시
   const focusAction = (e) => {
+    e.stopPropagation();
+
     setFocus("On");
   };
   //searchInputseachBlur시
