@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@react-hook/window-scroll": "^1.0.0",
     "@types/react-router-dom": "^4.3.1",
     "apollo-boost": "^0.3.1",
     "graphql": "^14.2.0",

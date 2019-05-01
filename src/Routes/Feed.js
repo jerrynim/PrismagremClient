@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Helmet } from "rl-react-helmet";
 import styled from "styled-components";
 import { gql } from "apollo-boost";

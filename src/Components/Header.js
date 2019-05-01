@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link, withRouter } from "react-router-dom";
 import useInput from "../Hooks/useInput";
@@ -7,7 +7,13 @@ import { useQuery } from "react-apollo-hooks";
 import { ME } from "../SharedQueries";
 import searchIcon from "./Images/searchIcon.png";
 import Xicon from "./Images/Xicon.png";
+
+/*
+  미구현: x버트은으로 검색창 비우기
+ */
+
 const Header = styled.header`
+  position: fixed;
   width: 100%;
   border: 0;
   top: 0;
@@ -20,8 +26,9 @@ const Header = styled.header`
   align-items: center;
   z-index: 2;
   padding: 26px 20px;
-  height: 77px;
+  height: ${(props) => (props.scrollDirection === "up" ? "52px" : "77px")};
   vertical-align: baseline;
+  transition: height 0.2s;
 `;
 
 const HeaderWrapper = styled.div`
@@ -30,7 +37,6 @@ const HeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: height 0.2s;
 `;
 
 const HeaderColumn = styled.div`
@@ -87,17 +93,22 @@ const Bar = styled.div`
   height: 28px;
   margin: 0 16px;
   background-color: #262626;
+  opacity: ${(props) => (props.scrollDirection === "up" ? 0 : 1)};
+  transition: opacity 0.2s;
 `;
 
 const LogoLink = styled(Link)`
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  padding-left: 20px;
 `;
 
 const LogoText = styled.div`
   width: 103px;
   height: 36px;
+  opacity: ${(props) => (props.scrollDirection === "up" ? 0 : 1)};
+  transition: opacity 0.2s;
   background-size: cover;
   background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/2000px-Instagram_logo.svg.png");
 `;
@@ -151,22 +162,45 @@ export default withRouter(({ history }) => {
     e.preventDefault();
     history.push(`/search?term=${search.value}`);
   };
+  //searchInput focus 시
   const focusAction = (e) => {
     setFocus("On");
   };
-
+  //searchInputseachBlur시
   const blurAction = () => {
     setFocus("Off");
   };
 
+  //헤더 축소를 위한 scorll값
+  //헤더 사이즈 축소를 위한 scorll값 구하기
+  const [lastScrollTop, setLastScrollTop] = useState(0);
+  const [bodyOffset, setBodyOffset] = useState(
+    document.body.getBoundingClientRect()
+  );
+  const [scrollY, setScrollY] = useState(bodyOffset.top);
+  const [scrollDirection, setScrollDirection] = useState();
+  const handleScroll = () => {
+    setBodyOffset(document.body.getBoundingClientRect());
+    setScrollY(-bodyOffset.top);
+    setScrollDirection(lastScrollTop > -bodyOffset.top ? "down" : "up");
+    setLastScrollTop(-bodyOffset.top);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [scrollY]);
+
   return (
-    <Header>
+    <Header scrollDirection={scrollDirection}>
       <HeaderWrapper>
         <HeaderColumn>
           <LogoLink to="/">
             <Logo />
-            <Bar />
-            <LogoText />
+            <Bar scrollDirection={scrollDirection} />
+            <LogoText scrollDirection={scrollDirection} />
           </LogoLink>
         </HeaderColumn>
         <SearchColumn>
