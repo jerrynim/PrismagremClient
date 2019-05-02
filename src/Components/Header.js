@@ -146,12 +146,13 @@ const SearchForm = styled.form`
 
 const SearchXIcon = styled.button`
   position: absolute;
-  margin: 0px 0px 12px 95px;
+  margin: 7px 0px 0px 88px;
   width: 14px;
   height: 14px;
   background-size: cover;
   border: 0;
   background-image: url(${Xicon});
+  outline: none;
 `;
 
 export default withRouter(({ history }) => {
@@ -171,6 +172,10 @@ export default withRouter(({ history }) => {
   //searchInputseachBlur시
   const blurAction = () => {
     setFocus("Off");
+  };
+  //검색어 리셋
+  const clearSearch = () => {
+    search.setValue("");
   };
 
   //헤더 축소를 위한 scorll값
@@ -206,10 +211,10 @@ export default withRouter(({ history }) => {
           </LogoLink>
         </HeaderColumn>
         <SearchColumn>
+          {<SearchXIcon onClick={clearSearch} />}
           {search.value === "" ? (
             <SearchForm onSubmit={onSearchSubmit}>
               <SearchLabel>
-                {searchFocused === "On" && <SearchXIcon />}
                 <SearchIcon2 searchFocused={searchFocused} />
               </SearchLabel>
               <SearchInput
@@ -224,7 +229,6 @@ export default withRouter(({ history }) => {
           ) : (
             <SearchForm onSubmit={onSearchSubmit}>
               <SearchLabel>
-                {searchFocused === "On" && <SearchXIcon />}
                 <SearchIcon searchFocused={searchFocused} />
                 {searchFocused === "Off" && <span>{search.value}</span>}
               </SearchLabel>
