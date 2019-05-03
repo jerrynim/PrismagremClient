@@ -3,9 +3,10 @@ import styled from "styled-components";
 import TextareaAutosize from "react-autosize-textarea";
 import FatText from "../FatText";
 import Avatar from "../Avatar";
-import { HeartFull, HeartEmpty, Comment as CommentIcon } from "../Icons";
+import { HeartFull, HeartEmpty } from "../Icons";
 import { Link } from "react-router-dom";
-
+import more from "../Images/more.png";
+import CommentItem from "../Images/Comment.png";
 const Post = styled.div`
   border-radius: 3px;
   border: 1px solid #e6e6e6;
@@ -24,13 +25,31 @@ const Caption = styled.div`
 `;
 
 const Header = styled.header`
-  padding: 15px;
+  padding: 13px 16px;
   display: flex;
   align-items: center;
 `;
 
 const UserColumn = styled.div`
-  margin-left: 10px;
+  width: 100%;
+  margin-left: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const UserText = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+const MoreButton = styled.button`
+  width: 15px;
+  height: 15px;
+  border: 0px;
+  outline: none;
+  background-image: url(${more});
+  background-size: cover;
+  cursor: pointer;
 `;
 
 const Location = styled.span`
@@ -41,24 +60,22 @@ const Location = styled.span`
 
 const Files = styled.div`
   position: relative;
+  height: 600px;
   padding-bottom: 100%;
   display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  flex-shrink: 0;
+  overflow: hidden;
 `;
 
 const File = styled.div`
   max-width: 100%;
-  width: 100%;
+  min-width: 100%;
   height: 600px;
-  position: absolute;
   top: 0;
   background-image: url(${(props) => props.src}});
   background-size: cover;
   background-position: center;
-  opacity: ${(props) => (props.showing ? 1 : 0)};
-  transition: opacity 0.5s linear;
+  transform: translateX(${(props) => props.currentItem * 612}px) 0.2s;
+  ${(props) => console.log(props)};
 `;
 
 const Button = styled.span`
@@ -66,13 +83,14 @@ const Button = styled.span`
 `;
 
 const Meta = styled.div`
-  padding: 15px;
+  padding: 16px;
 `;
 
 const Buttons = styled.div`
+  display: flex;
   ${Button} {
     &:first-child {
-      margin-right: 10px;
+      margin-right: 16px;
     }
   }
   margin-bottom: 10px;
@@ -110,6 +128,29 @@ const Comment = styled.li`
   }
 `;
 
+const CommentIcon = styled.div`
+  background-size: cover;
+  background-image: url(${CommentItem});
+  width: 24px;
+  height: 24px;
+`;
+
+const TextBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const TextSubmit = styled.button`
+  border: 0;
+  color: #3897f0;
+  outline: none;
+  font-weight: 600;
+  cursor: pointer;
+  width: 40px;
+  font-weight: 600;
+  font-size: 14px;
+`;
+
 export default ({
   user: { username, avatar },
   location,
@@ -129,16 +170,19 @@ export default ({
     <Header>
       <Avatar size="sm" url={avatar} />
       <UserColumn>
-        <Link to={`/${username}`}>
-          <FatText text={username} />
-        </Link>{" "}
-        <Location>{location}</Location>
+        <UserText>
+          <Link to={`/${username}`}>
+            <FatText text={username} />
+          </Link>
+          <Location>{location}</Location>
+        </UserText>
+        <MoreButton />
       </UserColumn>
     </Header>
     <Files>
       {files &&
         files.map((file, index) => (
-          <File key={file.id} src={file.url} showing={index === currentItem} />
+          <File key={file.id} src={file.url} currentItem={currentItem} />
         ))}
     </Files>
     <Meta>
@@ -150,7 +194,7 @@ export default ({
           <CommentIcon />
         </Button>
       </Buttons>
-      <FatText text={likeCount === 1 ? "1 like" : `${likeCount} likes`} />
+      <FatText text={likeCount === 1 ? "좋아요 1개" : `좋아요${likeCount}개`} />
       <Caption>
         <FatText text={username} /> {caption}
       </Caption>
@@ -171,12 +215,15 @@ export default ({
         </Comments>
       )}
       <Timestamp>{createdAt}</Timestamp>
-      <Textarea
-        onKeyPress={onKeyPress}
-        placeholder={"Add a comment..."}
-        value={newComment.value}
-        onChange={newComment.onChange}
-      />
+      <TextBox>
+        <Textarea
+          onKeyPress={onKeyPress}
+          placeholder={"댓글 달기..."}
+          value={newComment.value}
+          onChange={newComment.onChange}
+        />
+        <TextSubmit>게시</TextSubmit>
+      </TextBox>
     </Meta>
   </Post>
 );

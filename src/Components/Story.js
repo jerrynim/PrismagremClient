@@ -70,12 +70,15 @@ const StoryArray = styled.div`
   flex-direction: column;
 `;
 const StoryHeight = styled.div`
-  height: 52px;
-`;
-const StoryButton = styled.button`
-  display: flex;
-  padding-left: 5px;
+  min-height: 52px;
   text-align: left;
+  display: flex;
+  justify-content: flex-start;
+`;
+
+const StoryButton = styled.button`
+  padding: 0px;
+  display: flex;
   width: 100%;
   align-items: center;
   height: 44px;
@@ -88,7 +91,6 @@ const StoryPhoto = styled.div`
   width: 44px;
   height: 44px;
   background-image: url(${storyCircle});
-  background-size: cover;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -100,9 +102,7 @@ const StoryImg = styled.div`
   border-radius: 50%;
 `;
 const StoryDes = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-left: 3px;
+  margin-left: 8px;
 `;
 const StoryUserName = styled.div`
   font-size: 14px;
@@ -114,6 +114,7 @@ const StoryTime = styled.div`
   font-size: 10px;
   line-height: 12px;
   color: #999;
+  text-align: left;
   text-transform: uppercase;
 `;
 
