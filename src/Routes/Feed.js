@@ -61,7 +61,7 @@ const Posts = styled.div`
   margin-right: 28px;
   max-width: 614px;
   width: 100%;
-  display: flex;
+
   justify-content: center;
 `;
 

@@ -4,6 +4,8 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import storyCircle from "./Images/storyCircle.png";
 const Wrapper = styled.div`
+position: fixed;
+    top: 78px;
   height: 100vh;
   margin-bottom: 30px;
   max-width: 293px;

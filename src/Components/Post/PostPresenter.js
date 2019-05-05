@@ -15,7 +15,7 @@ const Post = styled.div`
   width: 100%;
   max-width: 614px;
   user-select: none;
-  margin-bottom: 25px;
+  margin-bottom: 60px;
   a {
     color: inherit;
   }
