@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import useInput from "../../Hooks/useInput";
 import PostPresenter from "./PostPresenter";
@@ -19,7 +19,6 @@ const PostContainer = ({
 }) => {
   const [isLikedS, setIsLiked] = useState(isLiked);
   const [likeCountS, setLikeCount] = useState(likeCount);
-  const [currentItem, setCurrentItem] = useState(0);
   const [selfComments, setSelfComments] = useState([]);
   const comment = useInput("");
   const toggleLikeMutation = useMutation(TOGGLE_LIKE, {
@@ -28,17 +27,6 @@ const PostContainer = ({
   const addCommentMutation = useMutation(ADD_COMMENT, {
     variables: { postId: id, text: comment.value }
   });
-  const slide = () => {
-    const totalFiles = files.length;
-    if (currentItem === totalFiles - 1) {
-      setTimeout(() => setCurrentItem(0), 3000);
-    } else {
-      setTimeout(() => setCurrentItem(currentItem + 1), 3000);
-    }
-  };
-  useEffect(() => {
-    slide();
-  }, [currentItem]);
 
   const toggleLike = () => {
     toggleLikeMutation();
@@ -67,6 +55,18 @@ const PostContainer = ({
     }
   };
 
+  const commentSubmit = async () => {
+    try {
+      const {
+        data: { addComment }
+      } = await addCommentMutation();
+      setSelfComments([...selfComments, addComment]);
+      comment.setValue("");
+    } catch (e) {
+      toast.error(e.message);
+    }
+  };
+
   return (
     <PostPresenter
       user={user}
@@ -80,10 +80,10 @@ const PostContainer = ({
       newComment={comment}
       setIsLiked={setIsLiked}
       setLikeCount={setLikeCount}
-      currentItem={currentItem}
       toggleLike={toggleLike}
       onKeyPress={onKeyPress}
       selfComments={selfComments}
+      commentSubmit={commentSubmit}
     />
   );
 };

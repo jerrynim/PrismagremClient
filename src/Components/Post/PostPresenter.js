@@ -7,6 +7,7 @@ import { HeartFull, HeartEmpty } from "../Icons";
 import { Link } from "react-router-dom";
 import more from "../Images/more.png";
 import CommentItem from "../Images/Comment.png";
+import Files from "../../Components/Files";
 const Post = styled.div`
   border-radius: 3px;
   border: 1px solid #e6e6e6;
@@ -56,26 +57,6 @@ const Location = styled.span`
   display: block;
   margin-top: 5px;
   font-size: 12px;
-`;
-
-const Files = styled.div`
-  position: relative;
-  height: 600px;
-  padding-bottom: 100%;
-  display: flex;
-  overflow: hidden;
-`;
-
-const File = styled.div`
-  max-width: 100%;
-  min-width: 100%;
-  height: 600px;
-  top: 0;
-  background-image: url(${(props) => props.src}});
-  background-size: cover;
-  background-position: center;
-  transform: translateX(${(props) => props.currentItem * 612}px) 0.2s;
-  ${(props) => console.log(props)};
 `;
 
 const Button = styled.span`
@@ -149,6 +130,11 @@ const TextSubmit = styled.button`
   width: 40px;
   font-weight: 600;
   font-size: 14px;
+  :disabled {
+    cursor: none;
+    pointer-events: none;
+    color: #cae3fc;
+  }
 `;
 
 export default ({
@@ -159,12 +145,12 @@ export default ({
   likeCount,
   createdAt,
   newComment,
-  currentItem,
   toggleLike,
   onKeyPress,
   comments,
   selfComments,
-  caption
+  caption,
+  commentSubmit
 }) => (
   <Post>
     <Header>
@@ -179,12 +165,7 @@ export default ({
         <MoreButton />
       </UserColumn>
     </Header>
-    <Files>
-      {files &&
-        files.map((file, index) => (
-          <File key={file.id} src={file.url} currentItem={currentItem} />
-        ))}
-    </Files>
+    <Files files={files} />
     <Meta>
       <Buttons>
         <Button onClick={toggleLike}>
@@ -222,7 +203,11 @@ export default ({
           value={newComment.value}
           onChange={newComment.onChange}
         />
-        <TextSubmit>게시</TextSubmit>
+        {newComment.value === "" ? (
+          <TextSubmit disabled>게시</TextSubmit>
+        ) : (
+          <TextSubmit onClick={commentSubmit}>게시</TextSubmit>
+        )}
       </TextBox>
     </Meta>
   </Post>

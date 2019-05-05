@@ -210,7 +210,7 @@ export default (me) => {
       <StoryBox>
         <StoryBoxHead>
           <StoryText>스토리</StoryText>
-          <StorySeeAll>모두 보기</StorySeeAll>
+          <StorySeeAll to={"/"}>모두 보기</StorySeeAll>
         </StoryBoxHead>
         <StoriesWrapper>
           <StoriesInWrapper>
@@ -277,12 +277,12 @@ export default (me) => {
       <RecommendBox>
         <RecommendBoxHead>
           <StoryText>회원님을 위환 추천</StoryText>
-          <StorySeeAll>모두 보기</StorySeeAll>
+          <StorySeeAll to={"/"}>모두 보기</StorySeeAll>
         </RecommendBoxHead>
         <RecommendsWrapper>
           <Recommend>
             <AvatarBox>
-              <Avatar size={"sm"} />
+              <Avatar size={"sm"} url={""} />
             </AvatarBox>
             <RecommendText>
               <StoryUserName>exampleuser</StoryUserName>
@@ -292,7 +292,7 @@ export default (me) => {
           </Recommend>
           <Recommend>
             <AvatarBox>
-              <Avatar size={"sm"} />
+              <Avatar size={"sm"} url={""} />
             </AvatarBox>
             <RecommendText>
               <StoryUserName>exampleuser</StoryUserName>
@@ -302,7 +302,7 @@ export default (me) => {
           </Recommend>
           <Recommend>
             <AvatarBox>
-              <Avatar size={"sm"} />
+              <Avatar size={"sm"} url={""} />
             </AvatarBox>
             <RecommendText>
               <StoryUserName>exampleuser</StoryUserName>
