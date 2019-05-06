@@ -1,18 +1,24 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Avatar from "./Avatar";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import storyCircle from "./Images/storyCircle.png";
+import { GET_USERS } from "../SharedQueries";
+import { useQuery } from "react-apollo-hooks";
+import Recommend from "./Recommend";
 const Wrapper = styled.div`
-position: fixed;
-    top: 78px;
   height: 100vh;
   margin-bottom: 30px;
   max-width: 293px;
   right: 0;
   width: 100%;
 `;
+const Wrapper2 = styled.div`
+  width: 293px;
 
+  position: ${(props) => (props.scrollY < 43 ? "" : "fixed")};
+  top: 78px;
+`;
 const Me = styled.div`
   display: flex;
   align-items: center;
@@ -142,37 +148,6 @@ const RecommendsWrapper = styled.div`
   justify-content: center;
 `;
 
-const Recommend = styled.div`
-  padding: 8px 16px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-`;
-const AvatarBox = styled.div`
-  margin-right: 12px;
-`;
-const RecommendText = styled.div`
-  width: 170px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`;
-
-const RecommendType = styled.div`
-  font-size: 12px;
-  color: #999;
-`;
-const FollowButton = styled.button`
-  padding: 0px;
-  color: #3897f0;
-  border: 0;
-  font-size: 12px;
-  cursor: pointer;
-  margin-left: 8px;
-  font-weight: 600;
-  outline: none;
-`;
-
 const Footer = styled.div``;
 const FooterNav = styled.nav`
   margin-bottom: 16px;
@@ -198,140 +173,146 @@ const Copyright = styled.span`
   text-transform: uppercase;
 `;
 
-export default (me) => {
+const Story = (me) => {
+  //스크롤값에따른 고정을위해서
+  //최상위에 줘가지고 스크롤값이 바뀔때마다 전체 render가 발생하는 문제가 생김
+  const [bodyOffset, setBodyOffset] = useState(
+    document.body.getBoundingClientRect()
+  );
+  const [scrollY, setScrollY] = useState(bodyOffset.top);
+  const handleScroll = () => {
+    setBodyOffset(document.body.getBoundingClientRect());
+    setScrollY(-bodyOffset.top);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [scrollY]);
+
+  //본인프로필을 위해서
   const { avatar, username, fullName } = me.me;
+  //추천유저를 위해서
+  const { data, loading } = useQuery(GET_USERS);
+
   return (
     <Wrapper>
-      <Me>
-        <Avatar size={"md"} url={avatar} />
-        <NameBox>
-          <Username to={`/${username}`}>{username}</Username>
-          <FullName>{fullName}</FullName>
-        </NameBox>
-      </Me>
-      <StoryBox>
-        <StoryBoxHead>
-          <StoryText>스토리</StoryText>
-          <StorySeeAll to={"/"}>모두 보기</StorySeeAll>
-        </StoryBoxHead>
-        <StoriesWrapper>
-          <StoriesInWrapper>
-            <StoryArray>
-              <StoryHeight>
-                <StoryButton>
-                  <StoryPhoto>
-                    <StoryImg />
-                  </StoryPhoto>
-                  <StoryDes>
-                    <StoryUserName>exampleuser</StoryUserName>
-                    <StoryTime>4시간전</StoryTime>
-                  </StoryDes>
-                </StoryButton>
-              </StoryHeight>
-              <StoryHeight>
-                <StoryButton>
-                  <StoryPhoto>
-                    <StoryImg />
-                  </StoryPhoto>
-                  <StoryDes>
-                    <StoryUserName>exampleuser</StoryUserName>
-                    <StoryTime>4시간전</StoryTime>
-                  </StoryDes>
-                </StoryButton>
-              </StoryHeight>
-              <StoryHeight>
-                <StoryButton>
-                  <StoryPhoto>
-                    <StoryImg />
-                  </StoryPhoto>
-                  <StoryDes>
-                    <StoryUserName>exampleuser</StoryUserName>
-                    <StoryTime>4시간전</StoryTime>
-                  </StoryDes>
-                </StoryButton>
-              </StoryHeight>
-              <StoryHeight>
-                <StoryButton>
-                  <StoryPhoto>
-                    <StoryImg />
-                  </StoryPhoto>
-                  <StoryDes>
-                    <StoryUserName>exampleuser</StoryUserName>
-                    <StoryTime>4시간전</StoryTime>
-                  </StoryDes>
-                </StoryButton>
-              </StoryHeight>
-              <StoryHeight>
-                <StoryButton>
-                  <StoryPhoto>
-                    <StoryImg />
-                  </StoryPhoto>
-                  <StoryDes>
-                    <StoryUserName>exampleuser</StoryUserName>
-                    <StoryTime>4시간전</StoryTime>
-                  </StoryDes>
-                </StoryButton>
-              </StoryHeight>
-            </StoryArray>
-          </StoriesInWrapper>
-        </StoriesWrapper>
-      </StoryBox>
-      <RecommendBox>
-        <RecommendBoxHead>
-          <StoryText>회원님을 위환 추천</StoryText>
-          <StorySeeAll to={"/"}>모두 보기</StorySeeAll>
-        </RecommendBoxHead>
-        <RecommendsWrapper>
-          <Recommend>
-            <AvatarBox>
-              <Avatar size={"sm"} url={""} />
-            </AvatarBox>
-            <RecommendText>
-              <StoryUserName>exampleuser</StoryUserName>
-              <RecommendType>Instagram 신규 가입</RecommendType>
-            </RecommendText>
-            <FollowButton>팔로우</FollowButton>
-          </Recommend>
-          <Recommend>
-            <AvatarBox>
-              <Avatar size={"sm"} url={""} />
-            </AvatarBox>
-            <RecommendText>
-              <StoryUserName>exampleuser</StoryUserName>
-              <RecommendType>Instagram 신규 가입</RecommendType>
-            </RecommendText>
-            <FollowButton>팔로우</FollowButton>
-          </Recommend>
-          <Recommend>
-            <AvatarBox>
-              <Avatar size={"sm"} url={""} />
-            </AvatarBox>
-            <RecommendText>
-              <StoryUserName>exampleuser</StoryUserName>
-              <RecommendType>Instagram 신규 가입</RecommendType>
-            </RecommendText>
-            <FollowButton>팔로우</FollowButton>
-          </Recommend>
-        </RecommendsWrapper>
-      </RecommendBox>
-      <Footer>
-        <FooterNav>
-          <FooterUl>
-            <FooterLi>Instagram 정보ㆍ</FooterLi>
-            <FooterLi>지원ㆍ</FooterLi>
-            <FooterLi>홍보 센터ㆍ</FooterLi>
-            <FooterLi>APIㆍ</FooterLi>
-            <FooterLi>채용 정보ㆍ</FooterLi>
-            <FooterLi>개인정보처리방침ㆍ</FooterLi>
-            <FooterLi>약관ㆍ</FooterLi>
-            <FooterLi>디렉터리ㆍ</FooterLi>
-            <FooterLi>프로필ㆍ</FooterLi>
-            <FooterLi>해시태그ㆍ</FooterLi>
-            <FooterLi>언어</FooterLi>
-          </FooterUl>
-        </FooterNav>
-        <Copyright>@{new Date().getFullYear()} INSTAGRAM&copy;</Copyright>
-      </Footer>
+      <Wrapper2 scrollY={scrollY}>
+        <Me>
+          <Avatar size={"md"} url={avatar} />
+          <NameBox>
+            <Username to={`/${username}`}>{username}</Username>
+            <FullName>{fullName}</FullName>
+          </NameBox>
+        </Me>
+        <StoryBox>
+          <StoryBoxHead>
+            <StoryText>스토리</StoryText>
+            <StorySeeAll to={"/"}>모두 보기</StorySeeAll>
+          </StoryBoxHead>
+          <StoriesWrapper>
+            <StoriesInWrapper>
+              <StoryArray>
+                <StoryHeight>
+                  <StoryButton>
+                    <StoryPhoto>
+                      <StoryImg />
+                    </StoryPhoto>
+                    <StoryDes>
+                      <StoryUserName>exampleuser</StoryUserName>
+                      <StoryTime>4시간전</StoryTime>
+                    </StoryDes>
+                  </StoryButton>
+                </StoryHeight>
+                <StoryHeight>
+                  <StoryButton>
+                    <StoryPhoto>
+                      <StoryImg />
+                    </StoryPhoto>
+                    <StoryDes>
+                      <StoryUserName>exampleuser</StoryUserName>
+                      <StoryTime>4시간전</StoryTime>
+                    </StoryDes>
+                  </StoryButton>
+                </StoryHeight>
+                <StoryHeight>
+                  <StoryButton>
+                    <StoryPhoto>
+                      <StoryImg />
+                    </StoryPhoto>
+                    <StoryDes>
+                      <StoryUserName>exampleuser</StoryUserName>
+                      <StoryTime>4시간전</StoryTime>
+                    </StoryDes>
+                  </StoryButton>
+                </StoryHeight>
+                <StoryHeight>
+                  <StoryButton>
+                    <StoryPhoto>
+                      <StoryImg />
+                    </StoryPhoto>
+                    <StoryDes>
+                      <StoryUserName>exampleuser</StoryUserName>
+                      <StoryTime>4시간전</StoryTime>
+                    </StoryDes>
+                  </StoryButton>
+                </StoryHeight>
+                <StoryHeight>
+                  <StoryButton>
+                    <StoryPhoto>
+                      <StoryImg />
+                    </StoryPhoto>
+                    <StoryDes>
+                      <StoryUserName>exampleuser</StoryUserName>
+                      <StoryTime>4시간전</StoryTime>
+                    </StoryDes>
+                  </StoryButton>
+                </StoryHeight>
+              </StoryArray>
+            </StoriesInWrapper>
+          </StoriesWrapper>
+        </StoryBox>
+        <RecommendBox>
+          <RecommendBoxHead>
+            <StoryText>회원님을 위환 추천</StoryText>
+            <StorySeeAll to={"/"}>모두 보기</StorySeeAll>
+          </RecommendBoxHead>
+          <RecommendsWrapper>
+            {!loading &&
+              data &&
+              data.getUsers &&
+              data.getUsers.map((user) => {
+                if (!user.isSelf) {
+                  return <Recommend key={user.id} user={user} />;
+                } else {
+                  return false;
+                }
+              })}
+          </RecommendsWrapper>
+        </RecommendBox>
+        <Footer>
+          <FooterNav>
+            <FooterUl>
+              <FooterLi>Instagram 정보ㆍ</FooterLi>
+              <FooterLi>지원ㆍ</FooterLi>
+              <FooterLi>홍보 센터ㆍ</FooterLi>
+              <FooterLi>APIㆍ</FooterLi>
+              <FooterLi>채용 정보ㆍ</FooterLi>
+              <FooterLi>개인정보처리방침ㆍ</FooterLi>
+              <FooterLi>약관ㆍ</FooterLi>
+              <FooterLi>디렉터리ㆍ</FooterLi>
+              <FooterLi>프로필ㆍ</FooterLi>
+              <FooterLi>해시태그ㆍ</FooterLi>
+              <FooterLi>언어</FooterLi>
+            </FooterUl>
+          </FooterNav>
+          <Copyright>@{new Date().getFullYear()} INSTAGRAM&copy;</Copyright>
+        </Footer>
+      </Wrapper2>
     </Wrapper>
   );
 };
+
+export default Story;

@@ -7,3 +7,15 @@ export const ME = gql`
     }
   }
 `;
+
+export const GET_USERS = gql`
+  query getUsers {
+    getUsers {
+      id
+      avatar
+      username
+      isFollowing
+      isSelf
+    }
+  }
+`;

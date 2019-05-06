@@ -70,6 +70,7 @@ export default () => {
   const {
     data: { me, loading: meLoading }
   } = useQuery(GET_ME);
+
   return (
     <div>
       {loading && meLoading && <Loader />}

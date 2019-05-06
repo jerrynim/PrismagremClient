@@ -8,10 +8,6 @@ import { ME } from "../SharedQueries";
 import searchIcon from "./Images/searchIcon.png";
 import Xicon from "./Images/Xicon.png";
 
-/*
-  미구현: x버트은으로 검색창 비우기
- */
-
 const Header = styled.header`
   position: fixed;
   width: 100%;
