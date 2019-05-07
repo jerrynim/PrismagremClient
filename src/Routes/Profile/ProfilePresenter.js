@@ -5,37 +5,57 @@ import Loader from "../../Components/Loader";
 import Avatar from "../../Components/Avatar";
 import FatText from "../../Components/FatText";
 import FollowButton from "../../Components/FollowButton";
-import SquarePost from "../../Components/SquarePost";
-import Button from "../../Components/Button";
-
+import options from "../../Components/Images/options.png";
+import television from "../../Components/Images/television.png";
+import tagged from "../../Components/Images/tagged.png";
+import Bookmark from "../../Components/Images/Bookmark.png";
+import net from "../../Components/Images/net.png";
+import ProfilePost from "./ProfilePost";
 const Wrapper = styled.div`
   min-height: 100vh;
 `;
 
-const Header = styled.header`
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  width: 80%;
-  margin: 0 auto;
-  margin-bottom: 40px;
+const Main = styled.div`
+  width: calc(100% - 40px);
+  margin: 77px auto 30px;
+  padding: 60px 20px 0px;
+  max-width: 935px;
 `;
 
-const HeaderColumn = styled.div``;
+const Header = styled.header`
+  display: flex;
+  width: 100%;
+  margin: 0 auto;
+  margin-bottom: 44px;
+`;
+
+const AvartarHeader = styled.div`
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 30px;
+`;
+
+const HeaderColumn = styled.div`
+  flex: 2;
+`;
 
 const UsernameRow = styled.div`
+  height: 40px;
+  margin-bottom: 20px;
   display: flex;
   align-items: center;
 `;
 
 const Username = styled.span`
-  font-size: 26px;
+  font-size: 28px;
   display: block;
 `;
 
 const Counts = styled.ul`
   display: flex;
-  margin: 15px 0px;
+  margin-bottom: 20px;
 `;
 
 const Count = styled.li`
@@ -54,10 +74,91 @@ const Bio = styled.p`
 `;
 
 const Posts = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 200px);
-  grid-template-rows: 200px;
-  grid-auto-rows: 200px;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 0px;
+  padding-top: 0px;
+  flex-grow: 1;
+`;
+
+const EditButton = styled.button`
+  background-color: transparent;
+  border: 1px solid #dbdbdb;
+  color: ${(props) => props.theme.darkColor};
+  width: 85px;
+  height: 30px;
+  border-radius: 4px;
+  margin-left: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 5px 9px;
+  outline: none;
+  :active {
+    opacity: 0.7;
+  }
+  cursor: pointer;
+`;
+
+const OptionButton = styled.button`
+  outline: 0;
+  background-color: transparent;
+  width: 24px;
+  height: 24px;
+  background-image: url(${options});
+  background-size: cover;
+  border: 0;
+  margin-left: 13px;
+  cursor: pointer;
+`;
+
+const NavItem = styled.div`
+  margin-right: 60px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &:first-child {
+    border-top: 1px solid black;
+  }
+`;
+
+const Navbar = styled.div`
+  border-top: 1px solid #efefef;
+  display: flex;
+  justify-content: center;
+  height: 53px;
+`;
+
+const NavIcon = styled.div`
+  background-image: url(${(props) => props.src});
+  background-size: 12px 12px;
+  width: 12px;
+  height: 12px;
+  cursor: pointer;
+`;
+
+const BookMarkIcon = styled.div`
+  background-image: url(${(props) => props.src});
+  background-size: 10px 12px;
+  width: 10px;
+  height: 12px;
+  cursor: pointer;
+`;
+
+const NavText = styled.span`
+  margin-left: 6px;
+  color: #999;
+  font-size: 12px;
+  cursor: pointer;
+  font-weight: 600;
+`;
+
+const FirstNavText = styled.span`
+  margin-left: 6px;
+  color: ${(props) => props.theme.darkColor};
+  font-size: 12px;
+  cursor: pointer;
+  font-weight: 600;
 `;
 
 export default ({ loading, data, logOut }) => {
@@ -86,47 +187,63 @@ export default ({ loading, data, logOut }) => {
     return (
       <Wrapper>
         <Helmet>
-          <title>{username} | Prismagram</title>
+          <title>{username} • Instagram 사진 및 동영상</title>
         </Helmet>
-        <Header>
-          <HeaderColumn>
-            <Avatar size="lg" url={avatar} />
-          </HeaderColumn>
-          <HeaderColumn>
-            <UsernameRow>
-              <Username>{username}</Username>{" "}
-              {isSelf ? (
-                <Button onClick={logOut} text="Log Out" />
-              ) : (
-                <FollowButton isFollowing={isFollowing} id={id} />
-              )}{" "}
-            </UsernameRow>
-            <Counts>
-              <Count>
-                <FatText text={String(postsCount)} /> posts
-              </Count>
-              <Count>
-                <FatText text={String(followersCount)} /> followers
-              </Count>
-              <Count>
-                <FatText text={String(followingCount)} /> following
-              </Count>
-            </Counts>
-            <FullName text={fullName} />
-            <Bio>{bio}</Bio>
-          </HeaderColumn>
-        </Header>
-        <Posts>
-          {posts &&
-            posts.map((post) => (
-              <SquarePost
-                key={post.id}
-                likeCount={post.likeCount}
-                commentCount={post.commentCount}
-                file={post.files[0]}
-              />
-            ))}
-        </Posts>
+        <Main>
+          <Header>
+            <AvartarHeader>
+              <Avatar size="lg" url={avatar} />
+            </AvartarHeader>
+            <HeaderColumn>
+              <UsernameRow>
+                <Username>{username}</Username>
+                {isSelf ? (
+                  <>
+                    <EditButton>프로필 편집</EditButton>
+                    <OptionButton />
+                  </>
+                ) : (
+                  <FollowButton isFollowing={isFollowing} id={id} />
+                )}
+              </UsernameRow>
+              <Counts>
+                <Count>
+                  게시물&nbsp;
+                  <FatText text={String(postsCount)} />
+                </Count>
+                <Count>
+                  팔로워&nbsp;
+                  <FatText text={String(followersCount)} />
+                </Count>
+                <Count>
+                  팔로우&nbsp;
+                  <FatText text={String(followingCount)} />
+                </Count>
+              </Counts>
+              <FullName text={fullName} />
+              <Bio>{bio}</Bio>
+            </HeaderColumn>
+          </Header>
+          <Navbar>
+            <NavItem>
+              <NavIcon src={net} />
+              <FirstNavText>게시물</FirstNavText>
+            </NavItem>
+            <NavItem>
+              <NavIcon src={television} />
+              <NavText>IGTV</NavText>
+            </NavItem>
+            <NavItem>
+              <BookMarkIcon src={Bookmark} />
+              <NavText>저장됨</NavText>
+            </NavItem>
+            <NavItem>
+              <NavIcon src={tagged} />
+              <NavText>태그됨</NavText>
+            </NavItem>
+          </Navbar>
+          <Posts>{posts && <ProfilePost posts={posts} />}</Posts>
+        </Main>
       </Wrapper>
     );
   }
