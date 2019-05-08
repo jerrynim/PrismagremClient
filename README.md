@@ -16,3 +16,5 @@ Pofile Route Layout [x]
 
 5/6 -- Profile Page Layout만듬,width:100%와 자식컴포넌트에 padding-bottom:100% 사용하면 정사각형됨. 하지만 오버레이가 힘듬. 다음부터는  
  grid쓸거임. Overlay는포기
+
+5/7 -- Posts 를 3개씩 나누어 정사각형 유지되도록 layout을만듬, Overlay만듬, ProfilePage축소시 화면 변경점 수정 (Header 휴대폰사이즈의 UI수정 필요)
