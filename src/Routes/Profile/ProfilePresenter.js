@@ -74,11 +74,9 @@ const Bio = styled.p`
 `;
 
 const Posts = styled.div`
-  display: flex;
   flex-direction: column;
   padding-bottom: 0px;
   padding-top: 0px;
-  flex-grow: 1;
 `;
 
 const EditButton = styled.button`
