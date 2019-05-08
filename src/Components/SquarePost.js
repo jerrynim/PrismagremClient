@@ -3,16 +3,37 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import { HeartFull, CommentFull } from "./Icons";
 
+const Overlay = styled.div`
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  justify-content: center;
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+`;
+
 const Container = styled.div`
   display: block;
   position: relative;
   width: 100%;
   cursor: pointer;
-
-  @media (min-width: 736px) {
+  @media (max-width: 735px) {
+    margin-right: 3px;
+  }
+  @media (min-width: 735px) {
     margin-right: 28px;
     &:last-child {
       margin-right: 0px;
+    }
+  }
+  &:hover {
+    ${Overlay} {
+      opacity: 1;
     }
   }
 `;
@@ -30,18 +51,6 @@ const Container3 = styled.div`
   padding-bottom: 100%;
 `;
 
-const Overlay = styled.div`
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0.3);
-  justify-content: center;
-  bottom: 0;
-  left: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-  flex-direction: column;
-  align-items: center;
-`;
 const OverlayUl = styled.ul`
   align-items: center;
   color: #fff;
