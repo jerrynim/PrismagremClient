@@ -2,16 +2,17 @@ import React from "react";
 import styled from "styled-components";
 const Footer = styled.footer`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   text-transform: uppercase;
   font-weight: 600;
   font-size: 12px;
   text-align: center;
-  padding: 130px 30px 50px;
-  @media (max-width: 900px) {
-    padding-top: 180px;
-    display: block;
+  padding: 10px 20px 0px;
+  @media (max-width: 876px) {
+    flex-direction: column;
+    margin: 0 auto;
+    max-width: 360px;
   }
 `;
 
@@ -33,7 +34,6 @@ const Link = styled.a`
 `;
 
 const Copyright = styled.span`
-  margin: 0px 0px 20px 130px;
   color: ${(props) => props.theme.darkGreyColor};
   @media (max-width: 900px) {
     margin: 0;

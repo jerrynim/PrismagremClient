@@ -9,10 +9,9 @@ import television from "../../Components/Images/television.png";
 import tagged from "../../Components/Images/tagged.png";
 import Bookmark from "../../Components/Images/Bookmark.png";
 import net from "../../Components/Images/net.png";
+import blueNet from "../../Components/Images/blueNet.png";
 import ProfilePost from "./ProfilePost";
-const Wrapper = styled.div`
-  min-height: 100vh;
-`;
+const Wrapper = styled.div``;
 
 const Main = styled.div`
   @media (min-width: 735px) {
@@ -20,7 +19,7 @@ const Main = styled.div`
     padding: 60px 20px 0;
     width: calc(100% - 40px);
   }
-  margin: 107px auto 30px;
+  margin: 107px auto 0px;
   width: 100%;
   max-width: 935px;
 `;
@@ -214,6 +213,9 @@ const NavItem = styled.div`
   @media (max-width: 735px) {
     flex: 1;
     margin: 0;
+    &:first-child {
+      border-top: 0;
+    }
   }
   margin-right: 60px;
   height: 100%;
@@ -251,7 +253,19 @@ const NavIcon = styled.div`
   height: 12px;
   cursor: pointer;
 `;
-
+const NetIcon = styled.div`
+  @media (max-width: 735px) {
+    background-size: 24px 24px;
+    width: 24px;
+    height: 24px;
+    background-image: url(${blueNet});
+  }
+  background-image: url(${(props) => props.src});
+  background-size: 12px 12px;
+  width: 12px;
+  height: 12px;
+  cursor: pointer;
+`;
 const BookMarkIcon = styled.div`
   @media (max-width: 735px) {
     background-size: 20px 24px;
@@ -368,7 +382,7 @@ export default ({ loading, data, logOut }) => {
           </SmallCounts>
           <Navbar>
             <NavItem>
-              <NavIcon src={net} />
+              <NetIcon src={net} />
               <FirstNavText>게시물</FirstNavText>
             </NavItem>
             <NavItem>

@@ -23,7 +23,6 @@ const Header = styled.header`
   z-index: 2;
   padding: 26px 20px;
   height: ${(props) => (props.scrollDirection === "up" ? "52px" : "77px")};
-  vertical-align: baseline;
   transition: height 0.2s;
 `;
 
@@ -36,21 +35,12 @@ const HeaderWrapper = styled.div`
 `;
 
 const HeaderColumn = styled.div`
-  width: 33%;
   text-align: center;
-  &:first-child {
-    margin-right: auto;
-    text-align: left;
-  }
-  &:last-child {
-    margin-left: auto;
-    text-align: right;
-  }
 `;
 
 const SearchColumn = styled(HeaderColumn)`
   @media (max-width: 512px) {
-    visibility: hidden;
+    display: none;
   }
 `;
 
@@ -97,7 +87,6 @@ const LogoLink = styled(Link)`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  padding-left: 20px;
 `;
 
 const LogoText = styled.div`

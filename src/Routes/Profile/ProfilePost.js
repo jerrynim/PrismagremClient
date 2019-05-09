@@ -11,6 +11,9 @@ const PostsLine = styled.div`
   }
   display: flex;
   width: 100%;
+  &:last-child {
+    margin-bottom: 0;
+  }
 `;
 
 const Container = styled.div`
