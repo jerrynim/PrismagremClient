@@ -2,11 +2,14 @@ import React, { useState, useEffect } from "react";
 import Avatar from "./Avatar";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import storyCircle from "./Images/storyCircle.png";
+import storyCircle2 from "./Images/storyCircle2.png";
 import { GET_USERS } from "../SharedQueries";
 import { useQuery } from "react-apollo-hooks";
 import Recommend from "./Recommend";
 const Wrapper = styled.div`
+  @media (max-width: 1000px) {
+    display: none;
+  }
   height: 100vh;
   margin-bottom: 30px;
   max-width: 293px;
@@ -98,7 +101,8 @@ const StoryButton = styled.button`
 const StoryPhoto = styled.div`
   width: 44px;
   height: 44px;
-  background-image: url(${storyCircle});
+  background-image: url(${storyCircle2});
+  background-size: cover;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -106,7 +110,6 @@ const StoryPhoto = styled.div`
 const StoryImg = styled.div`
   width: 34px;
   height: 34px;
-  background-color: blue;
   border-radius: 50%;
 `;
 const StoryDes = styled.div`

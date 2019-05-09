@@ -11,6 +11,7 @@ import Bookmark from "../../Components/Images/Bookmark.png";
 import net from "../../Components/Images/net.png";
 import blueNet from "../../Components/Images/blueNet.png";
 import ProfilePost from "./ProfilePost";
+import FullPost from "../../Components/FullPost";
 const Wrapper = styled.div``;
 
 const Main = styled.div`
@@ -325,82 +326,85 @@ export default ({ loading, data, logOut }) => {
       }
     } = data;
     return (
-      <Wrapper>
-        <Helmet>
-          <title>{username} • Instagram 사진 및 동영상</title>
-        </Helmet>
-        <Main>
-          <Header>
-            <AvartarHeader>
-              <Avatar size="lg" url={avatar} />
-            </AvartarHeader>
-            <HeaderColumn>
-              <UsernameRow>
-                <Username>{username}</Username>
-                {isSelf ? (
-                  <>
-                    <EditButton>프로필 편집</EditButton>
-                    <OptionButton />
-                  </>
-                ) : (
-                  <FollowButton isFollowing={isFollowing} id={id} />
-                )}
-              </UsernameRow>
-              <Counts>
-                <Count>
-                  게시물&nbsp;
-                  <FatText text={String(postsCount)} />
-                </Count>
-                <Count>
-                  팔로워&nbsp;
-                  <FatText text={String(followersCount)} />
-                </Count>
-                <Count>
-                  팔로우&nbsp;
-                  <FatText text={String(followingCount)} />
-                </Count>
-              </Counts>
-              <FullName text={fullName} />
-              <Bio>{bio}</Bio>
-              <ExtendEditButton>프로필 편집</ExtendEditButton>
-            </HeaderColumn>
-          </Header>
-          <SmallBio>{fullName}</SmallBio>
-          <SmallCounts>
-            <SmallCount>
-              <SmallCountText>게시물</SmallCountText>
-              <SmallCountNum>{postsCount}</SmallCountNum>
-            </SmallCount>
-            <SmallCount>
-              <SmallCountText>팔로워</SmallCountText>
-              <SmallCountNum>{followersCount}</SmallCountNum>
-            </SmallCount>
-            <SmallCount>
-              <SmallCountText>팔로우</SmallCountText>
-              <SmallCountNum>{followingCount}</SmallCountNum>
-            </SmallCount>
-          </SmallCounts>
-          <Navbar>
-            <NavItem>
-              <NetIcon src={net} />
-              <FirstNavText>게시물</FirstNavText>
-            </NavItem>
-            <NavItem>
-              <NavIcon src={television} />
-              <NavText>IGTV</NavText>
-            </NavItem>
-            <NavItem>
-              <BookMarkIcon src={Bookmark} />
-              <NavText>저장됨</NavText>
-            </NavItem>
-            <NavItem>
-              <NavIcon src={tagged} />
-              <NavText>태그됨</NavText>
-            </NavItem>
-          </Navbar>
-          <Posts>{posts && <ProfilePost posts={posts} />}</Posts>
-        </Main>
-      </Wrapper>
+      <>
+        <Wrapper>
+          <Helmet>
+            <title>{username} • Instagram 사진 및 동영상</title>
+          </Helmet>
+          <Main>
+            <Header>
+              <AvartarHeader>
+                <Avatar size="lg" url={avatar} />
+              </AvartarHeader>
+              <HeaderColumn>
+                <UsernameRow>
+                  <Username>{username}</Username>
+                  {isSelf ? (
+                    <>
+                      <EditButton>프로필 편집</EditButton>
+                      <OptionButton />
+                    </>
+                  ) : (
+                    <FollowButton isFollowing={isFollowing} id={id} />
+                  )}
+                </UsernameRow>
+                <Counts>
+                  <Count>
+                    게시물&nbsp;
+                    <FatText text={String(postsCount)} />
+                  </Count>
+                  <Count>
+                    팔로워&nbsp;
+                    <FatText text={String(followersCount)} />
+                  </Count>
+                  <Count>
+                    팔로우&nbsp;
+                    <FatText text={String(followingCount)} />
+                  </Count>
+                </Counts>
+                <FullName text={fullName} />
+                <Bio>{bio}</Bio>
+                <ExtendEditButton>프로필 편집</ExtendEditButton>
+              </HeaderColumn>
+            </Header>
+            <SmallBio>{fullName}</SmallBio>
+            <SmallCounts>
+              <SmallCount>
+                <SmallCountText>게시물</SmallCountText>
+                <SmallCountNum>{postsCount}</SmallCountNum>
+              </SmallCount>
+              <SmallCount>
+                <SmallCountText>팔로워</SmallCountText>
+                <SmallCountNum>{followersCount}</SmallCountNum>
+              </SmallCount>
+              <SmallCount>
+                <SmallCountText>팔로우</SmallCountText>
+                <SmallCountNum>{followingCount}</SmallCountNum>
+              </SmallCount>
+            </SmallCounts>
+            <Navbar>
+              <NavItem>
+                <NetIcon src={net} />
+                <FirstNavText>게시물</FirstNavText>
+              </NavItem>
+              <NavItem>
+                <NavIcon src={television} />
+                <NavText>IGTV</NavText>
+              </NavItem>
+              <NavItem>
+                <BookMarkIcon src={Bookmark} />
+                <NavText>저장됨</NavText>
+              </NavItem>
+              <NavItem>
+                <NavIcon src={tagged} />
+                <NavText>태그됨</NavText>
+              </NavItem>
+            </Navbar>
+            <Posts>{posts && <ProfilePost posts={posts} />}</Posts>
+          </Main>
+        </Wrapper>
+        <FullPost />
+      </>
     );
   }
   return null;

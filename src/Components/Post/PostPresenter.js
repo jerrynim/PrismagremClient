@@ -3,7 +3,7 @@ import styled from "styled-components";
 import TextareaAutosize from "react-autosize-textarea";
 import FatText from "../FatText";
 import Avatar from "../Avatar";
-import { HeartFull, HeartEmpty } from "../Icons";
+import { HeartFull2, HeartEmpty } from "../Icons";
 import { Link } from "react-router-dom";
 import more from "../Images/more.png";
 import CommentItem from "../Images/Comment.png";
@@ -65,6 +65,9 @@ const Button = styled.span`
 
 const Meta = styled.div`
   padding: 16px;
+  @media (max-width: 735px) {
+    padding: 16px 16px 0px;
+  }
 `;
 
 const Buttons = styled.div`
@@ -84,6 +87,11 @@ const Timestamp = styled.span`
   display: block;
   font-size: 12px;
   margin: 10px 0px;
+  @media (max-width: 735px) {
+    border: 0;
+    padding-bottom: 0px;
+    margin: 10px 0px 4px;
+  }
   padding-bottom: 10px;
   border-bottom: ${(props) => props.theme.lightGreyColor} 1px solid;
 `;
@@ -117,6 +125,9 @@ const CommentIcon = styled.div`
 `;
 
 const TextBox = styled.div`
+  @media (max-width: 735px) {
+    display: none;
+  }
   display: flex;
   justify-content: space-between;
 `;
@@ -169,7 +180,7 @@ export default ({
     <Meta>
       <Buttons>
         <Button onClick={toggleLike}>
-          {isLiked ? <HeartFull /> : <HeartEmpty />}
+          {isLiked ? <HeartFull2 /> : <HeartEmpty />}
         </Button>
         <Button>
           <CommentIcon />
