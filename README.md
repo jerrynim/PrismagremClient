@@ -17,6 +17,8 @@ Pofile Route Layout [x]
 5/6 -- Profile Page Layout만듬,width:100%와 자식컴포넌트에 padding-bottom:100% 사용하면 정사각형됨. 하지만 오버레이가 힘듬. 다음부터는  
  grid쓸거임. Overlay는포기
 
-5/7 -- Posts 를 3개씩 나누어 정사각형 유지되도록 layout을만듬, Overlay만듬, ProfilePage축소시 화면 변경점 수정 (Header 휴대폰사이즈의 UI수정 필요)
+5/7 -- Post 페이지가 반응형과 모바일사이즈에 변화하도록 레이아웃 구상
 
-5/8 -- Header Footer FeedPage Profile @media 적용, FeedPage에 축소시 나타날 스토리 레이아웃만듬, 포스트 클릭시 나타날 FullPost Layout짜는중, 댓글에 좋아요 기능을 추가할 필요가있음. 스토리도 포스트처럼 만들어야함.
+5/8 -- Posts 를 3개씩 나누어 정사각형 유지되도록 layout을만듬, Overlay만듬, ProfilePage축소시 화면 변경점 수정 (Header 휴대폰사이즈의 UI수정 필요)
+
+5/9 -- Header Footer FeedPage Profile @media 적용, FeedPage에 축소시 나타날 스토리 레이아웃만듬, 포스트 클릭시 나타날 FullPost Layout짜는중, 댓글에 좋아요 기능을 추가할 필요가있음. 스토리도 포스트처럼 만들어야함.
