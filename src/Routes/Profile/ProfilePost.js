@@ -38,11 +38,10 @@ const Container3 = styled.div`
   padding-bottom: 100%;
 `;
 
-const makePosts = ({ posts }) => {
+const makePosts = ({ posts, setFullPost, fullPost }) => {
   //배열을 3개씩 나눠서
   const last = posts.length % 3;
   let ThreePosts = [];
-
   if (last === 0) {
     const times = posts.length / 3;
     for (let i = 0; i < times; i++) {
@@ -58,6 +57,7 @@ const makePosts = ({ posts }) => {
                 likeCount={post.likeCount}
                 commentCount={post.commentCount}
                 file={post.files[0]}
+                setFullPost={setFullPost}
               />
             ))
           )}
@@ -80,6 +80,7 @@ const makePosts = ({ posts }) => {
                   likeCount={post.likeCount}
                   commentCount={post.commentCount}
                   file={post.files[0]}
+                  setFullPost={setFullPost}
                 />
               ))
             )}
@@ -121,6 +122,7 @@ const makePosts = ({ posts }) => {
                   likeCount={post.likeCount}
                   commentCount={post.commentCount}
                   file={post.files[0]}
+                  setFullPost={setFullPost}
                 />
               ))
             )}

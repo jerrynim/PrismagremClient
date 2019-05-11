@@ -8,6 +8,7 @@ scorll 포인트가 어느정도 도달할시 Story section 을 psotion:fixed로
 Story API, 동기화하기
 Pofile Route Layout [x]
 프로필 편집 페이지 만들기 ,옵션 버튼클릭시 팝업만들기
+오버레이 X버튼 >버튼 만들고 토글되게 만들고 ,기능들 불러오기
 --Log--
 
 5/5 -- 스크롤을하면 Story컴포넌트가 postion:fixed됨 (최상위컴포넌트에 props로 전달하여 이벤트발생시마다 전체가 render되는 문제)
@@ -22,3 +23,5 @@ Pofile Route Layout [x]
 5/8 -- Posts 를 3개씩 나누어 정사각형 유지되도록 layout을만듬, Overlay만듬, ProfilePage축소시 화면 변경점 수정 (Header 휴대폰사이즈의 UI수정 필요)
 
 5/9 -- Header Footer FeedPage Profile @media 적용, FeedPage에 축소시 나타날 스토리 레이아웃만듬, 포스트 클릭시 나타날 FullPost Layout짜는중, 댓글에 좋아요 기능을 추가할 필요가있음. 스토리도 포스트처럼 만들어야함.
+
+5/11 -- FullPost Layout을 만듬, Profile Container에서 fullPost state를 사용하여 post 값 전달 하게하여. 클릭시 fullPost가 나타남.

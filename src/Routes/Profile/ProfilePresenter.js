@@ -302,7 +302,7 @@ const FirstNavText = styled.span`
   font-weight: 600;
 `;
 
-export default ({ loading, data, logOut }) => {
+export default ({ loading, data, logOut, fullPost, setFullPost }) => {
   if (loading === true) {
     return (
       <Wrapper>
@@ -400,10 +400,18 @@ export default ({ loading, data, logOut }) => {
                 <NavText>태그됨</NavText>
               </NavItem>
             </Navbar>
-            <Posts>{posts && <ProfilePost posts={posts} />}</Posts>
+            <Posts>
+              {posts && (
+                <ProfilePost
+                  posts={posts}
+                  fullPost={fullPost}
+                  setFullPost={setFullPost}
+                />
+              )}
+            </Posts>
           </Main>
         </Wrapper>
-        <FullPost />
+        {fullPost !== "" && <FullPost />}
       </>
     );
   }

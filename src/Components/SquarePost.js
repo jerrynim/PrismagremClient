@@ -17,10 +17,13 @@ const Overlay = styled.div`
   opacity: 0;
 `;
 
-const Container = styled.div`
+const Container = styled.button`
   display: block;
   position: relative;
   width: 100%;
+  border: 0;
+  padding: 0;
+  outline: 0;
   cursor: pointer;
   @media (max-width: 735px) {
     margin-right: 3px;
@@ -75,25 +78,31 @@ const NumberText = styled.span`
   margin-left: 7px;
 `;
 
-const SquarePost = ({ likeCount, commentCount, file }) => (
-  <Container>
-    <Overlay>
-      <OverlayUl>
-        <Number>
-          <HeartFull />
-          <NumberText>{likeCount}</NumberText>
-        </Number>
-        <Number>
-          <CommentFull />
-          <NumberText>{commentCount}</NumberText>
-        </Number>
-      </OverlayUl>
-    </Overlay>
-    <Container2 bg={file.url}>
-      <Container3 />
-    </Container2>
-  </Container>
-);
+const SquarePost = ({ likeCount, commentCount, file, setFullPost }) => {
+  return (
+    <Container
+      onClick={() => {
+        setFullPost("hi");
+      }}
+    >
+      <Overlay>
+        <OverlayUl>
+          <Number>
+            <HeartFull />
+            <NumberText>{likeCount}</NumberText>
+          </Number>
+          <Number>
+            <CommentFull />
+            <NumberText>{commentCount}</NumberText>
+          </Number>
+        </OverlayUl>
+      </Overlay>
+      <Container2 bg={file.url}>
+        <Container3 />
+      </Container2>
+    </Container>
+  );
+};
 
 SquarePost.propTypes = {
   likeCount: PropTypes.number.isRequired,
