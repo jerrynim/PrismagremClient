@@ -1,8 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, createRef, useState } from "react";
 import styled from "styled-components";
 import { HeartEmpty, HeartFull2 } from "./Icons";
 import TextareaAutosize from "react-autosize-textarea";
 import CommentImg from "./Images/Comment.png";
+import { useMutation } from "react-apollo-hooks";
+import { ADD_COMMENT } from "./Post/PostQueries";
+import useInput from "../Hooks/useInput";
 const Container = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
   top: 0;
@@ -87,7 +90,6 @@ const WriterAvatar = styled.div`
 `;
 
 const WriterText = styled.div`
-  margin-left: 16px;
   display: flex;
   justify-content: space-between;
   text-overflow: ellipsis;
@@ -95,7 +97,8 @@ const WriterText = styled.div`
 `;
 const Comments = styled.div`
   overflow: scroll;
-  height: 351px;
+  height: -webkit-calc(100%-222px);
+  max-height: 372px;
   /*스크롤바 가리기*/
   ::-webkit-scrollbar {
     display: none;
@@ -236,7 +239,59 @@ const HeartButton = styled.button`
   outline: 0;
   cursor: pointer;
 `;
+
+const WriterLocation = styled.div`
+  font-size: 12px;
+  color: #262626;
+`;
+
+const WriterInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left: 16px;
+`;
 export default (fullPost, setFullPost) => {
+  //추가할 댓글을 client에 띄어주기위해
+  const [selfComments, setSelfComments] = useState([]);
+  //mutation을 위해
+  const text = useInput("");
+  const addCommentMutation = useMutation(ADD_COMMENT, {
+    variables: {
+      postId: fullPost.fullPost.id,
+      text: text.value
+    }
+  });
+
+  //엔터누를실
+  const onKeyPress = async (event) => {
+    const { which } = event;
+    if (which === 13) {
+      event.preventDefault();
+      try {
+        const {
+          data: { addComment }
+        } = await addCommentMutation();
+        setSelfComments([...selfComments, addComment]);
+
+        text.setValue("");
+      } catch (e) {
+        return false;
+      }
+    }
+  };
+
+  const commentSubmit = async () => {
+    try {
+      const {
+        data: { addComment }
+      } = await addCommentMutation();
+      setSelfComments([...selfComments, addComment]);
+      text.setValue("");
+    } catch (e) {
+      return false;
+    }
+  };
+
   //포스트의 Ref
   const postRef = React.createRef();
   const handleClick = (e) => {
@@ -257,6 +312,12 @@ export default (fullPost, setFullPost) => {
       document.removeEventListener("click", handleClick);
     };
   });
+
+  const InputRef = createRef();
+  //댓글아이콘 클릭시 input에 focus
+  const InputFoucs = () => {
+    InputRef.current.focus();
+  };
 
   const {
     fullPost: {
@@ -285,7 +346,10 @@ export default (fullPost, setFullPost) => {
             <Article>
               <Writer>
                 <WriterAvatar bg={user.avatar} />
-                <WriterText>{user.username}</WriterText>
+                <WriterInfo>
+                  <WriterText>{user.username}</WriterText>
+                  <WriterLocation>{location}</WriterLocation>
+                </WriterInfo>
               </Writer>
               <Comments>
                 <Comment>
@@ -308,6 +372,17 @@ export default (fullPost, setFullPost) => {
                     </CommentText>
                   </Comment>
                 ))}
+                {selfComments.map((selfComment) => (
+                  <Comment key={selfComment.id}>
+                    <WriteAvatarWrapper>
+                      <WriterAvatar bg={selfComment.user.avatar} />
+                    </WriteAvatarWrapper>
+                    <CommentText>
+                      {selfComment.text}
+                      <TimeStamp>{selfComment.createdAt}</TimeStamp>
+                    </CommentText>
+                  </Comment>
+                ))}
               </Comments>
               <ArticleFooter>
                 <Icons>
@@ -323,7 +398,7 @@ export default (fullPost, setFullPost) => {
                     )}
                   </IconButton>
 
-                  <IconButton>
+                  <IconButton onClick={InputFoucs}>
                     <CommentIcon />
                   </IconButton>
                 </Icons>
@@ -344,8 +419,16 @@ export default (fullPost, setFullPost) => {
 
                 <AddCommentBox>
                   <AddComment>
-                    <AddCommentInput placeholder={"댓글 달기..."} />
-                    <AddCommentButton>게시</AddCommentButton>
+                    <AddCommentInput
+                      ref={InputRef}
+                      onKeyPress={onKeyPress}
+                      value={text.value}
+                      onChange={text.onChange}
+                      placeholder={"댓글 달기..."}
+                    />
+                    <AddCommentButton onClick={commentSubmit}>
+                      게시
+                    </AddCommentButton>
                   </AddComment>
                 </AddCommentBox>
               </ArticleFooter>

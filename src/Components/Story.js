@@ -18,10 +18,9 @@ const Wrapper = styled.div`
 `;
 const Wrapper2 = styled.div`
   width: 293px;
-
-  position: ${(props) => (props.scrollY < 43 ? "" : "fixed")};
   top: 78px;
 `;
+
 const Me = styled.div`
   display: flex;
   align-items: center;
@@ -202,7 +201,7 @@ const Story = (me) => {
 
   return (
     <Wrapper>
-      <Wrapper2 scrollY={scrollY}>
+      <Wrapper2>
         <Me>
           <Avatar size={"md"} url={avatar} />
           <NameBox>

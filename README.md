@@ -27,4 +27,4 @@ Pofile Route Layout [x]
 5/11 -- FullPost Layout을 만듬, Profile Container에서 fullPost state를 사용하여 post 값 전달 하게하여. 클릭시 fullPost가 나타남.
 
 5/12 -- 오버레이 토글은 위한 clickListner와 ref사용, splice의사용으로 인한 props가 뒤로가기나 앞으로가기시 0가되어 나타나지 않는 문제로 인하
-여 splice를 immutable하게 하는 방법으로 교체해야함
+여 splice를 immutable하게 하는 방법으로 교체함
