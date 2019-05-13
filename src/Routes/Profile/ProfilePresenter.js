@@ -410,8 +410,10 @@ export default ({ loading, data, logOut, fullPost, setFullPost }) => {
               )}
             </Posts>
           </Main>
+          {fullPost !== "" && (
+            <FullPost fullPost={fullPost} setFullPost={setFullPost} />
+          )}
         </Wrapper>
-        {fullPost !== "" && <FullPost />}
       </>
     );
   }

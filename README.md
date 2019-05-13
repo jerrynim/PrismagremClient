@@ -25,3 +25,6 @@ Pofile Route Layout [x]
 5/9 -- Header Footer FeedPage Profile @media 적용, FeedPage에 축소시 나타날 스토리 레이아웃만듬, 포스트 클릭시 나타날 FullPost Layout짜는중, 댓글에 좋아요 기능을 추가할 필요가있음. 스토리도 포스트처럼 만들어야함.
 
 5/11 -- FullPost Layout을 만듬, Profile Container에서 fullPost state를 사용하여 post 값 전달 하게하여. 클릭시 fullPost가 나타남.
+
+5/12 -- 오버레이 토글은 위한 clickListner와 ref사용, splice의사용으로 인한 props가 뒤로가기나 앞으로가기시 0가되어 나타나지 않는 문제로 인하
+여 splice를 immutable하게 하는 방법으로 교체해야함

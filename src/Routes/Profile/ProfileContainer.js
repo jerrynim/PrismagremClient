@@ -19,9 +19,34 @@ const GET_USER = gql`
       postsCount
       posts {
         id
+        location
+        caption
+        user {
+          avatar
+          username
+          isFollowing
+          isSelf
+        }
         files {
           url
         }
+        likes {
+          id
+          user {
+            avatar
+            username
+          }
+        }
+        comments {
+          id
+          text
+          user {
+            avatar
+            username
+          }
+          createdAt
+        }
+        isLiked
         likeCount
         commentCount
       }

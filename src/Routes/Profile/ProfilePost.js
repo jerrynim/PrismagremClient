@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import styled from "styled-components";
 import SquarePost from "../../Components/SquarePost";
 
@@ -38,20 +38,24 @@ const Container3 = styled.div`
   padding-bottom: 100%;
 `;
 
-const makePosts = ({ posts, setFullPost, fullPost }) => {
+const ProfilePost = ({ posts, fullPost, setFullPost }) => {
   //배열을 3개씩 나눠서
   const last = posts.length % 3;
-  let ThreePosts = [];
   if (last === 0) {
-    const times = posts.length / 3;
-    for (let i = 0; i < times; i++) {
-      ThreePosts.push(posts.splice(0, 3));
+    let ThreePosts = [];
+    for (let i = 0; i < posts.length; i += 3) {
+      let newThreePosts = [];
+      newThreePosts.push(posts[i]);
+      newThreePosts.push(posts[i + 1]);
+      newThreePosts.push(posts[i + 2]);
+      ThreePosts.push(newThreePosts);
     }
+    //expect: [[[post[0],post[1],post[2]]]
     return (
       <>
-        <PostsLine>
-          {ThreePosts.map((threePost) =>
-            threePost.map((post) => (
+        {ThreePosts.map((threePost, index) => (
+          <PostsLine key={index}>
+            {threePost.map((post) => (
               <SquarePost
                 key={post.id}
                 likeCount={post.likeCount}
@@ -59,39 +63,44 @@ const makePosts = ({ posts, setFullPost, fullPost }) => {
                 file={post.files[0]}
                 setFullPost={setFullPost}
               />
-            ))
-          )}
-        </PostsLine>
+            ))}
+          </PostsLine>
+        ))}
       </>
     );
   } else if (last === 1) {
-    const times = (posts.length - last) / 3;
-    for (let i = 0; i < times; i++) {
-      ThreePosts.push(posts.splice(0, 3));
+    let ThreePosts = [];
+    for (let i = 0; i < posts.length - last; i += 3) {
+      let newThreePosts = [];
+      newThreePosts.push(posts[i]);
+      newThreePosts.push(posts[i + 1]);
+      newThreePosts.push(posts[i + 2]);
+      ThreePosts.push(newThreePosts);
     }
     return (
       <>
-        {
-          <PostsLine>
-            {ThreePosts.map((threePost) =>
-              threePost.map((post) => (
-                <SquarePost
-                  key={post.id}
-                  likeCount={post.likeCount}
-                  commentCount={post.commentCount}
-                  file={post.files[0]}
-                  setFullPost={setFullPost}
-                />
-              ))
-            )}
+        {ThreePosts.map((threePost, index) => (
+          <PostsLine key={index}>
+            {threePost.map((post) => (
+              <SquarePost
+                key={post.id}
+                likeCount={post.likeCount}
+                commentCount={post.commentCount}
+                file={post.files[0]}
+                post={post}
+                setFullPost={setFullPost}
+              />
+            ))}
           </PostsLine>
-        }
+        ))}
         <PostsLine>
           <SquarePost
             key={posts[posts.length - 1].id}
             likeCount={posts[posts.length - 1].likeCount}
             commentCount={posts[posts.length - 1].commentCount}
             file={posts[posts.length - 1].files[0]}
+            post={posts[posts.length - 1]}
+            setFullPost={setFullPost}
           />
           <Container>
             <Container2>
@@ -107,39 +116,46 @@ const makePosts = ({ posts, setFullPost, fullPost }) => {
       </>
     );
   } else if (last === 2) {
-    const times = (posts.length - last) / 3;
-    for (let i = 0; i < times; i++) {
-      ThreePosts.push(posts.splice(0, 3));
+    let ThreePosts = [];
+    for (let i = 0; i < posts.length - last; i += 3) {
+      let newThreePosts = [];
+      newThreePosts.push(posts[i]);
+      newThreePosts.push(posts[i + 1]);
+      newThreePosts.push(posts[i + 2]);
+      ThreePosts.push(newThreePosts);
     }
     return (
       <>
-        {
-          <PostsLine>
-            {ThreePosts.map((threePost) =>
-              threePost.map((post) => (
-                <SquarePost
-                  key={post.id}
-                  likeCount={post.likeCount}
-                  commentCount={post.commentCount}
-                  file={post.files[0]}
-                  setFullPost={setFullPost}
-                />
-              ))
-            )}
+        {ThreePosts.map((threePost, index) => (
+          <PostsLine key={index}>
+            {threePost.map((post) => (
+              <SquarePost
+                key={post.id}
+                likeCount={post.likeCount}
+                commentCount={post.commentCount}
+                file={post.files[0]}
+                post={post}
+                setFullPost={setFullPost}
+              />
+            ))}
           </PostsLine>
-        }
+        ))}
         <PostsLine>
           <SquarePost
             key={posts[posts.length - 1].id}
             likeCount={posts[posts.length - 1].likeCount}
             commentCount={posts[posts.length - 1].commentCount}
             file={posts[posts.length - 1].files[0]}
+            post={posts[posts.length - 1]}
+            setFullPost={setFullPost}
           />
           <SquarePost
             key={posts[posts.length - 2].id}
             likeCount={posts[posts.length - 2].likeCount}
             commentCount={posts[posts.length - 2].commentCount}
             file={posts[posts.length - 2].files[0]}
+            post={posts[posts.length - 2]}
+            setFullPost={setFullPost}
           />
           <Container>
             <Container2>
@@ -151,4 +167,4 @@ const makePosts = ({ posts, setFullPost, fullPost }) => {
     );
   }
 };
-export default makePosts;
+export default ProfilePost;

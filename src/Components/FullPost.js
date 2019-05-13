@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
-import { HeartEmpty } from "./Icons";
+import { HeartEmpty, HeartFull2 } from "./Icons";
 import TextareaAutosize from "react-autosize-textarea";
 import CommentImg from "./Images/Comment.png";
 const Container = styled.div`
@@ -22,6 +22,7 @@ const Wrapper = styled.div`
   @media (min-width: 481px) {
     padding: 0 40px;
   }
+  pointer-events: auto;
 `;
 
 const PostWrapper = styled.div`
@@ -52,7 +53,8 @@ const Image = styled.div`
 `;
 const Image2 = styled.div`
   padding-bottom: 100%;
-  background-color: red;
+  background-image: url(${(props) => props.img});
+  background-size: cover;
 `;
 const Article = styled.div`
   right: 0;
@@ -80,7 +82,8 @@ const WriterAvatar = styled.div`
   height: 34px;
   cursor: pointer;
   border-radius: 50%;
-  background-color: red;
+  background-size: cover;
+  background-image: url(${(props) => props.bg});
 `;
 
 const WriterText = styled.div`
@@ -163,10 +166,11 @@ const LikeAvatar = styled.div`
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background-color: red;
+  background-image: url(${(props) => props.bg});
   background-size: contain;
 `;
 const LikeText = styled.div`
+  color: #000000;
   display: flex;
   align-items: center;
 `;
@@ -226,107 +230,129 @@ const AddCommentButton = styled.button`
     color: #cae3fc;
   }
 `;
-export default () => (
-  <Container>
-    <Wrapper>
-      <PostWrapper>
-        <Post>
-          <ImageWapper>
-            <Image>
-              <Image2 />
-            </Image>
-          </ImageWapper>
-          <Article>
-            <Writer>
-              <WriterAvatar />
-              <WriterText>assd</WriterText>
-            </Writer>
-            <Comments>
-              <Comment>
-                <WriteAvatarWrapper>
-                  <WriterAvatar />
-                </WriteAvatarWrapper>
-                <CommentText>
-                  aksdjnf klasnjdfk lasndflk asdnfkl asdf kasdf asd fasd
-                  <TimeStamp>97 주 </TimeStamp>
-                </CommentText>
-              </Comment>
-              <Comment>
-                <WriteAvatarWrapper>
-                  <WriterAvatar />
-                </WriteAvatarWrapper>
-                <CommentText>
-                  aksdjnf klasnjdfk lasndflk asdnfkl asdf kasdf asd fasd
-                  <TimeStamp>97 주 </TimeStamp>
-                </CommentText>
-              </Comment>
-              <Comment>
-                <WriteAvatarWrapper>
-                  <WriterAvatar />
-                </WriteAvatarWrapper>
-                <CommentText>
-                  aksdjnf klasnjdfk lasndflk asdnfkl asdf kasdf asd fasd
-                  <TimeStamp>97 주 </TimeStamp>
-                </CommentText>
-              </Comment>
-              <Comment>
-                <WriteAvatarWrapper>
-                  <WriterAvatar />
-                </WriteAvatarWrapper>
-                <CommentText>
-                  aksdjnf klasnjdfk lasndflk asdnfkl asdf kasdf asd fasd
-                  <TimeStamp>97 주 </TimeStamp>
-                </CommentText>
-              </Comment>
-              <Comment>
-                <WriteAvatarWrapper>
-                  <WriterAvatar />
-                </WriteAvatarWrapper>
-                <CommentText>
-                  aksdjnf klasnjdfk lasndflk asdnfkl asdf kasdf asd fasd
-                  <TimeStamp>97 주 </TimeStamp>
-                </CommentText>
-              </Comment>
-              <Comment>
-                <WriteAvatarWrapper>
-                  <WriterAvatar />
-                </WriteAvatarWrapper>
-                <CommentText>
-                  aksdjnf klasnjdfk lasndflk asdnfkl asdf kasdf asd fasd
-                  <TimeStamp>97 주 </TimeStamp>
-                </CommentText>
-              </Comment>
-            </Comments>
-            <ArticleFooter>
-              <Icons>
-                <IconButton>
-                  <HeartEmpty />
-                </IconButton>
 
-                <IconButton>
-                  <CommentIcon />
-                </IconButton>
-              </Icons>
-              <LikeComment>
-                <LikeAvartarButton>
-                  <LikeAvatar />
-                </LikeAvartarButton>
-                <LikeText>
-                  <span>asdfasd</span>님 <span>111명</span>이 좋아합니다
-                </LikeText>
-              </LikeComment>
-              <LikeTimeStamp>2019년 5월 11일</LikeTimeStamp>
+const HeartButton = styled.button`
+  border: 0;
+  outline: 0;
+  cursor: pointer;
+`;
+export default (fullPost, setFullPost) => {
+  //포스트의 Ref
+  const postRef = React.createRef();
+  const handleClick = (e) => {
+    if (!postRef.current.contains(e.target)) {
+      //바깥쪽을 클릭하면
+      fullPost.setFullPost("");
+    } else {
+      //안쪽을 클릭하면
+      return true;
+    }
+  };
 
-              <AddCommentBox>
-                <AddComment>
-                  <AddCommentInput placeholder={"댓글 달기..."} />
-                  <AddCommentButton>게시</AddCommentButton>
-                </AddComment>
-              </AddCommentBox>
-            </ArticleFooter>
-          </Article>
-        </Post>
-      </PostWrapper>
-    </Wrapper>
-  </Container>
-);
+  //클릭시 사라지게 하기위한 리스너
+  useEffect(() => {
+    document.addEventListener("click", handleClick);
+
+    return function() {
+      document.removeEventListener("click", handleClick);
+    };
+  });
+
+  const {
+    fullPost: {
+      caption,
+      comments,
+      files,
+      isLiked,
+      likes,
+      likeCount,
+      location,
+      user,
+      createdAt
+    }
+  } = fullPost;
+
+  return (
+    <Container>
+      <Wrapper>
+        <PostWrapper>
+          <Post ref={postRef}>
+            <ImageWapper>
+              <Image>
+                <Image2 img={files[0].url} />
+              </Image>
+            </ImageWapper>
+            <Article>
+              <Writer>
+                <WriterAvatar bg={user.avatar} />
+                <WriterText>{user.username}</WriterText>
+              </Writer>
+              <Comments>
+                <Comment>
+                  <WriteAvatarWrapper>
+                    <WriterAvatar bg={user.avatar} />
+                  </WriteAvatarWrapper>
+                  <CommentText>
+                    {caption}
+                    <TimeStamp>{createdAt}</TimeStamp>
+                  </CommentText>
+                </Comment>
+                {comments.map((comment) => (
+                  <Comment key={comment.id}>
+                    <WriteAvatarWrapper>
+                      <WriterAvatar bg={comment.user.avatar} />
+                    </WriteAvatarWrapper>
+                    <CommentText>
+                      {comment.text}
+                      <TimeStamp>{comment.createdAt}</TimeStamp>
+                    </CommentText>
+                  </Comment>
+                ))}
+              </Comments>
+              <ArticleFooter>
+                <Icons>
+                  <IconButton>
+                    {isLiked ? (
+                      <HeartButton>
+                        <HeartFull2 />
+                      </HeartButton>
+                    ) : (
+                      <HeartButton>
+                        <HeartEmpty />
+                      </HeartButton>
+                    )}
+                  </IconButton>
+
+                  <IconButton>
+                    <CommentIcon />
+                  </IconButton>
+                </Icons>
+                <LikeComment>
+                  {likes[0] !== undefined && (
+                    <>
+                      <LikeAvartarButton>
+                        <LikeAvatar bg={likes[0].user.avatar} />
+                      </LikeAvartarButton>
+                      <LikeText>
+                        <b>{likes[0].user.username}</b>님 <b>{likeCount}</b>이
+                        좋아합니다
+                      </LikeText>
+                    </>
+                  )}
+                </LikeComment>
+                <LikeTimeStamp>{createdAt}</LikeTimeStamp>
+
+                <AddCommentBox>
+                  <AddComment>
+                    <AddCommentInput placeholder={"댓글 달기..."} />
+                    <AddCommentButton>게시</AddCommentButton>
+                  </AddComment>
+                </AddCommentBox>
+              </ArticleFooter>
+            </Article>
+          </Post>
+        </PostWrapper>
+      </Wrapper>
+    </Container>
+  );
+};

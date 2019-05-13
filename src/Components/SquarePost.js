@@ -78,11 +78,11 @@ const NumberText = styled.span`
   margin-left: 7px;
 `;
 
-const SquarePost = ({ likeCount, commentCount, file, setFullPost }) => {
+const SquarePost = ({ likeCount, commentCount, file, post, setFullPost }) => {
   return (
     <Container
       onClick={() => {
-        setFullPost("hi");
+        setFullPost(post);
       }}
     >
       <Overlay>
