@@ -6,6 +6,7 @@ import CommentImg from "./Images/Comment.png";
 import { useMutation } from "react-apollo-hooks";
 import { ADD_COMMENT } from "./Post/PostQueries";
 import useInput from "../Hooks/useInput";
+import FullFiles from "./FullFiles";
 const Container = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
   top: 0;
@@ -48,17 +49,16 @@ const ImageWapper = styled.div`
   padding-right: 335px;
   min-height: 450px;
   align-items: center;
+  left: 0;
+  top: 0;
 `;
 const Image = styled.div`
+  position: relative;
   width: 100%;
   display: block;
   overflow: hidden;
 `;
-const Image2 = styled.div`
-  padding-bottom: 100%;
-  background-image: url(${(props) => props.img});
-  background-size: cover;
-`;
+
 const Article = styled.div`
   right: 0;
   position: absolute;
@@ -253,6 +253,8 @@ const WriterInfo = styled.div`
 export default (fullPost, setFullPost) => {
   //추가할 댓글을 client에 띄어주기위해
   const [selfComments, setSelfComments] = useState([]);
+  //
+  const [showing, setShowing] = useState(0);
   //mutation을 위해
   const text = useInput("");
   const addCommentMutation = useMutation(ADD_COMMENT, {
@@ -279,7 +281,7 @@ export default (fullPost, setFullPost) => {
       }
     }
   };
-
+  //게시 버튼으로 CommentAdd
   const commentSubmit = async () => {
     try {
       const {
@@ -295,12 +297,16 @@ export default (fullPost, setFullPost) => {
   //포스트의 Ref
   const postRef = React.createRef();
   const handleClick = (e) => {
-    if (!postRef.current.contains(e.target)) {
-      //바깥쪽을 클릭하면
-      fullPost.setFullPost("");
-    } else {
-      //안쪽을 클릭하면
-      return true;
+    try {
+      if (!postRef.current.contains(e.target)) {
+        //바깥쪽을 클릭하면
+        fullPost.setFullPost("");
+      } else {
+        //안쪽을 클릭하면
+        return true;
+      }
+    } catch (e) {
+      console.log(e.message);
     }
   };
 
@@ -312,7 +318,7 @@ export default (fullPost, setFullPost) => {
       document.removeEventListener("click", handleClick);
     };
   });
-
+  //comment Input 의 Ref
   const InputRef = createRef();
   //댓글아이콘 클릭시 input에 focus
   const InputFoucs = () => {
@@ -340,7 +346,11 @@ export default (fullPost, setFullPost) => {
           <Post ref={postRef}>
             <ImageWapper>
               <Image>
-                <Image2 img={files[0].url} />
+                <FullFiles
+                  files={files}
+                  showing={showing}
+                  setShowing={setShowing}
+                />
               </Image>
             </ImageWapper>
             <Article>
