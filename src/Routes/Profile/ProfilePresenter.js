@@ -12,6 +12,7 @@ import net from "../../Components/Images/net.png";
 import blueNet from "../../Components/Images/blueNet.png";
 import ProfilePost from "./ProfilePost";
 import FullPost from "../../Components/FullPost";
+import SettingOverlay from "../../Components/SettingOverlay";
 const Wrapper = styled.div``;
 
 const Main = styled.div`
@@ -112,7 +113,7 @@ const Bio = styled.p`
   }
   margin: 10px 0px;
 `;
-const ExtendEditButton = styled.div`
+const ExtendEditButton = styled.button`
   @media (min-width: 735px) {
     display: none;
   }
@@ -177,7 +178,7 @@ const Posts = styled.div`
   padding-top: 0px;
 `;
 
-const EditButton = styled.button`
+const EditButton = styled.Link`
   @media (max-width: 735px) {
     display: none;
   }
@@ -302,7 +303,15 @@ const FirstNavText = styled.span`
   font-weight: 600;
 `;
 
-export default ({ loading, data, logOut, fullPost, setFullPost }) => {
+export default ({
+  loading,
+  data,
+  logOut,
+  fullPost,
+  setFullPost,
+  setSetOverlay,
+  SetOverlay
+}) => {
   if (loading === true) {
     return (
       <Wrapper>
@@ -341,8 +350,12 @@ export default ({ loading, data, logOut, fullPost, setFullPost }) => {
                   <Username>{username}</Username>
                   {isSelf ? (
                     <>
-                      <EditButton>프로필 편집</EditButton>
-                      <OptionButton />
+                      <EditButton> 프로필 편집</EditButton>
+                      <OptionButton
+                        onClick={() => {
+                          setSetOverlay("On");
+                        }}
+                      />
                     </>
                   ) : (
                     <FollowButton isFollowing={isFollowing} id={id} />
@@ -412,6 +425,12 @@ export default ({ loading, data, logOut, fullPost, setFullPost }) => {
           </Main>
           {fullPost !== "" && (
             <FullPost fullPost={fullPost} setFullPost={setFullPost} />
+          )}
+          {SetOverlay === "On" && (
+            <SettingOverlay
+              SetOverlay={SetOverlay}
+              setSetOverlay={setSetOverlay}
+            />
           )}
         </Wrapper>
       </>

@@ -64,6 +64,7 @@ export default withRouter(({ match: { params: { username } } }) => {
   const { data, loading } = useQuery(GET_USER, { variables: { username } });
   const logOut = useMutation(LOG_OUT);
   const [fullPost, setFullPost] = useState("");
+  const [SetOverlay, setSetOverlay] = useState("");
   return (
     <ProfilePresenter
       loading={loading}
@@ -71,6 +72,8 @@ export default withRouter(({ match: { params: { username } } }) => {
       data={data}
       fullPost={fullPost}
       setFullPost={setFullPost}
+      SetOverlay={SetOverlay}
+      setSetOverlay={setSetOverlay}
     />
   );
 });

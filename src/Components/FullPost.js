@@ -7,6 +7,7 @@ import { useMutation } from "react-apollo-hooks";
 import { ADD_COMMENT } from "./Post/PostQueries";
 import useInput from "../Hooks/useInput";
 import FullFiles from "./FullFiles";
+import XIcon from "./Images/X.png";
 const Container = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
   top: 0;
@@ -18,6 +19,20 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+`;
+const ColseButton = styled.button`
+  position: absolute;
+  margin: 15px 10px;
+
+  top: 0;
+  right: 0;
+  border: 0;
+  outline: 0;
+  background-size: 18px 18px;
+  background-image: url(${XIcon});
+  background-color: transparent;
+  width: 18px;
+  height: 18px;
 `;
 const Wrapper = styled.div`
   display: flex;
@@ -341,6 +356,7 @@ export default (fullPost, setFullPost) => {
 
   return (
     <Container>
+      <ColseButton />
       <Wrapper>
         <PostWrapper>
           <Post ref={postRef}>
