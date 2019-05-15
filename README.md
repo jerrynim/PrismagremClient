@@ -6,9 +6,10 @@ scorll 포인트가 어느정도 도달할시 Story section 을 psotion:fixed로
 
 --ToDo--
 Story API, 동기화하기
+editProfile시 하단에 프로필이 변경되었습니다 toast, 비밀번호 와 비밀번호 확인 비교하기 , 비밀번호 변경 API
 Pofile Route Layout [x]
-프로필 편집 페이지 만들기 ,옵션 버튼클릭시 팝업만들기
-오버레이 X버튼 >버튼 만들고 토글되게 만들고 ,기능들 불러오기
+프로필 편집 페이지 만들기 ,옵션 버튼클릭시 팝업만들기[x]
+오버레이 X버튼 >버튼 만들고 토글되게 만들고 ,기능들 불러오기[x]
 --Log--
 
 5/5 -- 스크롤을하면 Story컴포넌트가 postion:fixed됨 (최상위컴포넌트에 props로 전달하여 이벤트발생시마다 전체가 render되는 문제)
@@ -28,3 +29,5 @@ Pofile Route Layout [x]
 
 5/12 -- 오버레이 토글은 위한 clickListner와 ref사용, splice의사용으로 인한 props가 뒤로가기나 앞으로가기시 0가되어 나타나지 않는 문제로 인하
 여 splice를 immutable하게 하는 방법으로 교체함, FullPost의 Comments Height조절, comment추가 기능 넣음, FullPost 이미지 전환을 만들었으나 좌측애니메이션은 못넣겠다. 다음 포스트를 보는기능은 안하기로한다.
+
+5/13 -- EditProfile 버튼에 history.push로 링크. EditProfile Page Ui 50% 제작 flex: 0 0 333px 형식을 처음 사용해보는데 생각대로 되지가 않는다.
