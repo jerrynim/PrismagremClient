@@ -10,6 +10,10 @@ editProfile시 하단에 프로필이 변경되었습니다 toast, 비밀번호 
 Pofile Route Layout [x]
 프로필 편집 페이지 만들기 ,옵션 버튼클릭시 팝업만들기[x]
 오버레이 X버튼 >버튼 만들고 토글되게 만들고 ,기능들 불러오기[x]
+모바일 화면 fullPost만들기[x]
+더블클릭시 좋아요 기능[x]
+fullPost heart toggle 기능[x]
+더블클릭시 Heart Icon Animation 나오게하기
 --Log--
 
 5/5 -- 스크롤을하면 Story컴포넌트가 postion:fixed됨 (최상위컴포넌트에 props로 전달하여 이벤트발생시마다 전체가 render되는 문제)
@@ -31,3 +35,10 @@ Pofile Route Layout [x]
 여 splice를 immutable하게 하는 방법으로 교체함, FullPost의 Comments Height조절, comment추가 기능 넣음, FullPost 이미지 전환을 만들었으나 좌측애니메이션은 못넣겠다. 다음 포스트를 보는기능은 안하기로한다.
 
 5/13 -- EditProfile 버튼에 history.push로 링크. EditProfile Page Ui 50% 제작 flex: 0 0 333px 형식을 처음 사용해보는데 생각대로 되지가 않는다.
+
+5/14 -- EditProfile UI 완성, action 에 따라 view변경.
+
+5/15 -- fixed가 느리게 발생하는 것은 useState를 handler안에 두어서 계속되는 rendering때문이라고 본다. fixed Story view 최적화.
+모바일 fullPost UI done
+
+5/16 -- 좋아요 토글 기능 to fullPost, onDoubleClick, minisize FullPOst UI, Back end user에 gender,phoneNumber schema 추가

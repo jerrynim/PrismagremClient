@@ -216,9 +216,7 @@ const NavItem = styled.div`
   @media (max-width: 735px) {
     flex: 1;
     margin: 0;
-    &:first-child {
-      border-top: 0;
-    }
+    border: 0;
   }
   margin-right: 60px;
   height: 100%;
@@ -226,6 +224,10 @@ const NavItem = styled.div`
   justify-content: center;
   align-items: center;
   &:first-child {
+    @media (max-width: 735px) {
+      border-top: 0;
+    }
+
     border-top: 1px solid black;
   }
   &:last-child {

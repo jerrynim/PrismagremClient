@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
+import { useQuery } from "react-apollo-hooks";
+import { ME } from "../../SharedQueries";
+import useInput from "../../Hooks/useInput";
 const Container = styled.div`
   margin-top: 77px;
   background-color: #fafafa;
@@ -209,115 +212,140 @@ const FindPw = styled.button`
   cursor: pointer;
   font-size: 14px;
 `;
-export default ({ action, setAction, onKeyPress }) => (
-  <Container>
-    <Wrapper>
-      <MenuBox>
-        <MenuList>
-          {action === "editProfile" ? (
-            <ActMenu>프로필 편집</ActMenu>
-          ) : (
-            <Menu
-              onClick={() => {
-                setAction("editProfile");
-              }}
-            >
-              프로필 편집
-            </Menu>
+export default ({ action, setAction, onKeyPress }) => {
+  //me Query
+  const {
+    data: { me: user }
+  } = useQuery(ME);
+  console.log(user);
+
+  useEffect();
+
+  return (
+    <Container>
+      <Wrapper>
+        <MenuBox>
+          <MenuList>
+            {action === "editProfile" ? (
+              <ActMenu>프로필 편집</ActMenu>
+            ) : (
+              <Menu
+                onClick={() => {
+                  setAction("editProfile");
+                }}
+              >
+                프로필 편집
+              </Menu>
+            )}
+            {action === "changePW" ? (
+              <ActMenu>비밀번호 변경</ActMenu>
+            ) : (
+              <Menu
+                onClick={() => {
+                  setAction("changePW");
+                }}
+              >
+                비밀번호 변경
+              </Menu>
+            )}
+            <Menu>허가된 앱</Menu>
+            <Menu>이메일 및 SMS</Menu>
+            <Menu>연락처 관리</Menu>
+            <Menu>공개 범위 및 보안</Menu>
+          </MenuList>
+        </MenuBox>
+        <ContentBox>
+          <Profile>
+            <Avatar />
+            <UsernameBox>
+              <Username>cnagjd</Username>
+              <ChangeAvatar>프로필 사진 바꾸기</ChangeAvatar>
+            </UsernameBox>
+          </Profile>
+          {action === "editProfile" && (
+            <EditForm>
+              <Category>
+                <Label>이름</Label>
+                <InputWrapper onKeyPress={onKeyPress} />
+              </Category>
+              <Category>
+                <Label>사용자 이름</Label>
+                <InputWrapper onKeyPress={onKeyPress} />
+              </Category>
+              <Category>
+                <Label>소개</Label>
+                <BioInputWrapper onKeyPress={onKeyPress} />
+              </Category>
+              <Category>
+                <Label />
+                <PrivateText>개인 정보</PrivateText>
+              </Category>
+              <Category>
+                <Label>이메일</Label>
+                <InputWrapper onKeyPress={onKeyPress} />
+              </Category>
+              <Category>
+                <Label>전화번호</Label>
+                <InputWrapper onKeyPress={onKeyPress} />
+              </Category>
+              <Category>
+                <Label>성별</Label>
+                <SelectDiv>
+                  <SelectIcon>></SelectIcon>
+                  <SelectBox>
+                    <option>남성</option>
+                    <option>여성</option>
+                    <option>선택 안함</option>
+                  </SelectBox>
+                </SelectDiv>
+              </Category>
+              <Category>
+                <Label />
+                <SubmitButton>제출</SubmitButton>
+              </Category>
+            </EditForm>
           )}
-          {action === "changePW" ? (
-            <ActMenu>비밀번호 변경</ActMenu>
-          ) : (
-            <Menu
-              onClick={() => {
-                setAction("changePW");
-              }}
-            >
-              비밀번호 변경
-            </Menu>
+          {action === "changePW" && (
+            <PwForm>
+              <Category>
+                <Label>이전 비밀번호</Label>
+                <PwInput
+                  onKeyPress={onKeyPress}
+                  type={"password"}
+                  autocomplete="current-password"
+                  required
+                />
+              </Category>
+              <Category>
+                <Label>새 비밀번호</Label>
+                <PwInput
+                  onKeyPress={onKeyPress}
+                  type={"password"}
+                  autocomplete="new-password"
+                  required
+                />
+              </Category>
+              <Category>
+                <Label>새 비밀번호 확인</Label>
+                <PwInput
+                  onKeyPress={onKeyPress}
+                  type={"password"}
+                  autocomplete="new-password"
+                  required
+                />
+              </Category>
+              <Category>
+                <Label />
+                <SubmitButton>비밀번호 변경</SubmitButton>
+              </Category>
+              <Category>
+                <Label />
+                <FindPw>비밀번호를 잊으셨나요?</FindPw>
+              </Category>
+            </PwForm>
           )}
-          <Menu>허가된 앱</Menu>
-          <Menu>이메일 및 SMS</Menu>
-          <Menu>연락처 관리</Menu>
-          <Menu>공개 범위 및 보안</Menu>
-        </MenuList>
-      </MenuBox>
-      <ContentBox>
-        <Profile>
-          <Avatar />
-          <UsernameBox>
-            <Username>cnagjd</Username>
-            <ChangeAvatar>프로필 사진 바꾸기</ChangeAvatar>
-          </UsernameBox>
-        </Profile>
-        {action === "editProfile" && (
-          <EditForm>
-            <Category>
-              <Label>이름</Label>
-              <InputWrapper onKeyPress={onKeyPress} />
-            </Category>
-            <Category>
-              <Label>사용자 이름</Label>
-              <InputWrapper onKeyPress={onKeyPress} />
-            </Category>
-            <Category>
-              <Label>소개</Label>
-              <BioInputWrapper onKeyPress={onKeyPress} />
-            </Category>
-            <Category>
-              <Label />
-              <PrivateText>개인 정보</PrivateText>
-            </Category>
-            <Category>
-              <Label>이메일</Label>
-              <InputWrapper onKeyPress={onKeyPress} />
-            </Category>
-            <Category>
-              <Label>전화번호</Label>
-              <InputWrapper onKeyPress={onKeyPress} />
-            </Category>
-            <Category>
-              <Label>성별</Label>
-              <SelectDiv>
-                <SelectIcon>></SelectIcon>
-                <SelectBox>
-                  <option>남성</option>
-                  <option>여성</option>
-                  <option>선택 안함</option>
-                </SelectBox>
-              </SelectDiv>
-            </Category>
-            <Category>
-              <Label />
-              <SubmitButton>제출</SubmitButton>
-            </Category>
-          </EditForm>
-        )}
-        {action === "changePW" && (
-          <PwForm>
-            <Category>
-              <Label>이전 비밀번호</Label>
-              <PwInput onKeyPress={onKeyPress} type={"password"} />
-            </Category>
-            <Category>
-              <Label>새 비밀번호</Label>
-              <PwInput onKeyPress={onKeyPress} type={"password"} />
-            </Category>
-            <Category>
-              <Label>새 비밀번호 확인</Label>
-              <PwInput onKeyPress={onKeyPress} type={"password"} />
-            </Category>
-            <Category>
-              <Label />
-              <SubmitButton>비밀번호 변경</SubmitButton>
-            </Category>
-            <Category>
-              <Label />
-              <FindPw>비밀번호를 잊으셨나요?</FindPw>
-            </Category>
-          </PwForm>
-        )}
-      </ContentBox>
-    </Wrapper>
-  </Container>
-);
+        </ContentBox>
+      </Wrapper>
+    </Container>
+  );
+};

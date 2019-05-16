@@ -11,7 +11,7 @@ const Container = styled.div`
   display: flex;
   background-image: url(${(props) => props.src});
   background-size: cover;
-  transition: translateX() 0.2s;
+  position: relative;
 `;
 
 const File = styled.div`
@@ -20,6 +20,9 @@ const File = styled.div`
   overflow: hidden;
 `;
 const ShowingLeftButton = styled.button`
+  @media (max-width: 736px) {
+    top: 35%;
+  }
   justify-self: center;
   margin: 16px 8px;
   position: absolute;
@@ -36,6 +39,9 @@ const ShowingLeftButton = styled.button`
 `;
 
 const ShowingRightButton = styled.button`
+  @media (max-width: 736px) {
+    top: 35%;
+  }
   justify-self: center;
   margin: 16px 8px;
   position: absolute;

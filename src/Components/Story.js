@@ -19,6 +19,7 @@ const Wrapper = styled.div`
 const Wrapper2 = styled.div`
   width: 293px;
   top: 78px;
+  position: ${(props) => props.fixing};
 `;
 
 const Me = styled.div`
@@ -177,22 +178,21 @@ const Copyright = styled.span`
 
 const Story = (me) => {
   //스크롤값에따른 고정을위해서
-  //최상위에 줘가지고 스크롤값이 바뀔때마다 전체 render가 발생하는 문제가 생김
-  const [bodyOffset, setBodyOffset] = useState(
-    document.body.getBoundingClientRect()
-  );
-  const [scrollY, setScrollY] = useState(bodyOffset.top);
+  const [fixing, setFixing] = useState("");
   const handleScroll = () => {
-    setBodyOffset(document.body.getBoundingClientRect());
-    setScrollY(-bodyOffset.top);
+    const ScrollY = -document.body.getBoundingClientRect().top;
+    if (ScrollY > 43) {
+      setFixing("fixed");
+    } else {
+      setFixing("");
+    }
   };
-
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [scrollY]);
+  }, []);
 
   //본인프로필을 위해서
   const { avatar, username, fullName } = me.me;
@@ -201,7 +201,7 @@ const Story = (me) => {
 
   return (
     <Wrapper>
-      <Wrapper2>
+      <Wrapper2 fixing={fixing}>
         <Me>
           <Avatar size={"md"} url={avatar} />
           <NameBox>

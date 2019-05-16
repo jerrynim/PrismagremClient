@@ -8,6 +8,7 @@ import { ADD_COMMENT } from "./Post/PostQueries";
 import useInput from "../Hooks/useInput";
 import FullFiles from "./FullFiles";
 import XIcon from "./Images/X.png";
+import { TOGGLE_LIKE } from "./Post/PostQueries";
 const Container = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
   top: 0;
@@ -52,11 +53,22 @@ const PostWrapper = styled.div`
   background-color: white;
 `;
 const Post = styled.div`
+  @media (max-width: 736px) {
+    width: 100%;
+    margin: auto;
+    display: flex;
+    background-color: #fff;
+    justify-content: center;
+  }
   position: relative;
   width: 100%;
   display: flex;
 `;
+
 const ImageWapper = styled.div`
+  @media (max-width: 736px) {
+    display: none;
+  }
   background-color: #000;
   position: relative;
   display: flex;
@@ -75,6 +87,9 @@ const Image = styled.div`
 `;
 
 const Article = styled.div`
+  @media (max-width: 736px) {
+    display: none;
+  }
   right: 0;
   position: absolute;
   width: 335px;
@@ -145,6 +160,9 @@ const ArticleFooter = styled.div`
   position: absolute;
 `;
 const Icons = styled.div`
+  @media (max-width: 736px) {
+    padding: 0;
+  }
   border-top: 1px solid #efefef;
   padding: 4px 16px 0px;
   display: flex;
@@ -160,8 +178,12 @@ const IconButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: white;
 `;
 const LikeComment = styled.div`
+  @media (max-width: 736px) {
+    padding: 0;
+  }
   width: 100%;
   padding: 0px 16px;
   margin-bottom: 4px;
@@ -179,6 +201,7 @@ const LikeAvartarButton = styled.button`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  background-color: white;
 `;
 const LikeAvatar = styled.div`
   width: 20px;
@@ -200,6 +223,12 @@ const LikeTimeStamp = styled.span`
   letter-spacing: 0.2px;
 `;
 const AddCommentBox = styled.div`
+  @media (max-width: 736px) {
+    display: ${(props) => (props.hiding === "" ? "none" : "")};
+    margin-top: 4px;
+    padding: 0;
+    height: 48px;
+  }
   margin-top: 8px;
   padding: 0px 16px;
   border-top: 1px solid #efefef;
@@ -231,6 +260,7 @@ const CommentIcon = styled.button`
   border: 0;
   outline: 0;
   cursor: pointer;
+  background-color: white;
 `;
 const AddCommentButton = styled.button`
   border: 0;
@@ -239,7 +269,7 @@ const AddCommentButton = styled.button`
   padding: 0;
   outline: 0;
   font-weight: 600;
-  width: 27px;
+  min-width: 25px;
   cursor: pointer;
 
   :disabled {
@@ -253,6 +283,7 @@ const HeartButton = styled.button`
   border: 0;
   outline: 0;
   cursor: pointer;
+  background-color: white;
 `;
 
 const WriterLocation = styled.div`
@@ -265,19 +296,77 @@ const WriterInfo = styled.div`
   flex-direction: column;
   margin-left: 16px;
 `;
-export default (fullPost, setFullPost) => {
+
+const SmallAriticle = styled.article`
+  @media (min-width: 736px) {
+    display: none;
+  }
+  display: flex;
+  flex-direction: column;
+`;
+const SmallWriter = styled.div`
+  height: 60px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+`;
+const SmallAvatar = styled.div`
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-image: url(${(props) => props.bg});
+  background-size: cover;
+`;
+const SmallUsername = styled.div`
+  margin-left: 12px;
+  font-size: 14px;
+  color: #262626;
+`;
+const SmallArticleFooter = styled.div`
+  padding: 0px 16px;
+`;
+const SmallImage = styled.div`
+  width: 100%;
+  display: block;
+  overflow: hidden;
+`;
+
+export default ({ fullPost, setFullPost }) => {
   //추가할 댓글을 client에 띄어주기위해
   const [selfComments, setSelfComments] = useState([]);
-  //
   const [showing, setShowing] = useState(0);
   //mutation을 위해
   const text = useInput("");
   const addCommentMutation = useMutation(ADD_COMMENT, {
     variables: {
-      postId: fullPost.fullPost.id,
+      postId: fullPost.id,
       text: text.value
     }
   });
+
+  //Heart toggle을 위해
+  const [isLikedS, setIsLiked] = useState(fullPost.isLiked);
+  const [likeCountS, setLikeCount] = useState(fullPost.likeCount);
+  //toggle Heart Mutation
+  const toggleLikeMutation = useMutation(TOGGLE_LIKE, {
+    variables: { postId: fullPost.id }
+  });
+
+  //toggleHeart 기능
+  const toggleLike = (e) => {
+    e.preventDefault();
+    toggleLikeMutation();
+    if (isLikedS === true) {
+      setIsLiked(false);
+      setLikeCount(likeCountS - 1);
+    } else {
+      setIsLiked(true);
+      setLikeCount(likeCountS + 1);
+    }
+  };
+
+  //Small addComment의 나오는 기능을 위해
+  const [hiding, setHiding] = useState("");
 
   //엔터누를실
   const onKeyPress = async (event) => {
@@ -297,7 +386,8 @@ export default (fullPost, setFullPost) => {
     }
   };
   //게시 버튼으로 CommentAdd
-  const commentSubmit = async () => {
+  const commentSubmit = async (e) => {
+    e.preventDefault();
     try {
       const {
         data: { addComment }
@@ -311,11 +401,11 @@ export default (fullPost, setFullPost) => {
 
   //포스트의 Ref
   const postRef = React.createRef();
-  const handleClick = (e) => {
+  const handleClick = async (e) => {
     try {
       if (!postRef.current.contains(e.target)) {
         //바깥쪽을 클릭하면
-        fullPost.setFullPost("");
+        setFullPost("");
       } else {
         //안쪽을 클릭하면
         return true;
@@ -341,17 +431,14 @@ export default (fullPost, setFullPost) => {
   };
 
   const {
-    fullPost: {
-      caption,
-      comments,
-      files,
-      isLiked,
-      likes,
-      likeCount,
-      location,
-      user,
-      createdAt
-    }
+    caption,
+    comments,
+    files,
+    likes,
+    likeCount,
+    location,
+    user,
+    createdAt
   } = fullPost;
 
   return (
@@ -361,7 +448,7 @@ export default (fullPost, setFullPost) => {
         <PostWrapper>
           <Post ref={postRef}>
             <ImageWapper>
-              <Image>
+              <Image onDoubleClick={toggleLike}>
                 <FullFiles
                   files={files}
                   showing={showing}
@@ -413,30 +500,29 @@ export default (fullPost, setFullPost) => {
               <ArticleFooter>
                 <Icons>
                   <IconButton>
-                    {isLiked ? (
-                      <HeartButton>
+                    {isLikedS ? (
+                      <HeartButton onClick={toggleLike}>
                         <HeartFull2 />
                       </HeartButton>
                     ) : (
-                      <HeartButton>
+                      <HeartButton onClick={toggleLike}>
                         <HeartEmpty />
                       </HeartButton>
                     )}
                   </IconButton>
-
                   <IconButton onClick={InputFoucs}>
                     <CommentIcon />
                   </IconButton>
                 </Icons>
                 <LikeComment>
-                  {likes[0] !== undefined && (
+                  {likeCountS !== 0 && (
                     <>
                       <LikeAvartarButton>
                         <LikeAvatar bg={likes[0].user.avatar} />
                       </LikeAvartarButton>
                       <LikeText>
-                        <b>{likes[0].user.username}</b>님 <b>{likeCount}</b>이
-                        좋아합니다
+                        <b>{likes[0].user.username}</b>님 외<b>{likeCount}</b>
+                        명이 좋아합니다
                       </LikeText>
                     </>
                   )}
@@ -459,6 +545,69 @@ export default (fullPost, setFullPost) => {
                 </AddCommentBox>
               </ArticleFooter>
             </Article>
+            <SmallAriticle>
+              <SmallWriter>
+                <SmallAvatar bg={user.avatar} />
+                <SmallUsername>{user.username}</SmallUsername>
+              </SmallWriter>
+              <SmallImage onDoubleClick={toggleLike}>
+                <FullFiles
+                  files={files}
+                  showing={showing}
+                  setShowing={setShowing}
+                />
+              </SmallImage>
+              <SmallArticleFooter>
+                <Icons>
+                  <IconButton>
+                    {isLikedS ? (
+                      <HeartButton onClick={toggleLike}>
+                        <HeartFull2 />
+                      </HeartButton>
+                    ) : (
+                      <HeartButton onClick={toggleLike}>
+                        <HeartEmpty />
+                      </HeartButton>
+                    )}
+                  </IconButton>
+
+                  <IconButton
+                    onClick={() => {
+                      setHiding("show");
+                    }}
+                  >
+                    <CommentIcon />
+                  </IconButton>
+                </Icons>
+                <LikeComment>
+                  {likeCountS !== 0 && (
+                    <>
+                      <LikeAvartarButton>
+                        <LikeAvatar bg={likes[0].user.avatar} />
+                      </LikeAvartarButton>
+                      <LikeText>
+                        <b>{likes[0].user.username}</b>님 외<b>{likeCount}</b>
+                        명이 좋아합니다
+                      </LikeText>
+                    </>
+                  )}
+                </LikeComment>
+                <LikeTimeStamp>{createdAt}</LikeTimeStamp>
+                <AddCommentBox hiding={hiding}>
+                  <AddComment>
+                    <AddCommentInput
+                      onKeyPress={onKeyPress}
+                      value={text.value}
+                      onChange={text.onChange}
+                      placeholder={"댓글 달기..."}
+                    />
+                    <AddCommentButton onClick={commentSubmit}>
+                      게시
+                    </AddCommentButton>
+                  </AddComment>
+                </AddCommentBox>
+              </SmallArticleFooter>
+            </SmallAriticle>
           </Post>
         </PostWrapper>
       </Wrapper>
