@@ -351,7 +351,21 @@ export default ({ fullPost, setFullPost }) => {
   const toggleLikeMutation = useMutation(TOGGLE_LIKE, {
     variables: { postId: fullPost.id }
   });
+  const [heartPop, setHeartPop] = useState("");
 
+  const onDoubleClick = (e) => {
+    e.preventDefault();
+    toggleLikeMutation();
+    if (isLikedS === true) {
+      setIsLiked(false);
+      setLikeCount(likeCountS - 1);
+      setHeartPop("");
+    } else {
+      setIsLiked(true);
+      setLikeCount(likeCountS + 1);
+      setHeartPop("Pop");
+    }
+  };
   //toggleHeart 기능
   const toggleLike = (e) => {
     e.preventDefault();
@@ -448,8 +462,9 @@ export default ({ fullPost, setFullPost }) => {
         <PostWrapper>
           <Post ref={postRef}>
             <ImageWapper>
-              <Image onDoubleClick={toggleLike}>
+              <Image onDoubleClick={onDoubleClick}>
                 <FullFiles
+                  heartPop={heartPop}
                   files={files}
                   showing={showing}
                   setShowing={setShowing}
@@ -518,7 +533,9 @@ export default ({ fullPost, setFullPost }) => {
                   {likeCountS !== 0 && (
                     <>
                       <LikeAvartarButton>
-                        <LikeAvatar bg={likes[0].user.avatar} />
+                        {likes[0].user && (
+                          <LikeAvatar bg={likes[0].user.avatar} />
+                        )}
                       </LikeAvartarButton>
                       <LikeText>
                         <b>{likes[0].user.username}</b>님 외<b>{likeCount}</b>
@@ -550,8 +567,9 @@ export default ({ fullPost, setFullPost }) => {
                 <SmallAvatar bg={user.avatar} />
                 <SmallUsername>{user.username}</SmallUsername>
               </SmallWriter>
-              <SmallImage onDoubleClick={toggleLike}>
+              <SmallImage onDoubleClick={onDoubleClick}>
                 <FullFiles
+                  heartPop={heartPop}
                   files={files}
                   showing={showing}
                   setShowing={setShowing}

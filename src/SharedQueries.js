@@ -8,7 +8,6 @@ export const ME = gql`
       username
       email
       lastName
-      secret
       bio
       phoneNumber
       gender

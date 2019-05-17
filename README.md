@@ -13,7 +13,7 @@ Pofile Route Layout [x]
 모바일 화면 fullPost만들기[x]
 더블클릭시 좋아요 기능[x]
 fullPost heart toggle 기능[x]
-더블클릭시 Heart Icon Animation 나오게하기
+더블클릭시 Heart Icon Animation 나오게하기[x]
 --Log--
 
 5/5 -- 스크롤을하면 Story컴포넌트가 postion:fixed됨 (최상위컴포넌트에 props로 전달하여 이벤트발생시마다 전체가 render되는 문제)
@@ -42,3 +42,5 @@ fullPost heart toggle 기능[x]
 모바일 fullPost UI done
 
 5/16 -- 좋아요 토글 기능 to fullPost, onDoubleClick, minisize FullPOst UI, Back end user에 gender,phoneNumber schema 추가
+
+5/17 -- FullPost Image doublie Click시 HeartIcon 나오게함

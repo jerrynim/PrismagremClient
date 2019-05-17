@@ -10,10 +10,10 @@ import EditProfile from "../Routes/EditProfile";
 const LoggedInRoutes = () => (
   <Switch>
     <Route exact path="/" component={Feed} />
-    <Route path="/explore" component={Explore} />
-    <Route path="/editProfile" component={EditProfile} />
-    <Route path="/search" component={Search} />
-    <Route path="/:username" component={Profile} />
+    <Route exact path="/explore" component={Explore} />
+    <Route exact path="/search" component={Search} />
+    <Route exact path="/:username" component={Profile} />
+    <Route exact path="/:username/editProfile" component={EditProfile} />
     <Redirect from="*" to="/" />
   </Switch>
 );

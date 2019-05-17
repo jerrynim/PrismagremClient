@@ -1,8 +1,8 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import arrowTransparent from "../Components/Images/arrowTransparent.png";
 import arrowTransparent2 from "../Components/Images/arrowTransparent2.png";
-
+import whiteHeart from "../Components/Images/whiteHeart.png";
 const Container = styled.div`
   left: 0;
   right: 0;
@@ -12,6 +12,8 @@ const Container = styled.div`
   background-image: url(${(props) => props.src});
   background-size: cover;
   position: relative;
+  justify-content: center;
+  align-items: center;
 `;
 
 const File = styled.div`
@@ -27,6 +29,7 @@ const ShowingLeftButton = styled.button`
   margin: 16px 8px;
   position: absolute;
   top: 45%;
+  left: 0;
   z-index: 5;
   background-size: cover;
   background-image: url(${arrowTransparent2});
@@ -58,7 +61,35 @@ const ShowingRightButton = styled.button`
   right: 0;
 `;
 
-const FullFiles = ({ files, showing, setShowing }) => {
+const Animation = keyframes`
+    0%{
+        height:0;
+        width:0;
+    }
+    25%{
+      height:100px;
+        width:100px;
+    }
+    75%{
+      height:100px;
+        width:100px;
+        opacity:1;
+    }
+    100%{
+      height:0;
+        width:0;
+        opacity:0;
+
+    }
+`;
+
+const Heart = styled.div`
+  animation: 1s ${Animation} ease-in;
+
+  background-image: url(${whiteHeart});
+  background-size: cover;
+`;
+const FullFiles = ({ files, showing, setShowing, heartPop }) => {
   const length = files.length;
   const addShowing = () => {
     setShowing(showing + 1);
@@ -68,6 +99,8 @@ const FullFiles = ({ files, showing, setShowing }) => {
   };
   return (
     <Container src={files[showing].url}>
+      {heartPop === "Pop" && <Heart />}
+
       {showing !== 0 && <ShowingLeftButton onClick={subShowing} />}
       {showing !== length - 1 && <ShowingRightButton onClick={addShowing} />}
       {files &&

@@ -1,8 +1,15 @@
 import React, { useState } from "react";
 import EditProfilePresenter from "./EditProfilePresenter";
+import { useQuery } from "react-apollo-hooks";
+import { ME } from "../../SharedQueries";
+
 export default () => {
   //Menu 전환을 위한 State
   const [action, setAction] = useState("editProfile");
+  console.log("Containerrendered");
+  const {
+    data: { me: user }
+  } = useQuery(ME);
 
   //input의 enter키 방지
   const onKeyPress = async (event) => {
@@ -12,10 +19,15 @@ export default () => {
     }
   };
   return (
-    <EditProfilePresenter
-      action={action}
-      setAction={setAction}
-      onKeyPress={onKeyPress}
-    />
+    <>
+      {user && (
+        <EditProfilePresenter
+          user={user}
+          action={action}
+          setAction={setAction}
+          onKeyPress={onKeyPress}
+        />
+      )}
+    </>
   );
 };
