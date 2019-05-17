@@ -43,4 +43,4 @@ fullPost heart toggle 기능[x]
 
 5/16 -- 좋아요 토글 기능 to fullPost, onDoubleClick, minisize FullPOst UI, Back end user에 gender,phoneNumber schema 추가
 
-5/17 -- FullPost Image doublie Click시 HeartIcon 나오게함
+5/17 -- FullPost Image doublie Click시 HeartIcon 나오게함, Edit Profile 가능, 비밀번호 변경API필요, 사진업로드 기능은 좀더 알아 봐야겠다.
