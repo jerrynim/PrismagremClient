@@ -10,7 +10,7 @@ const GET_USER = gql`
       id
       avatar
       username
-      fullName
+      lastName
       isFollowing
       isSelf
       bio
@@ -61,19 +61,29 @@ export const LOG_OUT = gql`
 `;
 
 export default withRouter(({ match: { params: { username } } }) => {
-  const { data, loading } = useQuery(GET_USER, { variables: { username } });
+  console.log(username);
+  const { data } = useQuery(GET_USER, {
+    variables: { username }
+  });
+
   const logOut = useMutation(LOG_OUT);
   const [fullPost, setFullPost] = useState("");
   const [SetOverlay, setSetOverlay] = useState("");
+
+  console.log(data);
+
   return (
-    <ProfilePresenter
-      loading={loading}
-      logOut={logOut}
-      data={data}
-      fullPost={fullPost}
-      setFullPost={setFullPost}
-      SetOverlay={SetOverlay}
-      setSetOverlay={setSetOverlay}
-    />
+    <>
+      {data && (
+        <ProfilePresenter
+          logOut={logOut}
+          data={data}
+          fullPost={fullPost}
+          setFullPost={setFullPost}
+          SetOverlay={SetOverlay}
+          setSetOverlay={setSetOverlay}
+        />
+      )}
+    </>
   );
 });

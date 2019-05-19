@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import useInput from "../../Hooks/useInput";
 import TextareaAutosize from "react-autosize-textarea";
 import { useMutation } from "react-apollo-hooks";
-import { EDIT_PROFILE } from "./EditProfileQuery";
+import { EDIT_PROFILE } from "./EditProfileQueries";
 import { Helmet } from "rl-react-helmet";
+import { gql } from "apollo-boost";
+
 const Container = styled.div`
   margin-top: 77px;
   background-color: #fafafa;
@@ -264,6 +266,32 @@ export default ({ action, setAction, onKeyPress, user, onInputChange }) => {
       phoneNumber: phoneNumber.value
     }
   });
+
+  //파일 input의 Ref
+  const photoRef = useRef(null);
+
+  const UPLOAD_MUTATION = gql`
+    mutation uploadFile($file: Upload!, $name: String!) {
+      uploadFile(file: $file, name: $name) {
+        id
+      }
+    }
+  `;
+  const UploadMutation = useMutation(UPLOAD_MUTATION);
+
+  const handleFile = (e) => {
+    e.preventDefault();
+    const { files } = photoRef.current;
+    const file = files[0];
+    try {
+      console.log(file);
+      UploadMutation({ variables: { file, name: files[0].name } });
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+
+  //EditProflie 버튼
   const onSubmit = (e) => {
     e.preventDefault();
 
@@ -276,6 +304,7 @@ export default ({ action, setAction, onKeyPress, user, onInputChange }) => {
     //API 전송
     //하단에 토스트생성
   };
+
   return (
     <>
       <Helmet>
@@ -332,6 +361,13 @@ export default ({ action, setAction, onKeyPress, user, onInputChange }) => {
                       </ChangeAvatar>
                     )}
                   </div>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    ref={photoRef}
+                    onChange={handleFile}
+                  />
+                  <button onClick={handleFile} />
                 </UsernameBox>
               </Profile>
               {action === "editProfile" && (

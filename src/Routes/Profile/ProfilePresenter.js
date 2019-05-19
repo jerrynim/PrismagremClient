@@ -13,7 +13,7 @@ import blueNet from "../../Components/Images/blueNet.png";
 import ProfilePost from "./ProfilePost";
 import FullPost from "../../Components/FullPost";
 import SettingOverlay from "../../Components/SettingOverlay";
-import { withRouter } from "react-router";
+import { Link } from "react-router-dom";
 const Wrapper = styled.div``;
 
 const Main = styled.div`
@@ -179,13 +179,13 @@ const Posts = styled.div`
   padding-top: 0px;
 `;
 
-const EditButton = styled.button`
+const EditButton = styled(Link)`
   @media (max-width: 735px) {
     display: none;
   }
   background-color: transparent;
   border: 1px solid #dbdbdb;
-  color: ${(props) => props.theme.darkColor};
+  color: ${(props) => props.theme.blackColor};
   width: 85px;
   height: 30px;
   border-radius: 4px;
@@ -306,147 +306,151 @@ const FirstNavText = styled.span`
   font-weight: 600;
 `;
 
-export default withRouter(
-  ({
-    loading,
-    data,
-    logOut,
-    fullPost,
-    setFullPost,
-    setSetOverlay,
-    SetOverlay,
-    history
-  }) => {
-    if (loading === true) {
-      return (
+export default ({
+  loading,
+  data,
+  logOut,
+  fullPost,
+  setFullPost,
+  setSetOverlay,
+  SetOverlay
+}) => {
+  if (loading === true) {
+    return (
+      <Wrapper>
+        <Loader />
+      </Wrapper>
+    );
+  } else if (!loading && data && data.seeUser) {
+    const {
+      seeUser: {
+        id,
+        avatar,
+        username,
+        lastName,
+        isFollowing,
+        isSelf,
+        bio,
+        followingCount,
+        followersCount,
+        postsCount,
+        posts
+      }
+    } = data;
+    console.log(
+      id,
+      avatar,
+      username,
+      lastName,
+      isFollowing,
+      isSelf,
+      bio,
+      followingCount,
+      followersCount,
+      postsCount,
+      posts
+    );
+    return (
+      <>
         <Wrapper>
-          <Loader />
+          <Helmet>
+            <title>{username} • Instagram 사진 및 동영상</title>
+          </Helmet>
+          <Main>
+            <Header>
+              <AvartarHeader>
+                <Avatar size="lg" url={avatar} />
+              </AvartarHeader>
+              <HeaderColumn>
+                <UsernameRow>
+                  <Username>{username}</Username>
+                  {isSelf ? (
+                    <>
+                      <EditButton to="/editProfile">프로필 편집</EditButton>
+                      <OptionButton
+                        onClick={() => {
+                          setSetOverlay("On");
+                        }}
+                      />
+                    </>
+                  ) : (
+                    <FollowButton isFollowing={isFollowing} id={id} />
+                  )}
+                </UsernameRow>
+                <Counts>
+                  <Count>
+                    게시물&nbsp;
+                    <FatText text={postsCount} />
+                  </Count>
+                  <Count>
+                    팔로워&nbsp;
+                    <FatText text={followersCount} />
+                  </Count>
+                  <Count>
+                    팔로우&nbsp;
+                    <FatText text={followingCount} />
+                  </Count>
+                </Counts>
+                <FullName text={lastName} />
+                <Bio>{bio}</Bio>
+                <ExtendEditButton>프로필 편집</ExtendEditButton>
+              </HeaderColumn>
+            </Header>
+            <SmallBio>{lastName}</SmallBio>
+            <SmallCounts>
+              <SmallCount>
+                <SmallCountText>게시물</SmallCountText>
+                <SmallCountNum>{postsCount}</SmallCountNum>
+              </SmallCount>
+              <SmallCount>
+                <SmallCountText>팔로워</SmallCountText>
+                <SmallCountNum>{followersCount}</SmallCountNum>
+              </SmallCount>
+              <SmallCount>
+                <SmallCountText>팔로우</SmallCountText>
+                <SmallCountNum>{followingCount}</SmallCountNum>
+              </SmallCount>
+            </SmallCounts>
+            <Navbar>
+              <NavItem>
+                <NetIcon src={net} />
+                <FirstNavText>게시물</FirstNavText>
+              </NavItem>
+              <NavItem>
+                <NavIcon src={television} />
+                <NavText>IGTV</NavText>
+              </NavItem>
+              <NavItem>
+                <BookMarkIcon src={Bookmark} />
+                <NavText>저장됨</NavText>
+              </NavItem>
+              <NavItem>
+                <NavIcon src={tagged} />
+                <NavText>태그됨</NavText>
+              </NavItem>
+            </Navbar>
+            <Posts>
+              {posts && (
+                <ProfilePost
+                  posts={posts}
+                  fullPost={fullPost}
+                  setFullPost={setFullPost}
+                />
+              )}
+            </Posts>
+          </Main>
+          {fullPost !== "" && (
+            <FullPost fullPost={fullPost} setFullPost={setFullPost} />
+          )}
+          {SetOverlay === "On" && (
+            <SettingOverlay
+              SetOverlay={SetOverlay}
+              setSetOverlay={setSetOverlay}
+            />
+          )}
         </Wrapper>
-      );
-    } else if (!loading && data && data.seeUser) {
-      const {
-        seeUser: {
-          id,
-          avatar,
-          username,
-          fullName,
-          isFollowing,
-          isSelf,
-          bio,
-          followingCount,
-          followersCount,
-          postsCount,
-          posts
-        }
-      } = data;
-      return (
-        <>
-          <Wrapper>
-            <Helmet>
-              <title>{username} • Instagram 사진 및 동영상</title>
-            </Helmet>
-            <Main>
-              <Header>
-                <AvartarHeader>
-                  <Avatar size="lg" url={avatar} />
-                </AvartarHeader>
-                <HeaderColumn>
-                  <UsernameRow>
-                    <Username>{username}</Username>
-                    {isSelf ? (
-                      <>
-                        <EditButton
-                          onClick={() => {
-                            history.push(`/editProfile`);
-                          }}
-                        >
-                          프로필 편집
-                        </EditButton>
-                        <OptionButton
-                          onClick={() => {
-                            setSetOverlay("On");
-                          }}
-                        />
-                      </>
-                    ) : (
-                      <FollowButton isFollowing={isFollowing} id={id} />
-                    )}
-                  </UsernameRow>
-                  <Counts>
-                    <Count>
-                      게시물&nbsp;
-                      <FatText text={String(postsCount)} />
-                    </Count>
-                    <Count>
-                      팔로워&nbsp;
-                      <FatText text={String(followersCount)} />
-                    </Count>
-                    <Count>
-                      팔로우&nbsp;
-                      <FatText text={String(followingCount)} />
-                    </Count>
-                  </Counts>
-                  <FullName text={fullName} />
-                  <Bio>{bio}</Bio>
-                  <ExtendEditButton>프로필 편집</ExtendEditButton>
-                </HeaderColumn>
-              </Header>
-              <SmallBio>{fullName}</SmallBio>
-              <SmallCounts>
-                <SmallCount>
-                  <SmallCountText>게시물</SmallCountText>
-                  <SmallCountNum>{postsCount}</SmallCountNum>
-                </SmallCount>
-                <SmallCount>
-                  <SmallCountText>팔로워</SmallCountText>
-                  <SmallCountNum>{followersCount}</SmallCountNum>
-                </SmallCount>
-                <SmallCount>
-                  <SmallCountText>팔로우</SmallCountText>
-                  <SmallCountNum>{followingCount}</SmallCountNum>
-                </SmallCount>
-              </SmallCounts>
-              <Navbar>
-                <NavItem>
-                  <NetIcon src={net} />
-                  <FirstNavText>게시물</FirstNavText>
-                </NavItem>
-                <NavItem>
-                  <NavIcon src={television} />
-                  <NavText>IGTV</NavText>
-                </NavItem>
-                <NavItem>
-                  <BookMarkIcon src={Bookmark} />
-                  <NavText>저장됨</NavText>
-                </NavItem>
-                <NavItem>
-                  <NavIcon src={tagged} />
-                  <NavText>태그됨</NavText>
-                </NavItem>
-              </Navbar>
-              <Posts>
-                {posts && (
-                  <ProfilePost
-                    posts={posts}
-                    fullPost={fullPost}
-                    setFullPost={setFullPost}
-                  />
-                )}
-              </Posts>
-            </Main>
-            {fullPost !== "" && (
-              <FullPost fullPost={fullPost} setFullPost={setFullPost} />
-            )}
-            {SetOverlay === "On" && (
-              <SettingOverlay
-                SetOverlay={SetOverlay}
-                setSetOverlay={setSetOverlay}
-              />
-            )}
-          </Wrapper>
-        </>
-      );
-    }
-    return null;
+      </>
+    );
   }
-);
+  return null;
+};
