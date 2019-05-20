@@ -45,4 +45,6 @@ fullPost heart toggle 기능[x]
 
 5/17 -- FullPost Image doublie Click시 HeartIcon 나오게함, Edit Profile 가능, 비밀번호 변경API필요, 사진업로드 기능은 좀더 알아 봐야겠다.
 
-5/19 -- Profile Container에서 render가 계속해서 발생하지 않는 버그., S3에
+5/19 -- Profile Container에서 render가 계속해서 발생하지 않는 버그., file을 graphql로 서버에서 S3업로드와 prisma저장 하려 하였으나 에러로 axios를 사용하기로 함, useMutation 문제로 mutation 방법을 바꿔보자
+
+5/20 -- Image 업로드는 apollo cilent를 사용해야하는데, Apollo client 사용시 변환점이 너무 많아서 branch를 다시 돌아가기로 결정

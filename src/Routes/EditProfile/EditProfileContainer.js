@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import EditProfilePresenter from "./EditProfilePresenter";
 import { useQuery } from "react-apollo-hooks";
+import { Mutation } from "react-apollo";
 import { ME } from "../../SharedQueries";
-
-export default () => {
+import { UPLOAD_MUTATION } from "./EditProfileQueries";
+const EditProfileContainer = () => {
   //Menu 전환을 위한 State
   const [action, setAction] = useState("editProfile");
   // const [uploading, setUplaoding] = useState("");
@@ -20,15 +21,24 @@ export default () => {
   };
 
   return (
-    <>
-      {user && (
-        <EditProfilePresenter
-          user={user}
-          action={action}
-          setAction={setAction}
-          onKeyPress={onKeyPress}
-        />
-      )}
-    </>
+    <Mutation mutation={UPLOAD_MUTATION}>
+      {(upload) => {
+        return (
+          <>
+            {user && (
+              <EditProfilePresenter
+                user={user}
+                action={action}
+                setAction={setAction}
+                onKeyPress={onKeyPress}
+                upload={upload}
+              />
+            )}
+          </>
+        );
+      }}
+    </Mutation>
   );
 };
+
+export default EditProfileContainer;
