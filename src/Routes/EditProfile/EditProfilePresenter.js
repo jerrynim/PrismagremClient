@@ -5,7 +5,6 @@ import TextareaAutosize from "react-autosize-textarea";
 import { useMutation } from "react-apollo-hooks";
 import { EDIT_PROFILE } from "./EditProfileQueries";
 import { Helmet } from "rl-react-helmet";
-import { gql } from "apollo-boost";
 
 const Container = styled.div`
   margin-top: 77px;
@@ -249,7 +248,14 @@ const PhotoInput = styled.input`
   }
 `;
 
-export default ({ action, setAction, onKeyPress, user, onInputChange }) => {
+const EditProfilePresenter = ({
+  action,
+  setAction,
+  onKeyPress,
+  user,
+  onInputChange,
+  upload
+}) => {
   const username = useInput(user.username);
   const bio = useInput(user.bio);
   const email = useInput(user.email);
@@ -270,25 +276,13 @@ export default ({ action, setAction, onKeyPress, user, onInputChange }) => {
   //파일 input의 Ref
   const photoRef = useRef(null);
 
-  const UPLOAD_MUTATION = gql`
-    mutation uploadFile($file: Upload!, $name: String!) {
-      uploadFile(file: $file, name: $name) {
-        id
-      }
-    }
-  `;
-  const UploadMutation = useMutation(UPLOAD_MUTATION);
-
   const handleFile = (e) => {
     e.preventDefault();
     const { files } = photoRef.current;
     const file = files[0];
-    try {
-      console.log(file);
-      UploadMutation({ variables: { file, name: files[0].name } });
-    } catch (e) {
-      console.log(e.message);
-    }
+    let reader = new FileReader();
+    console.log(reader.readAsDataURL(file));
+    // upload({ variables: { file } });
   };
 
   //EditProflie 버튼
@@ -366,6 +360,16 @@ export default ({ action, setAction, onKeyPress, user, onInputChange }) => {
                     accept="image/*"
                     ref={photoRef}
                     onChange={handleFile}
+                  />
+                  <input
+                    type="file"
+                    required
+                    onChange={({
+                      target: {
+                        validity,
+                        files: [file]
+                      }
+                    }) => validity.valid && upload({ variables: { file } })}
                   />
                   <button onClick={handleFile} />
                 </UsernameBox>
@@ -482,3 +486,4 @@ export default ({ action, setAction, onKeyPress, user, onInputChange }) => {
     </>
   );
 };
+export default EditProfilePresenter;
