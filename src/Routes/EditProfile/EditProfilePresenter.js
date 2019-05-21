@@ -3,9 +3,9 @@ import styled from "styled-components";
 import useInput from "../../Hooks/useInput";
 import TextareaAutosize from "react-autosize-textarea";
 import { useMutation } from "react-apollo-hooks";
-import { EDIT_PROFILE } from "./EditProfileQueries";
+import { EDIT_PROFILE, UPLOAD_MUTATION } from "./EditProfileQueries";
 import { Helmet } from "rl-react-helmet";
-
+import FormData from "form-data";
 const Container = styled.div`
   margin-top: 77px;
   background-color: #fafafa;
@@ -253,8 +253,7 @@ const EditProfilePresenter = ({
   setAction,
   onKeyPress,
   user,
-  onInputChange,
-  upload
+  onInputChange
 }) => {
   const username = useInput(user.username);
   const bio = useInput(user.bio);
@@ -276,13 +275,17 @@ const EditProfilePresenter = ({
   //파일 input의 Ref
   const photoRef = useRef(null);
 
-  const handleFile = (e) => {
+  const uploadMutation = useMutation(UPLOAD_MUTATION);
+
+  const handleFile = async (e) => {
     e.preventDefault();
     const { files } = photoRef.current;
     const file = files[0];
-    let reader = new FileReader();
-    console.log(reader.readAsDataURL(file));
-    // upload({ variables: { file } });
+    const formData = new FormData();
+    await formData.append("file", file, file.name);
+    console.log(file, formData, formData.get("file"));
+
+    uploadMutation({ variables: { file: formData } });
   };
 
   //EditProflie 버튼
@@ -361,17 +364,6 @@ const EditProfilePresenter = ({
                     ref={photoRef}
                     onChange={handleFile}
                   />
-                  <input
-                    type="file"
-                    required
-                    onChange={({
-                      target: {
-                        validity,
-                        files: [file]
-                      }
-                    }) => validity.valid && upload({ variables: { file } })}
-                  />
-                  <button onClick={handleFile} />
                 </UsernameBox>
               </Profile>
               {action === "editProfile" && (

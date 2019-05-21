@@ -24,8 +24,6 @@ export const EDIT_PROFILE = gql`
 
 export const UPLOAD_MUTATION = gql`
   mutation uploadFile($file: Upload!) {
-    uploadFile(file: $file) {
-      id
-    }
+    uploadFile(file: $file)
   }
 `;

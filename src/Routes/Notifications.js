@@ -1,33 +1,50 @@
-import React from "react";
-import gql from "graphql-tag";
+import React, { useRef } from "react";
 import styled from "styled-components";
-import { Mutation } from "react-apollo";
+import axios from "axios";
+import FormData from "form-data";
 const Input = styled.input`
   margin-top: 300px;
 `;
+export default () => {
+  const inputRef = useRef(null);
 
-const UploadFile = () => (
-  <Mutation
-    mutation={gql`
-      mutation($file: Upload!) {
-        uploadFile(file: $file) {
-          success
-        }
+  const onChange = async () => {
+    const file = await inputRef.current.files[0];
+    console.log(file);
+    const sendRequset = () => {
+      return new Promise((resolve, reject) => {
+        const req = new XMLHttpRequest();
+        //progress
+        req.upload.addEventListener("progress", (event) => {
+          // if (event.lengthComputable) {
+          //   const copy = { ...this.state.uploadProgress };
+          //   copy[file.name] = {
+          //     state: "pending",
+          //     percentage: (event.loaded / event.total) * 100
+          //   };
+          console.log((event.loaded / event.total) * 100);
+        });
+
+        let formData = new FormData();
+        formData.append("name", "hahkjahkajlh");
+        formData.append("file", file, file.name);
+        console.log(formData);
+        axios({
+          method: "post",
+          url: "http://localhost:4000/upload",
+          data: formData
+        });
+      });
+    };
+
+    if (file) {
+      try {
+        sendRequset(file);
+      } catch (e) {
+        console.log(e.message);
       }
-    `}
-  >
-    {(mutate) => (
-      <Input
-        type="file"
-        required
-        onChange={({
-          target: {
-            validity,
-            files: [file]
-          }
-        }) => validity.valid && mutate({ variables: { file } })}
-      />
-    )}
-  </Mutation>
-);
-export default UploadFile;
+    }
+  };
+
+  return <Input type={"file"} ref={inputRef} onChange={onChange} />;
+};
