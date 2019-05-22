@@ -373,7 +373,12 @@ export default ({
                 </div>
                 <div>
                   <InputLabel input={secret}>비밀번호</InputLabel>
-                  <Input type="password" {...secret} />
+                  <Input
+                    type={"password"}
+                    autoComplete="current-password"
+                    required
+                    {...secret}
+                  />
                 </div>
                 <SignUpButton>가입</SignUpButton>
                 {errorMessage !== "" && <ErrorText>{errorMessage}</ErrorText>}
@@ -446,7 +451,12 @@ export default ({
                     </div>
                     <div>
                       <InputLabel input={secret}>비밀번호</InputLabel>
-                      <Input type="password" {...secret} />
+                      <Input
+                        type={"password"}
+                        autoComplete="current-password"
+                        required
+                        {...secret}
+                      />
                     </div>
                   </Inputs>
                   {email.value === "" || secret.value === "" ? (
@@ -576,7 +586,12 @@ export default ({
                 </div>
                 <div>
                   <InputLabel input={secret}>비밀번호</InputLabel>
-                  <Input type="password" {...secret} />
+                  <Input
+                    type={"password"}
+                    autoComplete="current-password"
+                    required
+                    {...secret}
+                  />
                 </div>
                 <SignUpButton>가입</SignUpButton>
               </form>

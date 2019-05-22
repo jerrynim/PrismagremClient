@@ -72,7 +72,7 @@ export default ({ SetOverlay, setSetOverlay }) => {
         return true;
       }
     } catch (e) {
-      console.log(e.message);
+      throw Error();
     }
   };
 

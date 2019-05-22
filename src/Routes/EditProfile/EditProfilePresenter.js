@@ -1,9 +1,9 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import useInput from "../../Hooks/useInput";
 import TextareaAutosize from "react-autosize-textarea";
 import { useMutation } from "react-apollo-hooks";
-import { EDIT_PROFILE, UPLOAD_MUTATION } from "./EditProfileQueries";
+import { EDIT_PROFILE } from "./EditProfileQueries";
 import { Helmet } from "rl-react-helmet";
 const Container = styled.div`
   margin-top: 77px;
@@ -60,7 +60,8 @@ const Avatar = styled.div`
   }
   height: 38px;
   width: 38px;
-  background-color: #fafafa;
+  background-image: url(${(props) => props.bg});
+  background-size: cover;
   border-radius: 50%;
 `;
 const UsernameBox = styled.div`
@@ -239,32 +240,35 @@ const FindPw = styled.button`
 `;
 
 const PhotoInput = styled.input`
-  color: white;
+  position: absolute;
   opacity: 0;
-  height: 10px;
-  &:focus {
-    outline: none;
+  height: 18px;
+  width: 105px;
+  outline: none;
+`;
+const PhotoInput2 = styled.input`
+  @media (max-width: 735px) {
+    margin: 2px 20px 0;
   }
+  @media (min-width: 736px) {
+    margin: 2px 32px 0 124px;
+  }
+  height: 38px;
+  width: 38px;
+  opacity: 0;
+  border-radius: 50%;
+  position: absolute;
+  outline: none;
 `;
 
-const EditProfilePresenter = ({
-  action,
-  setAction,
-  onKeyPress,
-  user,
-<<<<<<< HEAD
-  onInputChange
-=======
-  onInputChange,
-  upload
->>>>>>> 28a653ac202f0f4a54bbc44cf9cafee1bf9617a5
-}) => {
+const EditProfilePresenter = ({ action, setAction, onKeyPress, user }) => {
   const username = useInput(user.username);
   const bio = useInput(user.bio);
   const email = useInput(user.email);
   const gender = useInput(user.gender);
   const lastName = useInput(user.lastName);
   const phoneNumber = useInput(user.phoneNumber);
+  const [avatar, setAvatar] = useState(user.avatar);
   const editProfileMutation = useMutation(EDIT_PROFILE, {
     variables: {
       username: username.value,
@@ -276,19 +280,64 @@ const EditProfilePresenter = ({
     }
   });
 
+  const [upload, setUpload] = useState(false);
+  const [progress, setProgress] = useState(0);
   //파일 input의 Ref
   const photoRef = useRef(null);
-
-<<<<<<< HEAD
+  const photoRef2 = useRef(null);
   const onChange = async () => {
     const file = await photoRef.current.files[0];
     const sendRequset = () => {
       return new Promise((resolve, reject) => {
         const req = new XMLHttpRequest();
         //progress
+
+        setUpload(true);
+        //너무빨라서 퍼센트 보기가 힘듬
         req.upload.addEventListener("progress", (event) => {
           if (event.lengthComputable) {
-            console.log((event.loaded / event.total) * 100);
+            setProgress((event.loaded / event.total) * 100);
+          }
+        });
+        req.upload.addEventListener("load", async (event) => {
+          setUpload(false);
+          //사진 바꾸기
+          await console.log(req);
+          await console.log(req.status);
+          await console.log(req.response);
+          await console.log(req.responseText);
+          setAvatar();
+        });
+        req.upload.addEventListener("error", (event) => {
+          console.log("error");
+          reject(req.response);
+        });
+
+        let formData = new FormData();
+        formData.append("name", "hahkjahkajlh");
+        formData.append("file", file);
+        req.open("POST", "http://localhost:4000/upload");
+        req.send(formData);
+      });
+    };
+    if (file) {
+      try {
+        sendRequset(file);
+      } catch (e) {
+        throw Error();
+      }
+    }
+  };
+
+  const onChange2 = async () => {
+    const file = await photoRef2.current.files[0];
+    const sendRequset = () => {
+      return new Promise((resolve, reject) => {
+        const req = new XMLHttpRequest();
+        //progress
+        req.upload.addEventListener("progress", (event) => {
+          if (event.lengthComputable) {
+            //(event.loaded / event.total) * 100);
           }
         });
 
@@ -299,23 +348,13 @@ const EditProfilePresenter = ({
         req.send(formData);
       });
     };
-
     if (file) {
       try {
         sendRequset(file);
       } catch (e) {
-        console.log(e.message);
+        throw Error();
       }
     }
-=======
-  const handleFile = (e) => {
-    e.preventDefault();
-    const { files } = photoRef.current;
-    const file = files[0];
-    let reader = new FileReader();
-    console.log(reader.readAsDataURL(file));
-    // upload({ variables: { file } });
->>>>>>> 28a653ac202f0f4a54bbc44cf9cafee1bf9617a5
   };
   //EditProflie 버튼
   const onSubmit = (e) => {
@@ -323,9 +362,8 @@ const EditProfilePresenter = ({
 
     try {
       editProfileMutation();
-      console.log("editSuccess");
     } catch (e) {
-      console.log(e.message);
+      throw Error();
     }
     //API 전송
     //하단에 토스트생성
@@ -371,42 +409,28 @@ const EditProfilePresenter = ({
             </MenuBox>
             <ContentBox>
               <Profile>
-                <Avatar />
+                <PhotoInput2
+                  type="file"
+                  ref={photoRef2}
+                  onChange={onChange2}
+                  accept="image/*"
+                />
+                <Avatar bg={avatar} />
                 <UsernameBox>
                   <Username>{username.value}</Username>
                   <div>
                     <PhotoInput
-                      id={"photo"}
                       type="file"
+                      ref={photoRef}
+                      onChange={onChange}
                       accept="image/*"
-                      onChange={onInputChange}
                     />
                     {action === "editProfile" && (
-                      <ChangeAvatar htmlFor="photo" onClick={onInputChange}>
+                      <ChangeAvatar htmlFor="photo">
                         프로필 사진 바꾸기
                       </ChangeAvatar>
                     )}
                   </div>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    ref={photoRef}
-                    onChange={onChange}
-                  />
-<<<<<<< HEAD
-=======
-                  <input
-                    type="file"
-                    required
-                    onChange={({
-                      target: {
-                        validity,
-                        files: [file]
-                      }
-                    }) => validity.valid && upload({ variables: { file } })}
-                  />
-                  <button onClick={handleFile} />
->>>>>>> 28a653ac202f0f4a54bbc44cf9cafee1bf9617a5
                 </UsernameBox>
               </Profile>
               {action === "editProfile" && (

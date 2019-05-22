@@ -9,14 +9,13 @@ export default () => {
 
   const onChange = async () => {
     const file = await inputRef.current.files[0];
-    console.log(file);
+
     const sendRequset = () => {
       return new Promise((resolve, reject) => {
         const req = new XMLHttpRequest();
         //progress
         req.upload.addEventListener("progress", (event) => {
           if (event.lengthComputable) {
-            console.log((event.loaded / event.total) * 100);
           }
         });
 
@@ -32,7 +31,7 @@ export default () => {
       try {
         sendRequset(file);
       } catch (e) {
-        console.log(e.message);
+        throw Error();
       }
     }
   };

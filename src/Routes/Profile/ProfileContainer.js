@@ -61,7 +61,6 @@ export const LOG_OUT = gql`
 `;
 
 export default withRouter(({ match: { params: { username } } }) => {
-  console.log(username);
   const { data } = useQuery(GET_USER, {
     variables: { username }
   });
@@ -69,8 +68,6 @@ export default withRouter(({ match: { params: { username } } }) => {
   const logOut = useMutation(LOG_OUT);
   const [fullPost, setFullPost] = useState("");
   const [SetOverlay, setSetOverlay] = useState("");
-
-  console.log(data);
 
   return (
     <>

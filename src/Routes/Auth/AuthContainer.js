@@ -12,11 +12,6 @@ import {
 } from "./AuthQueries";
 import { toast } from "react-toastify";
 
-/*미구현 :input blur시 db에서 확인하는 기능 
-        랜덤한 사용자이름
-        비밀번호 표시
-*/
-
 export default () => {
   const [action, setAction] = useState("First");
   const email = useInput("");
@@ -65,7 +60,7 @@ export default () => {
   };
   useEffect(() => {
     slide();
-  }, [currentItem]);
+  });
 
   const createAccountMutation = useMutation(CREATE_ACCOUNT, {
     variables: {

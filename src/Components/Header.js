@@ -169,6 +169,7 @@ export default withRouter(({ history }) => {
   const [bodyOffset, setBodyOffset] = useState(
     document.body.getBoundingClientRect()
   );
+  // eslint-disable-next-line no-unused-vars
   const [scrollY, setScrollY] = useState(bodyOffset.top);
   const [scrollDirection, setScrollDirection] = useState();
   const handleScroll = () => {
@@ -183,7 +184,7 @@ export default withRouter(({ history }) => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [scrollY]);
+  });
 
   return (
     <Header scrollDirection={scrollDirection}>

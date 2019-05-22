@@ -337,19 +337,6 @@ export default ({
         posts
       }
     } = data;
-    console.log(
-      id,
-      avatar,
-      username,
-      lastName,
-      isFollowing,
-      isSelf,
-      bio,
-      followingCount,
-      followersCount,
-      postsCount,
-      posts
-    );
     return (
       <>
         <Wrapper>

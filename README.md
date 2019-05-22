@@ -14,6 +14,7 @@ Pofile Route Layout [x]
 더블클릭시 좋아요 기능[x]
 fullPost heart toggle 기능[x]
 더블클릭시 Heart Icon Animation 나오게하기[x]
+profilePhoto prisma 연결,loading설정하기,image component 생성[]
 --Log--
 
 5/5 -- 스크롤을하면 Story컴포넌트가 postion:fixed됨 (최상위컴포넌트에 props로 전달하여 이벤트발생시마다 전체가 render되는 문제)
@@ -48,3 +49,7 @@ fullPost heart toggle 기능[x]
 5/19 -- Profile Container에서 render가 계속해서 발생하지 않는 버그., file을 graphql로 서버에서 S3업로드와 prisma저장 하려 하였으나 에러로 axios를 사용하기로 함, useMutation 문제로 mutation 방법을 바꿔보자
 
 5/20 -- Image 업로드는 apollo cilent를 사용해야하는데, Apollo client 사용시 변환점이 너무 많아서 branch를 다시 돌아가기로 결정
+
+5/21 -- apollo link, mutation 제거하고 Rest API 로 교체
+
+5/22 -- image 파일을 aws S3를 이용하여 사진 링크를 생성 하였다. git merge to master , error fix 함
