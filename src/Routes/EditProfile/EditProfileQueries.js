@@ -24,6 +24,12 @@ export const EDIT_PROFILE = gql`
 
 export const UPLOAD_MUTATION = gql`
   mutation uploadFile($file: Upload!) {
+<<<<<<< HEAD
     uploadFile(file: $file)
+=======
+    uploadFile(file: $file) {
+      id
+    }
+>>>>>>> 28a653ac202f0f4a54bbc44cf9cafee1bf9617a5
   }
 `;

@@ -5,7 +5,6 @@ import TextareaAutosize from "react-autosize-textarea";
 import { useMutation } from "react-apollo-hooks";
 import { EDIT_PROFILE, UPLOAD_MUTATION } from "./EditProfileQueries";
 import { Helmet } from "rl-react-helmet";
-import FormData from "form-data";
 const Container = styled.div`
   margin-top: 77px;
   background-color: #fafafa;
@@ -253,7 +252,12 @@ const EditProfilePresenter = ({
   setAction,
   onKeyPress,
   user,
+<<<<<<< HEAD
   onInputChange
+=======
+  onInputChange,
+  upload
+>>>>>>> 28a653ac202f0f4a54bbc44cf9cafee1bf9617a5
 }) => {
   const username = useInput(user.username);
   const bio = useInput(user.bio);
@@ -275,6 +279,7 @@ const EditProfilePresenter = ({
   //파일 input의 Ref
   const photoRef = useRef(null);
 
+<<<<<<< HEAD
   const onChange = async () => {
     const file = await photoRef.current.files[0];
     const sendRequset = () => {
@@ -302,6 +307,15 @@ const EditProfilePresenter = ({
         console.log(e.message);
       }
     }
+=======
+  const handleFile = (e) => {
+    e.preventDefault();
+    const { files } = photoRef.current;
+    const file = files[0];
+    let reader = new FileReader();
+    console.log(reader.readAsDataURL(file));
+    // upload({ variables: { file } });
+>>>>>>> 28a653ac202f0f4a54bbc44cf9cafee1bf9617a5
   };
   //EditProflie 버튼
   const onSubmit = (e) => {
@@ -379,6 +393,20 @@ const EditProfilePresenter = ({
                     ref={photoRef}
                     onChange={onChange}
                   />
+<<<<<<< HEAD
+=======
+                  <input
+                    type="file"
+                    required
+                    onChange={({
+                      target: {
+                        validity,
+                        files: [file]
+                      }
+                    }) => validity.valid && upload({ variables: { file } })}
+                  />
+                  <button onClick={handleFile} />
+>>>>>>> 28a653ac202f0f4a54bbc44cf9cafee1bf9617a5
                 </UsernameBox>
               </Profile>
               {action === "editProfile" && (

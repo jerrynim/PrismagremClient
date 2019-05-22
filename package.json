@@ -9,9 +9,18 @@
     "apollo-client": "^2.5.1",
     "apollo-link-context": "^1.0.17",
     "apollo-upload-client": "^10.0.1",
+<<<<<<< HEAD
     "graphql": "^14.2.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
+=======
+    "axios": "^0.18.0",
+    "graphql": "^14.2.0",
+    "prop-types": "^15.7.2",
+    "react": "^16.8.6",
+    "react-animations": "^1.0.0",
+    "react-apollo": "^2.5.5",
+>>>>>>> 28a653ac202f0f4a54bbc44cf9cafee1bf9617a5
     "react-apollo-hooks": "^0.4.4",
     "react-autosize-textarea": "^7.0.0",
     "react-dom": "^16.8.6",
