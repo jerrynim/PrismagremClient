@@ -52,4 +52,5 @@ profilePhoto prisma 연결,loading설정하기,image component 생성[]
 
 5/21 -- apollo link, mutation 제거하고 Rest API 로 교체
 
-5/22 -- image 파일을 aws S3를 이용하여 사진 링크를 생성 하였다. git merge to master , error fix 함
+5/22 -- image 파일을 aws S3를 이용하여 사진 링크를 생성 하였다. git merge to master , error fix 함,
+req는 뜨는데 req.response는 왜 안뜨는지 해결해야 함.

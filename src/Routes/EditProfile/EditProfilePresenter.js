@@ -299,13 +299,14 @@ const EditProfilePresenter = ({ action, setAction, onKeyPress, user }) => {
             setProgress((event.loaded / event.total) * 100);
           }
         });
-        req.upload.addEventListener("load", async (event) => {
+        req.upload.addEventListener("load", (event) => {
           setUpload(false);
           //사진 바꾸기
-          await console.log(req);
-          await console.log(req.status);
-          await console.log(req.response);
-          await console.log(req.responseText);
+          console.log(req);
+          console.log(req.status);
+          console.log(req.response);
+          console.log(req.responseText);
+          console.log(req.DONE)
           setAvatar();
         });
         req.upload.addEventListener("error", (event) => {
