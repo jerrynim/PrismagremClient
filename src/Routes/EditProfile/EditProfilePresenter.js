@@ -275,19 +275,34 @@ const EditProfilePresenter = ({
   //파일 input의 Ref
   const photoRef = useRef(null);
 
-  const uploadMutation = useMutation(UPLOAD_MUTATION);
+  const onChange = async () => {
+    const file = await photoRef.current.files[0];
+    const sendRequset = () => {
+      return new Promise((resolve, reject) => {
+        const req = new XMLHttpRequest();
+        //progress
+        req.upload.addEventListener("progress", (event) => {
+          if (event.lengthComputable) {
+            console.log((event.loaded / event.total) * 100);
+          }
+        });
 
-  const handleFile = async (e) => {
-    e.preventDefault();
-    const { files } = photoRef.current;
-    const file = files[0];
-    const formData = new FormData();
-    await formData.append("file", file, file.name);
-    console.log(file, formData, formData.get("file"));
+        let formData = new FormData();
+        formData.append("name", "hahkjahkajlh");
+        formData.append("file", file);
+        req.open("POST", "http://localhost:4000/upload");
+        req.send(formData);
+      });
+    };
 
-    uploadMutation({ variables: { file: formData } });
+    if (file) {
+      try {
+        sendRequset(file);
+      } catch (e) {
+        console.log(e.message);
+      }
+    }
   };
-
   //EditProflie 버튼
   const onSubmit = (e) => {
     e.preventDefault();
@@ -362,7 +377,7 @@ const EditProfilePresenter = ({
                     type="file"
                     accept="image/*"
                     ref={photoRef}
-                    onChange={handleFile}
+                    onChange={onChange}
                   />
                 </UsernameBox>
               </Profile>
