@@ -6,7 +6,8 @@ scorll 포인트가 어느정도 도달할시 Story section 을 psotion:fixed로
 
 --ToDo--
 Story API, 동기화하기
-editProfile시 하단에 프로필이 변경되었습니다 toast, 비밀번호 와 비밀번호 확인 비교하기 , 비밀번호 변경 API
+자잘한것 : fullPost 이미지 넘기기 고치기,small editProfile button 링크 넣기,로그아웃 버튼 넘기기,auth page 푸터 고려해서 ui수정하기[]
+비밀번호 와 비밀번호 확인 비교하기 , 비밀번호 변경 API[]
 Pofile Route Layout [x]
 프로필 편집 페이지 만들기 ,옵션 버튼클릭시 팝업만들기[x]
 오버레이 X버튼 >버튼 만들고 토글되게 만들고 ,기능들 불러오기[x]
@@ -14,7 +15,8 @@ Pofile Route Layout [x]
 더블클릭시 좋아요 기능[x]
 fullPost heart toggle 기능[x]
 더블클릭시 Heart Icon Animation 나오게하기[x]
-profilePhoto prisma 연결,loading설정하기,image component 생성[]
+profilePhoto prisma 연결,loading설정하기,image component 생성[x]
+
 --Log--
 
 5/5 -- 스크롤을하면 Story컴포넌트가 postion:fixed됨 (최상위컴포넌트에 props로 전달하여 이벤트발생시마다 전체가 render되는 문제)
@@ -54,3 +56,5 @@ profilePhoto prisma 연결,loading설정하기,image component 생성[]
 
 5/22 -- image 파일을 aws S3를 이용하여 사진 링크를 생성 하였다. git merge to master , error fix 함,
 req는 뜨는데 req.response는 왜 안뜨는지 해결해야 함.
+
+5/23 -- profilePhoto prisma 연결,loading설정하기,image component 생성

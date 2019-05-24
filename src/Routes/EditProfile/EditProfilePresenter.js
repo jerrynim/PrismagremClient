@@ -3,8 +3,10 @@ import styled from "styled-components";
 import useInput from "../../Hooks/useInput";
 import TextareaAutosize from "react-autosize-textarea";
 import { useMutation } from "react-apollo-hooks";
-import { EDIT_PROFILE } from "./EditProfileQueries";
+import { EDIT_PROFILE, CHANGE_PASSWORD } from "./EditProfileQueries";
 import { Helmet } from "rl-react-helmet";
+import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 const Container = styled.div`
   margin-top: 77px;
   background-color: #fafafa;
@@ -201,6 +203,13 @@ const SubmitButton = styled.button`
 `;
 const SubmitPWButton = styled(SubmitButton)`
   width: 97px;
+  :disabled {
+    cursor: none;
+    pointer-events: none;
+    background-color: #cae3fc;
+    border-color: #cae3fc;
+    color: #fafafa;
+  }
 `;
 const ActMenu = styled(Menu)`
   border-left: 2px solid #262626;
@@ -228,7 +237,7 @@ const PwInput = styled.input`
   }
 `;
 
-const FindPw = styled.button`
+const FindPw = styled(Link)`
   border: 0;
   color: #3897f0;
   display: inline;
@@ -279,97 +288,106 @@ const EditProfilePresenter = ({ action, setAction, onKeyPress, user }) => {
       phoneNumber: phoneNumber.value
     }
   });
-
+  //photoUpload를 상태 확인값
   const [upload, setUpload] = useState(false);
-  const [progress, setProgress] = useState(0);
+  //비밀번호 변경을 위해
+  const currentPs = useInput("");
+  const newPs = useInput("");
+  const confirmNewPs = useInput("");
+
+  const changePsMutation = useMutation(CHANGE_PASSWORD);
+
   //파일 input의 Ref
   const photoRef = useRef(null);
   const photoRef2 = useRef(null);
-  const onChange = async () => {
-    const file = await photoRef.current.files[0];
+  const onChange = async (ref) => {
+    const file = await ref.current.files[0];
     const sendRequset = () => {
       return new Promise((resolve, reject) => {
         const req = new XMLHttpRequest();
         //progress
-
         setUpload(true);
         //너무빨라서 퍼센트 보기가 힘듬
-        req.upload.addEventListener("progress", (event) => {
-          if (event.lengthComputable) {
-            setProgress((event.loaded / event.total) * 100);
+        // req.upload.addEventListener("progress", (event) => {
+        //   if (event.lengthComputable) {
+        //     console.log("percentage");
+        //   }
+        // });
+
+        req.onreadystatechange = () => {
+          if (req.readyState === 4) {
+            resolve(req.response);
           }
-        });
-        req.upload.addEventListener("load", (event) => {
-          setUpload(false);
-          //사진 바꾸기
-          console.log(req);
-          console.log(req.status);
-          console.log(req.response);
-          console.log(req.responseText);
-          console.log(req.DONE)
-          setAvatar();
-        });
+        };
+
         req.upload.addEventListener("error", (event) => {
           console.log("error");
           reject(req.response);
         });
 
         let formData = new FormData();
-        formData.append("name", "hahkjahkajlh");
+
+        formData.append("name", file.name);
         formData.append("file", file);
         req.open("POST", "http://localhost:4000/upload");
+        req.setRequestHeader("header", user.id);
         req.send(formData);
       });
     };
     if (file) {
       try {
-        sendRequset(file);
-      } catch (e) {
-        throw Error();
-      }
-    }
-  };
-
-  const onChange2 = async () => {
-    const file = await photoRef2.current.files[0];
-    const sendRequset = () => {
-      return new Promise((resolve, reject) => {
-        const req = new XMLHttpRequest();
-        //progress
-        req.upload.addEventListener("progress", (event) => {
-          if (event.lengthComputable) {
-            //(event.loaded / event.total) * 100);
+        sendRequset(file).then(
+          (res) => {
+            //when promise filled
+            setUpload(false);
+            setAvatar(res);
+          },
+          (res) => {
+            // if request rejected
+            throw Error();
           }
-        });
-
-        let formData = new FormData();
-        formData.append("name", "hahkjahkajlh");
-        formData.append("file", file);
-        req.open("POST", "http://localhost:4000/upload");
-        req.send(formData);
-      });
-    };
-    if (file) {
-      try {
-        sendRequset(file);
+        );
       } catch (e) {
         throw Error();
       }
     }
   };
+
   //EditProflie 버튼
   const onSubmit = (e) => {
     e.preventDefault();
-
     try {
       editProfileMutation();
+      toast.success("updated Profile");
     } catch (e) {
       throw Error();
     }
+
     //API 전송
     //하단에 토스트생성
   };
 
+  const changePassword = async (e) => {
+    e.preventDefault();
+    if (newPs.value !== confirmNewPs.value) {
+      toast.error("두 비밀번호가 일치하는지 확인하세요");
+    } else {
+      const {
+        data: { changePassword }
+      } = await changePsMutation({
+        variables: {
+          currentPs: currentPs.value,
+          newPs: newPs.value
+        }
+      });
+      if (changePassword === "비밀번호가 변경되었습니다.") {
+        //성공적으로 변경됨
+        toast.success("성공적으로 변경 되었습니다.");
+      } else {
+        toast.error(changePassword);
+      }
+    }
+  };
   return (
     <>
       <Helmet>
@@ -413,7 +431,7 @@ const EditProfilePresenter = ({ action, setAction, onKeyPress, user }) => {
                 <PhotoInput2
                   type="file"
                   ref={photoRef2}
-                  onChange={onChange2}
+                  onChange={() => onChange(photoRef2)}
                   accept="image/*"
                 />
                 <Avatar bg={avatar} />
@@ -423,7 +441,7 @@ const EditProfilePresenter = ({ action, setAction, onKeyPress, user }) => {
                     <PhotoInput
                       type="file"
                       ref={photoRef}
-                      onChange={onChange}
+                      onChange={() => onChange(photoRef)}
                       accept="image/*"
                     />
                     {action === "editProfile" && (
@@ -501,12 +519,14 @@ const EditProfilePresenter = ({ action, setAction, onKeyPress, user }) => {
                 </EditForm>
               )}
               {action === "changePW" && (
-                <PwForm>
+                <PwForm onSubmit={changePassword}>
                   <Category>
                     <Label>이전 비밀번호</Label>
                     <PwInput
                       onKeyPress={onKeyPress}
                       type={"password"}
+                      value={currentPs.value}
+                      onChange={currentPs.onChange}
                       autoComplete="current-password"
                       required
                     />
@@ -515,6 +535,8 @@ const EditProfilePresenter = ({ action, setAction, onKeyPress, user }) => {
                     <Label>새 비밀번호</Label>
                     <PwInput
                       onKeyPress={onKeyPress}
+                      value={newPs.value}
+                      onChange={newPs.onChange}
                       type={"password"}
                       autoComplete="new-password"
                       required
@@ -524,6 +546,8 @@ const EditProfilePresenter = ({ action, setAction, onKeyPress, user }) => {
                     <Label>새 비밀번호 확인</Label>
                     <PwInput
                       onKeyPress={onKeyPress}
+                      value={confirmNewPs.value}
+                      onChange={confirmNewPs.onChange}
                       type={"password"}
                       autoComplete="new-password"
                       required
@@ -531,11 +555,17 @@ const EditProfilePresenter = ({ action, setAction, onKeyPress, user }) => {
                   </Category>
                   <Category>
                     <Label />
-                    <SubmitPWButton>비밀번호 변경</SubmitPWButton>
+                    {currentPs.value !== "" &&
+                    newPs.value !== "" &&
+                    confirmNewPs.value !== "" ? (
+                      <SubmitPWButton>비밀번호 변경</SubmitPWButton>
+                    ) : (
+                      <SubmitPWButton disabled>비밀번호 변경</SubmitPWButton>
+                    )}
                   </Category>
                   <Category>
                     <Label />
-                    <FindPw>비밀번호를 잊으셨나요?</FindPw>
+                    <FindPw to="/editProfile">비밀번호를 잊으셨나요?</FindPw>
                   </Category>
                 </PwForm>
               )}

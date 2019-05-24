@@ -21,3 +21,9 @@ export const EDIT_PROFILE = gql`
     }
   }
 `;
+
+export const CHANGE_PASSWORD = gql`
+  mutation changePassword($currentPs: String, $newPs: String) {
+    changePassword(currentPs: $currentPs, newPs: $newPs)
+  }
+`;
