@@ -91,10 +91,12 @@ const Heart = styled.div`
 `;
 const FullFiles = ({ files, showing, setShowing, heartPop }) => {
   const length = files.length;
-  const addShowing = () => {
+  const addShowing = (e) => {
+    e.preventDefault();
     setShowing(showing + 1);
   };
-  const subShowing = () => {
+  const subShowing = (e) => {
+    e.preventDefault();
     setShowing(showing - 1);
   };
   return (

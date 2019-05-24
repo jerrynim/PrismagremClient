@@ -5,9 +5,11 @@ scorll 포인트가 어느정도 도달할시 Story section 을 psotion:fixed로
 추천 유저 찾아보기 API 동기화 하기
 
 --ToDo--
-Story API, 동기화하기
-자잘한것 : fullPost 이미지 넘기기 고치기,small editProfile button 링크 넣기,로그아웃 버튼 넘기기,auth page 푸터 고려해서 ui수정하기[]
-비밀번호 와 비밀번호 확인 비교하기 , 비밀번호 변경 API[]
+호이스팅하기[]
+Feed Page Ui수정,회원추천 unfollow와 overlay만 하고 끝내기로 []
+Profile page에도 editProfilePhoto기능넣기
+자잘한것 : fullPost 이미지 넘기기 고치기,small editProfile button 링크 넣기,로그아웃 버튼 넘기기,auth page 푸터 고려해서 ui수정하기[x]
+비밀번호 와 비밀번호 확인 비교하기 , 비밀번호 변경 API[x]
 Pofile Route Layout [x]
 프로필 편집 페이지 만들기 ,옵션 버튼클릭시 팝업만들기[x]
 오버레이 X버튼 >버튼 만들고 토글되게 만들고 ,기능들 불러오기[x]
@@ -58,3 +60,5 @@ profilePhoto prisma 연결,loading설정하기,image component 생성[x]
 req는 뜨는데 req.response는 왜 안뜨는지 해결해야 함.
 
 5/23 -- profilePhoto prisma 연결,loading설정하기,image component 생성
+
+5/24 -- 비밀번호 변경 완료. 3개의 입력값 필수, 비밀번호 확인, 비밀번호 비교, 이전비밀번호와 비교, 비밀번호 변경

@@ -199,9 +199,12 @@ export default () => {
               />
             ))}
         </Posts>
-        {!meLoading && me && me.avatar && me.username && me.fullName && (
-          <Story me={me} />
-        )}
+        {!loading &&
+          !meLoading &&
+          me &&
+          me.avatar &&
+          me.username &&
+          me.fullName && <Story me={me} />}
       </Wrapper>
     </div>
   );

@@ -114,7 +114,7 @@ const Bio = styled.p`
   }
   margin: 10px 0px;
 `;
-const ExtendEditButton = styled.button`
+const ExtendEditButton = styled(Link)`
   @media (min-width: 735px) {
     display: none;
   }
@@ -123,7 +123,7 @@ const ExtendEditButton = styled.button`
   align-items: center;
   background-color: transparent;
   border: 1px solid #dbdbdb;
-  color: ${(props) => props.theme.darkColor};
+  color: ${(props) => props.theme.blackColor};
   width: 100%;
   height: 30px;
   border-radius: 4px;
@@ -300,7 +300,7 @@ const FirstNavText = styled.span`
     display: none;
   }
   margin-left: 6px;
-  color: ${(props) => props.theme.darkColor};
+  color: ${(props) => props.theme.blackColor};
   font-size: 12px;
   cursor: pointer;
   font-weight: 600;
@@ -380,7 +380,9 @@ export default ({
                 </Counts>
                 <FullName text={lastName} />
                 <Bio>{bio}</Bio>
-                <ExtendEditButton>프로필 편집</ExtendEditButton>
+                <ExtendEditButton to="/editProfile">
+                  프로필 편집
+                </ExtendEditButton>
               </HeaderColumn>
             </Header>
             <SmallBio>{lastName}</SmallBio>
@@ -431,6 +433,7 @@ export default ({
           )}
           {SetOverlay === "On" && (
             <SettingOverlay
+              logOut={logOut}
               SetOverlay={SetOverlay}
               setSetOverlay={setSetOverlay}
             />

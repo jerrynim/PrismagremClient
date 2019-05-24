@@ -59,7 +59,7 @@ const List = styled.button`
   padding: 4px 8px;
   text-align: center;
 `;
-export default ({ SetOverlay, setSetOverlay }) => {
+export default ({ SetOverlay, setSetOverlay, logOut }) => {
   //Box Ref
   const boxRef = React.createRef();
   const handleClick = (e) => {
@@ -93,7 +93,7 @@ export default ({ SetOverlay, setSetOverlay }) => {
           <List>허가된 앱</List>
           <List>알림</List>
           <List>공개범위 및 보안</List>
-          <List>로그아웃 취소</List>
+          <List onClick={logOut}>로그아웃</List>
           <List
             onClick={() => {
               setSetOverlay("");

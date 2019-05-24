@@ -416,7 +416,9 @@ export default ({ fullPost, setFullPost }) => {
   //포스트의 Ref
   const postRef = React.createRef();
   const handleClick = async (e) => {
+    e.preventDefault();
     try {
+      console.log(postRef.current.contains(e.target));
       if (!postRef.current.contains(e.target)) {
         //바깥쪽을 클릭하면
         setFullPost("");
@@ -424,9 +426,7 @@ export default ({ fullPost, setFullPost }) => {
         //안쪽을 클릭하면
         return true;
       }
-    } catch (e) {
-      throw Error();
-    }
+    } catch (e) {}
   };
 
   //클릭시 사라지게 하기위한 리스너

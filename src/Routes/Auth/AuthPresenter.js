@@ -4,8 +4,12 @@ import Input from "../../Components/Input";
 import Helmet from "rl-react-helmet";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import { FACEBOOK_APPID } from "../../keys";
-
+import Footer from "../../Components/Footer";
 const Wrapper = styled.div`
+  @media (max-width: 450px) {
+    width: 100%;
+    align-items: flex-start;
+  }
   min-height: 80vh;
   display: flex;
   align-items: center;
@@ -30,12 +34,23 @@ const LoginSection = styled.div`
   @media (max-width: 900px) {
     padding: 52px 0px 0px 0px;
   }
+  @media (max-width: 450px) {
+    padding: 0;
+    position: relative;
+  }
 `;
 
 const SignUpSection = styled.div`
+  @media (max-width: 450px) {
+    padding: 0%;
+  }
   padding: 12px 0px;
 `;
 const Box = styled.div`
+  @media (max-width: 450px) {
+    width: 100%;
+    padding: 0%;
+  }
   ${(props) => props.theme.whiteBox}
   border-radius:1px;
   width: 100%;
@@ -43,6 +58,9 @@ const Box = styled.div`
 `;
 
 const StateChanger = styled(Box)`
+  @media (max-width: 450px) {
+    max-width: none;
+  }
   border: 1px solid #e6e6e6;
   height: 70px;
   text-align: center;
@@ -101,6 +119,9 @@ const SignUpButton = styled(FacebookButton)`
 
 const FirstForm = styled.div`
   border: 1px solid #e6e6e6;
+  @media (max-width: 450px) {
+    width: 100%;
+  }
   width: 350px;
   margin: 0px 0px 10px;
   display: flex;
@@ -110,6 +131,9 @@ const FirstForm = styled.div`
 `;
 
 const LoginForm = styled.div`
+  @media (max-width: 450px) {
+    width: 100%;
+  }
   border: 1px solid #e6e6e6;
   width: 350px;
   margin: 0px 0px 10px;
@@ -198,6 +222,9 @@ const FacebookBox = styled(Link)`
 `;
 
 const AppLinks = styled.div`
+  @media (max-width: 450px) {
+    width: 100%;
+  }
   width: 350;
   height: 44;
   display: flex;
@@ -210,6 +237,9 @@ const AppLinks = styled.div`
 `;
 
 const LoginScreen = styled.div`
+  @media (max-width: 450px) {
+    width: 100%;
+  }
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -289,6 +319,10 @@ const PhoneLinkWrapper = styled.div`
   text-align: center;
 `;
 
+const FooterWrapper = styled.div`
+  margin: 82px 0px 40px;
+  padding: 0px 20px;
+`;
 export default ({
   action,
   setAction,
@@ -713,5 +747,8 @@ export default ({
         </InWrapper>
       )}
     </Wrapper>
+    <FooterWrapper>
+      <Footer />
+    </FooterWrapper>
   </>
 );

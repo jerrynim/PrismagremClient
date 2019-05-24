@@ -232,7 +232,7 @@ export default withRouter(({ history }) => {
           <HeaderLink to="/explore">
             <Compass />
           </HeaderLink>
-          <HeaderLink to="/notifications">
+          <HeaderLink to="/">
             <HeartEmpty />
           </HeaderLink>
           {!data.me ? (

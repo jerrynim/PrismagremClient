@@ -289,7 +289,6 @@ const EditProfilePresenter = ({ action, setAction, onKeyPress, user }) => {
     }
   });
   //photoUpload를 상태 확인값
-  const [upload, setUpload] = useState(false);
   //비밀번호 변경을 위해
   const currentPs = useInput("");
   const newPs = useInput("");
@@ -306,7 +305,6 @@ const EditProfilePresenter = ({ action, setAction, onKeyPress, user }) => {
       return new Promise((resolve, reject) => {
         const req = new XMLHttpRequest();
         //progress
-        setUpload(true);
         //너무빨라서 퍼센트 보기가 힘듬
         // req.upload.addEventListener("progress", (event) => {
         //   if (event.lengthComputable) {
@@ -339,7 +337,6 @@ const EditProfilePresenter = ({ action, setAction, onKeyPress, user }) => {
         sendRequset(file).then(
           (res) => {
             //when promise filled
-            setUpload(false);
             setAvatar(res);
           },
           (res) => {
