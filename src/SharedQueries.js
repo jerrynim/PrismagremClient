@@ -26,3 +26,39 @@ export const GET_USERS = gql`
     }
   }
 `;
+
+export const GET_POSTS = gql`
+  query getPosts {
+    getPosts {
+      location
+      caption
+      user {
+        avatar
+        username
+        isFollowing
+        isSelf
+      }
+      files {
+        url
+      }
+      likes {
+        user {
+          avatar
+          username
+        }
+      }
+      comments {
+        text
+        user {
+          avatar
+          username
+        }
+        createdAt
+      }
+      createdAt
+      isLiked
+      likeCount
+      commentCount
+    }
+  }
+`;

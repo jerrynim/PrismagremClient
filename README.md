@@ -6,7 +6,14 @@ scorll 포인트가 어느정도 도달할시 Story section 을 psotion:fixed로
 
 --ToDo--
 호이스팅하기[]
+explore page만들기[]
+infinite scroll[]
+Dm기능[]
+hashtag 기능은 해봐야지[]
 Feed Page Ui수정,회원추천 unfollow와 overlay만 하고 끝내기로 []
+줄어든 화면에서 feed의 사진 전환 크기 문제
+postsCount 문제해결[x]
+Profile page 링크로 이동시 안나오던 문제 해결[x]
 Profile page에도 editProfilePhoto기능넣기
 자잘한것 : fullPost 이미지 넘기기 고치기,small editProfile button 링크 넣기,로그아웃 버튼 넘기기,auth page 푸터 고려해서 ui수정하기[x]
 비밀번호 와 비밀번호 확인 비교하기 , 비밀번호 변경 API[x]
@@ -62,3 +69,5 @@ req는 뜨는데 req.response는 왜 안뜨는지 해결해야 함.
 5/23 -- profilePhoto prisma 연결,loading설정하기,image component 생성
 
 5/24 -- 비밀번호 변경 완료. 3개의 입력값 필수, 비밀번호 확인, 비밀번호 비교, 이전비밀번호와 비교, 비밀번호 변경
+
+5/25 -- Profile page 링크로 이동시 안나오던 문제 해결

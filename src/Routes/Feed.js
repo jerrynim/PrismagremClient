@@ -127,7 +127,6 @@ const StroyAvatar = styled.div`
   border-radius: 50%;
   width: 56px;
   height: 56px;
-  background-color: red;
 `;
 const StoryText = styled.span`
   top: 68px;
@@ -170,7 +169,7 @@ export default () => {
                       <StoryCircle>
                         <StroyAvatar />
                       </StoryCircle>
-                      <StoryText>wefqw3rasd</StoryText>
+                      <StoryText>sampleUser</StoryText>
                     </StoryLink>
                   </TopStory>
                 ))}

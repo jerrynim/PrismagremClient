@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import more from "../Images/more.png";
 import CommentItem from "../Images/Comment.png";
 import Files from "../../Components/Files";
+import moment from "moment";
 const Post = styled.div`
   border-radius: 3px;
   border: 1px solid #e6e6e6;
@@ -162,64 +163,71 @@ export default ({
   selfComments,
   caption,
   commentSubmit
-}) => (
-  <Post>
-    <Header>
-      <Avatar size="sm" url={avatar} />
-      <UserColumn>
-        <UserText>
-          <Link to={`/${username}`}>
-            <FatText text={username} />
-          </Link>
-          <Location>{location}</Location>
-        </UserText>
-        <MoreButton />
-      </UserColumn>
-    </Header>
-    <Files files={files} />
-    <Meta>
-      <Buttons>
-        <Button onClick={toggleLike}>
-          {isLiked ? <HeartFull2 /> : <HeartEmpty />}
-        </Button>
-        <Button>
-          <CommentIcon />
-        </Button>
-      </Buttons>
-      <FatText text={likeCount === 1 ? "좋아요 1개" : `좋아요${likeCount}개`} />
-      <Caption>
-        <FatText text={username} /> {caption}
-      </Caption>
-      {comments && (
-        <Comments>
-          {comments.map((comment) => (
-            <Comment key={comment.id}>
-              <FatText text={comment.user.username} />
-              {comment.text}
-            </Comment>
-          ))}
-          {selfComments.map((comment) => (
-            <Comment key={comment.id}>
-              <FatText text={comment.user.username} />
-              {comment.text}
-            </Comment>
-          ))}
-        </Comments>
-      )}
-      <Timestamp>{createdAt}</Timestamp>
-      <TextBox>
-        <Textarea
-          onKeyPress={onKeyPress}
-          placeholder={"댓글 달기..."}
-          value={newComment.value}
-          onChange={newComment.onChange}
+}) => {
+  const date = moment(createdAt)
+    .startOf("day")
+    .fromNow();
+  return (
+    <Post>
+      <Header>
+        <Avatar size="sm" url={avatar} />
+        <UserColumn>
+          <UserText>
+            <Link to={`/${username}`}>
+              <FatText text={username} />
+            </Link>
+            <Location>{location}</Location>
+          </UserText>
+          <MoreButton />
+        </UserColumn>
+      </Header>
+      <Files files={files} />
+      <Meta>
+        <Buttons>
+          <Button onClick={toggleLike}>
+            {isLiked ? <HeartFull2 /> : <HeartEmpty />}
+          </Button>
+          <Button>
+            <CommentIcon />
+          </Button>
+        </Buttons>
+        <FatText
+          text={likeCount === 1 ? "좋아요 1개" : `좋아요${likeCount}개`}
         />
-        {newComment.value === "" ? (
-          <TextSubmit disabled>게시</TextSubmit>
-        ) : (
-          <TextSubmit onClick={commentSubmit}>게시</TextSubmit>
+        <Caption>
+          <FatText text={username} /> {caption}
+        </Caption>
+        {comments && (
+          <Comments>
+            {comments.map((comment) => (
+              <Comment key={comment.id}>
+                <FatText text={comment.user.username} />
+                {comment.text}
+              </Comment>
+            ))}
+            {selfComments.map((comment) => (
+              <Comment key={comment.id}>
+                <FatText text={comment.user.username} />
+                {comment.text}
+              </Comment>
+            ))}
+          </Comments>
         )}
-      </TextBox>
-    </Meta>
-  </Post>
-);
+        <Timestamp>{date}</Timestamp>
+        <TextBox>
+          <Textarea
+            onKeyPress={onKeyPress}
+            placeholder={"댓글 달기..."}
+            value={newComment.value}
+            onChange={newComment.onChange}
+          />
+          {newComment.value === "" ? (
+            <TextSubmit disabled>게시</TextSubmit>
+          ) : (
+            <TextSubmit onClick={commentSubmit}>게시</TextSubmit>
+          )}
+        </TextBox>
+      </Meta>
+    </Post>
+  );
+};

@@ -9,6 +9,7 @@ import useInput from "../Hooks/useInput";
 import FullFiles from "./FullFiles";
 import XIcon from "./Images/X.png";
 import { TOGGLE_LIKE } from "./Post/PostQueries";
+import moment from "moment";
 const Container = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
   top: 0;
@@ -486,11 +487,15 @@ export default ({ fullPost, setFullPost }) => {
                   </WriteAvatarWrapper>
                   <CommentText>
                     {caption}
-                    <TimeStamp>{createdAt}</TimeStamp>
+                    <TimeStamp>
+                      {moment(createdAt)
+                        .startOf("day")
+                        .fromNow()}
+                    </TimeStamp>
                   </CommentText>
                 </Comment>
-                {comments.map((comment) => (
-                  <Comment key={comment.id}>
+                {comments.map((comment, index) => (
+                  <Comment key={index}>
                     <WriteAvatarWrapper>
                       <WriterAvatar bg={comment.user.avatar} />
                     </WriteAvatarWrapper>

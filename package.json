@@ -10,6 +10,7 @@
     "apollo-link-context": "^1.0.17",
     "apollo-upload-client": "^10.0.1",
     "graphql": "^14.2.0",
+    "moment": "^2.24.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-apollo": "^2.5.6",

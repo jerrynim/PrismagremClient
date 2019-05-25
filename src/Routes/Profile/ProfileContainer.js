@@ -3,16 +3,11 @@ import { gql } from "apollo-boost";
 import { withRouter } from "react-router-dom";
 import { useQuery, useMutation } from "react-apollo-hooks";
 import ProfilePresenter from "./ProfilePresenter";
-import styled from "styled-components";
 import Footer from "../../Components/Footer";
-const Message = styled.div`
-  text-align: center;
-  margin-top: 100px;
-`;
+
 const GET_USER = gql`
   query seeUser($username: String!) {
     seeUser(username: $username) {
-      id
       avatar
       username
       lastName
@@ -23,7 +18,6 @@ const GET_USER = gql`
       followersCount
       postsCount
       posts {
-        id
         location
         caption
         user {
@@ -36,14 +30,12 @@ const GET_USER = gql`
           url
         }
         likes {
-          id
           user {
             avatar
             username
           }
         }
         comments {
-          id
           text
           user {
             avatar
@@ -51,6 +43,7 @@ const GET_USER = gql`
           }
           createdAt
         }
+        createdAt
         isLiked
         likeCount
         commentCount
@@ -67,9 +60,10 @@ export const LOG_OUT = gql`
 
 export default withRouter(({ match: { params: { username } } }) => {
   const { data, loading } = useQuery(GET_USER, {
+    fetchPolicy: "network-only",
+    errorPolicy: "ignore",
     variables: { username }
   });
-
   const logOut = useMutation(LOG_OUT);
   const [fullPost, setFullPost] = useState("");
   const [SetOverlay, setSetOverlay] = useState("");
@@ -88,7 +82,6 @@ export default withRouter(({ match: { params: { username } } }) => {
         />
       )}
       <Footer />
-      <Message>만약 뜨지 않는다면 새로고침을 해주세요</Message>
     </>
   );
 });
