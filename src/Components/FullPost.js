@@ -419,7 +419,6 @@ export default ({ fullPost, setFullPost }) => {
   const handleClick = async (e) => {
     e.preventDefault();
     try {
-      console.log(postRef.current.contains(e.target));
       if (!postRef.current.contains(e.target)) {
         //바깥쪽을 클릭하면
         setFullPost("");
@@ -489,7 +488,7 @@ export default ({ fullPost, setFullPost }) => {
                     {caption}
                     <TimeStamp>
                       {moment(createdAt)
-                        .startOf("day")
+                        .startOf()
                         .fromNow()}
                     </TimeStamp>
                   </CommentText>
@@ -501,7 +500,11 @@ export default ({ fullPost, setFullPost }) => {
                     </WriteAvatarWrapper>
                     <CommentText>
                       {comment.text}
-                      <TimeStamp>{comment.createdAt}</TimeStamp>
+                      <TimeStamp>
+                        {moment(comment.createdAt)
+                          .startOf()
+                          .fromNow()}
+                      </TimeStamp>
                     </CommentText>
                   </Comment>
                 ))}
@@ -512,7 +515,11 @@ export default ({ fullPost, setFullPost }) => {
                     </WriteAvatarWrapper>
                     <CommentText>
                       {selfComment.text}
-                      <TimeStamp>{selfComment.createdAt}</TimeStamp>
+                      <TimeStamp>
+                        {moment(selfComment.createdAt)
+                          .startOf()
+                          .fromNow()}
+                      </TimeStamp>
                     </CommentText>
                   </Comment>
                 ))}
@@ -549,7 +556,11 @@ export default ({ fullPost, setFullPost }) => {
                     </>
                   )}
                 </LikeComment>
-                <LikeTimeStamp>{createdAt}</LikeTimeStamp>
+                <LikeTimeStamp>
+                  {moment(createdAt)
+                    .startOf()
+                    .fromNow()}
+                </LikeTimeStamp>
 
                 <AddCommentBox>
                   <AddComment>
@@ -615,7 +626,11 @@ export default ({ fullPost, setFullPost }) => {
                     </>
                   )}
                 </LikeComment>
-                <LikeTimeStamp>{createdAt}</LikeTimeStamp>
+                <LikeTimeStamp>
+                  {moment(createdAt)
+                    .startOf()
+                    .fromNow()}
+                </LikeTimeStamp>
                 <AddCommentBox hiding={hiding}>
                   <AddComment>
                     <AddCommentInput

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Avatar from "./Avatar";
 import { useMutation } from "react-apollo-hooks";
-import { FOLLOW } from "./FollowButton/FollowButtonQueries";
+import { FOLLOW, UNFOLLOW } from "./FollowButton/FollowButtonQueries";
 
 const Container = styled.div`
   padding: 8px 16px;
@@ -64,14 +64,24 @@ const Recommend = (user) => {
     }
   });
 
+  const unFollowMutation = useMutation(UNFOLLOW, {
+    variables: {
+      id: RecommendUser.id
+    }
+  });
   const followClick = (e) => {
     e.preventDefault();
     followMutation();
     setFollowing(true);
   };
+  const unFollowClick = (e) => {
+    e.preventDefault();
+    unFollowMutation();
+    setFollowing(false);
+  };
 
   //클라이언트 following toggled을 위해
-  const [following, setFollowing] = useState(false);
+  const [following, setFollowing] = useState(RecommendUser.isFollowing);
   return (
     <Container>
       <AvatarBox>
@@ -85,7 +95,9 @@ const Recommend = (user) => {
         <FollowButton onClick={followClick}>팔로우</FollowButton>
       )}
       {//언팔로우를 위한 팝업 을 생성해야함
-      following !== false && <UnFollowButton>팔로잉</UnFollowButton>}
+      following !== false && (
+        <UnFollowButton onClick={unFollowClick}>팔로잉</UnFollowButton>
+      )}
     </Container>
   );
 };

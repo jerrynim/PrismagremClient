@@ -65,9 +65,10 @@ const Button = styled.span`
 `;
 
 const Meta = styled.div`
-  padding: 16px;
-  @media (max-width: 735px) {
-    padding: 16px 16px 0px;
+  position: relative;
+  padding: 0px 16px 16px;
+  @media (max-width: 1000px) {
+    padding: 16px;
   }
 `;
 

@@ -8,6 +8,7 @@ import Footer from "../../Components/Footer";
 const GET_USER = gql`
   query seeUser($username: String!) {
     seeUser(username: $username) {
+      id
       avatar
       username
       lastName
@@ -17,37 +18,41 @@ const GET_USER = gql`
       followingCount
       followersCount
       postsCount
-      posts {
-        location
-        caption
+    }
+  }
+`;
+const GET_POSTS = gql`
+  query getUserPost($userId: String!) {
+    getUserPost(userId: $userId) {
+      location
+      caption
+      user {
+        avatar
+        username
+        isFollowing
+        isSelf
+      }
+      files {
+        url
+      }
+      likes {
         user {
           avatar
           username
-          isFollowing
-          isSelf
         }
-        files {
-          url
-        }
-        likes {
-          user {
-            avatar
-            username
-          }
-        }
-        comments {
-          text
-          user {
-            avatar
-            username
-          }
-          createdAt
+      }
+      comments {
+        text
+        user {
+          avatar
+          username
         }
         createdAt
-        isLiked
-        likeCount
-        commentCount
       }
+      createdAt
+      isLiked
+      likeCount
+      commentCount
     }
   }
 `;

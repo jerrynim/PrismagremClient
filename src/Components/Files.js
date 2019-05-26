@@ -56,6 +56,22 @@ const ShowingRightButton = styled.button`
   right: 0;
 `;
 
+const CountsWrapper = styled.div`
+  position: absolute;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  bottom: 0;
+  left: 0;
+  padding-top: 24px;
+`;
+const Counts = styled.div`
+  background-color: #3897f0;
+  border-radius: 50%;
+  width: 7px;
+  height: 7px;
+  margin-right: 5px;
+`;
 const Files = (files) => {
   const [showing, setShowing] = useState(0);
   const addShowing = () => {
@@ -74,6 +90,11 @@ const Files = (files) => {
         files.files.map((file, index) => (
           <File key={file.id} src={file.url} showing={showing} />
         ))}
+      <CountsWrapper>
+        {files.files.map((file, index) => (
+          <Counts key={index} showing={showing} />
+        ))}
+      </CountsWrapper>
     </Container>
   );
 };
