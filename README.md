@@ -74,4 +74,4 @@ req는 뜨는데 req.response는 왜 안뜨는지 해결해야 함.
 
 5/25 -- Profile page 링크로 이동시 안나오던 문제 해결
 
-5/26 -- https://www.notion.so/jerrynim로 대체
+5/26 -- https://www.notion.so/jerrynim 로 대체

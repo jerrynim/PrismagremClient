@@ -16,9 +16,8 @@ const File = styled.div`
   min-width: 100%;
   height: 600px;
   top: 0;
-  background-image: url(${(props) => props.src}});
   background-size: cover;
-  background-position: center;
+  background-image: url(${(props) => props.src});
   transform: translateX(${(props) => props.showing * -612}px);
   transition: 0.2s;
 `;
@@ -56,23 +55,7 @@ const ShowingRightButton = styled.button`
   right: 0;
 `;
 
-const CountsWrapper = styled.div`
-  position: absolute;
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  bottom: 0;
-  left: 0;
-  padding-top: 24px;
-`;
-const Counts = styled.div`
-  background-color: #3897f0;
-  border-radius: 50%;
-  width: 7px;
-  height: 7px;
-  margin-right: 5px;
-`;
-const Files = (files) => {
+const Files = ({ files }) => {
   const [showing, setShowing] = useState(0);
   const addShowing = () => {
     setShowing(showing + 1);
@@ -83,18 +66,13 @@ const Files = (files) => {
   return (
     <Container showing={showing}>
       {showing !== 0 && <ShowingLeftButton onClick={subShowing} />}
-      {showing !== files.files.length - 1 && (
+      {showing !== files.length - 1 && (
         <ShowingRightButton onClick={addShowing} />
       )}
       {files &&
-        files.files.map((file, index) => (
+        files.map((file, index) => (
           <File key={file.id} src={file.url} showing={showing} />
         ))}
-      <CountsWrapper>
-        {files.files.map((file, index) => (
-          <Counts key={index} showing={showing} />
-        ))}
-      </CountsWrapper>
     </Container>
   );
 };

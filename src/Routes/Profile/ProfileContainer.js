@@ -18,41 +18,38 @@ const GET_USER = gql`
       followingCount
       followersCount
       postsCount
-    }
-  }
-`;
-const GET_POSTS = gql`
-  query getUserPost($userId: String!) {
-    getUserPost(userId: $userId) {
-      location
-      caption
-      user {
-        avatar
-        username
-        isFollowing
-        isSelf
-      }
-      files {
-        url
-      }
-      likes {
+      posts {
+        postId
+        location
+        caption
         user {
           avatar
           username
+          isFollowing
+          isSelf
         }
-      }
-      comments {
-        text
-        user {
-          avatar
-          username
+        files {
+          url
+        }
+        likes {
+          user {
+            avatar
+            username
+          }
+        }
+        comments {
+          text
+          user {
+            avatar
+            username
+          }
+          createdAt
         }
         createdAt
+        isLiked
+        likeCount
+        commentCount
       }
-      createdAt
-      isLiked
-      likeCount
-      commentCount
     }
   }
 `;

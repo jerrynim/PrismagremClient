@@ -55,12 +55,13 @@ const ProfilePost = ({ posts, fullPost, setFullPost }) => {
       <>
         {ThreePosts.map((threePost, index) => (
           <PostsLine key={index}>
-            {threePost.map((post) => (
+            {threePost.map((post, index) => (
               <SquarePost
-                key={post.id}
+                key={index}
                 likeCount={post.likeCount}
                 commentCount={post.commentCount}
                 file={post.files[0]}
+                post={post}
                 setFullPost={setFullPost}
               />
             ))}

@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { Helmet } from "rl-react-helmet";
 import Loader from "../../Components/Loader";
 import FatText from "../../Components/FatText";
-import FollowButton from "../../Components/FollowButton";
 import options from "../../Components/Images/options.png";
 import television from "../../Components/Images/television.png";
 import tagged from "../../Components/Images/tagged.png";
@@ -14,6 +13,7 @@ import ProfilePost from "./ProfilePost";
 import FullPost from "../../Components/FullPost";
 import SettingOverlay from "../../Components/SettingOverlay";
 import { Link } from "react-router-dom";
+import more from "../../Components/Images/more.png";
 const Wrapper = styled.div``;
 
 const Main = styled.div`
@@ -305,7 +305,47 @@ const FirstNavText = styled.span`
   cursor: pointer;
   font-weight: 600;
 `;
-
+const ExtendFollowButton = styled.button`
+  padding: 0 24px;
+  cursor: pointer;
+  background: #3897f0;
+  border-color: #3897f0;
+  color: #fff;
+  border-radius: 3px;
+  border-style: solid;
+  border-width: 1px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 26px;
+  outline: 0;
+  width: 87px;
+  margin-left: 16px;
+`;
+const UnderArrow = styled.div`
+  padding: 0 12px;
+  cursor: pointer;
+  background: #3897f0;
+  border-color: #3897f0;
+  color: #fff;
+  border-radius: 3px;
+  border-style: solid;
+  border-width: 1px;
+  font-size: 1px;
+  font-weight: 600;
+  outline: 0;
+  margin-left: 6px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+`;
+const More = styled.div`
+  background-image: url(${more});
+  background-size: cover;
+  width: 16px;
+  height: 16px;
+  margin-left: 15px;
+  cursor: pointer;
+`;
 export default ({
   loading,
   data,
@@ -324,11 +364,9 @@ export default ({
   } else if (!loading && data && data.seeUser) {
     const {
       seeUser: {
-        id,
         avatar,
         username,
         lastName,
-        isFollowing,
         isSelf,
         bio,
         followingCount,
@@ -361,7 +399,11 @@ export default ({
                       />
                     </>
                   ) : (
-                    <FollowButton isFollowing={isFollowing} id={id} />
+                    <>
+                      <ExtendFollowButton>팔로우</ExtendFollowButton>
+                      <UnderArrow>▼</UnderArrow>
+                      <More />
+                    </>
                   )}
                 </UsernameRow>
                 <Counts>
@@ -418,17 +460,21 @@ export default ({
                 <NavText>태그됨</NavText>
               </NavItem>
             </Navbar>
-            <Posts>
-              {posts && (
-                <ProfilePost
-                  posts={posts}
-                  fullPost={fullPost}
-                  setFullPost={setFullPost}
-                />
-              )}
-            </Posts>
+            {postsCount === 0 ? (
+              <div />
+            ) : (
+              <Posts>
+                {posts && (
+                  <ProfilePost
+                    posts={posts}
+                    fullPost={fullPost}
+                    setFullPost={setFullPost}
+                  />
+                )}
+              </Posts>
+            )}
           </Main>
-          {fullPost !== "" && (
+          {fullPost && (
             <FullPost fullPost={fullPost} setFullPost={setFullPost} />
           )}
           {SetOverlay === "On" && (

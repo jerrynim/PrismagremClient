@@ -340,17 +340,18 @@ export default ({ fullPost, setFullPost }) => {
   const text = useInput("");
   const addCommentMutation = useMutation(ADD_COMMENT, {
     variables: {
-      postId: fullPost.id,
+      postId: fullPost.postId,
       text: text.value
     }
   });
 
   //Heart toggle을 위해
+  const [likesS] = useState(fullPost.likes);
   const [isLikedS, setIsLiked] = useState(fullPost.isLiked);
   const [likeCountS, setLikeCount] = useState(fullPost.likeCount);
   //toggle Heart Mutation
   const toggleLikeMutation = useMutation(TOGGLE_LIKE, {
-    variables: { postId: fullPost.id }
+    variables: { postId: fullPost.postId }
   });
   const [heartPop, setHeartPop] = useState("");
 
@@ -377,6 +378,13 @@ export default ({ fullPost, setFullPost }) => {
     } else {
       setIsLiked(true);
       setLikeCount(likeCountS + 1);
+      likesS.push({
+        user: {
+          avatar:
+            "https://jerrynim-instagram.s3.ap-northeast-2.amazonaws.com/af749760-8055-11e9-b954-89b6e830b3a7-02ee1b30-7c8e-11e9-96dc-956601f0823e-KakaoTalk_Photo_2019-05-17-16-46-12.jpeg",
+          username: "jerrynim"
+        }
+      });
     }
   };
 
@@ -441,7 +449,9 @@ export default ({ fullPost, setFullPost }) => {
   const InputRef = createRef();
   //댓글아이콘 클릭시 input에 focus
   const InputFoucs = () => {
-    InputRef.current.focus();
+    try {
+      InputRef.current.focus();
+    } catch (e) {}
   };
 
   const {
@@ -545,12 +555,12 @@ export default ({ fullPost, setFullPost }) => {
                   {likeCountS !== 0 && (
                     <>
                       <LikeAvartarButton>
-                        {likes[0].user && (
+                        {likesS[0].user && (
                           <LikeAvatar bg={likes[0].user.avatar} />
                         )}
                       </LikeAvartarButton>
                       <LikeText>
-                        <b>{likes[0].user.username}</b>님 외<b>{likeCount}</b>
+                        <b>{likesS[0].user.username}</b>님 외<b>{likeCountS}</b>
                         명이 좋아합니다
                       </LikeText>
                     </>
