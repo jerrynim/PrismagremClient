@@ -14,6 +14,7 @@ import FullPost from "../../Components/FullPost";
 import SettingOverlay from "../../Components/SettingOverlay";
 import { Link } from "react-router-dom";
 import more from "../../Components/Images/more.png";
+import photograph from "../../Components/Images/photograph.png";
 const Wrapper = styled.div``;
 
 const Main = styled.div`
@@ -346,6 +347,32 @@ const More = styled.div`
   margin-left: 15px;
   cursor: pointer;
 `;
+
+const EmptyPost = styled.div`
+  width: 100%;
+  height: 223;
+  display: flex;
+  justify-content: center;
+`;
+const EmptyInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 60px;
+`;
+const EmptyPhoto = styled.div`
+  width: 62px;
+  height: 62px;
+  background-image: url(${photograph});
+  background-size: cover;
+`;
+const EmptyText = styled.div`
+  margin-top: 32px;
+  font-size: 28px;
+  color: #262626;
+  font-weight: 300;
+  line-height: 32px;
+`;
 export default ({
   loading,
   data,
@@ -461,7 +488,12 @@ export default ({
               </NavItem>
             </Navbar>
             {postsCount === 0 ? (
-              <div />
+              <EmptyPost>
+                <EmptyInfo>
+                  <EmptyPhoto />
+                  <EmptyText>게시물 없음</EmptyText>
+                </EmptyInfo>
+              </EmptyPost>
             ) : (
               <Posts>
                 {posts && (

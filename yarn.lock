@@ -8560,6 +8560,13 @@ react-helmet@^5.2.0:
     react-fast-compare "^2.0.2"
     react-side-effect "^1.1.0"
 
+react-input-trigger@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/react-input-trigger/-/react-input-trigger-1.1.2.tgz#752b9266debcb49a86c83bff1843b5e652e8e471"
+  integrity sha512-fz/uT7YxpKPUCt1SIBXDh2K1qvQFwBan7VwtxDU9ZMPpnit1YMVGc2Aw+aCVcjxb+hLslb2pZJxOCwVjID5OrQ==
+  dependencies:
+    textarea-caret "^3.1.0"
+
 react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.4:
   version "16.8.6"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.8.6.tgz#5bbc1e2d29141c9fbdfed456343fe2bc430a6a16"
@@ -9918,6 +9925,11 @@ text-table@0.2.0, text-table@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha1-f17oI66AUgfACvLfSoTsP8+lcLQ=
+
+textarea-caret@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/textarea-caret/-/textarea-caret-3.1.0.tgz#5d5a35bb035fd06b2ff0e25d5359e97f2655087f"
+  integrity sha512-cXAvzO9pP5CGa6NKx0WYHl+8CHKZs8byMkt3PCJBCmq2a34YA9pO1NrQET5pzeqnBjBdToF5No4rrmkDUgQC2Q==
 
 throat@^4.0.0:
   version "4.1.0"

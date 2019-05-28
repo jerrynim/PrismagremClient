@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import TextareaAutosize from "react-autosize-textarea";
 import FatText from "../FatText";
 import Avatar from "../Avatar";
 import { HeartFull2, HeartEmpty } from "../Icons";
@@ -9,6 +8,8 @@ import more from "../Images/more.png";
 import CommentItem from "../Images/Comment.png";
 import Files from "../../Components/Files";
 import moment from "moment";
+import InputTrigger from "react-input-trigger";
+
 const Post = styled.div`
   border-radius: 3px;
   border: 1px solid #e6e6e6;
@@ -98,7 +99,7 @@ const Timestamp = styled.span`
   border-bottom: ${(props) => props.theme.lightGreyColor} 1px solid;
 `;
 
-const Textarea = styled(TextareaAutosize)`
+const Textarea = styled.textarea`
   border: none;
   width: 100%;
   resize: none;
@@ -132,6 +133,7 @@ const TextBox = styled.div`
   }
   display: flex;
   justify-content: space-between;
+  position: relative;
 `;
 
 const TextSubmit = styled.button`
@@ -149,6 +151,20 @@ const TextSubmit = styled.button`
     color: #cae3fc;
   }
 `;
+const Popup = styled.div`
+  position: absolute;
+  width: 200px;
+  border-radius: 6px;
+  display: ${(props) => (props.showSuggestor ? "block" : "none")};
+  top: ${(props) => props.top + 15}px;
+  left: ${(props) => props.left}px;
+`;
+
+const UserBox = styled.div`
+  padding: 10px 20px;
+  background-color: ${(props) =>
+    props.index === props.currentSelection ? "#999" : "white"};
+`;
 
 export default ({
   user: { username, avatar },
@@ -165,6 +181,64 @@ export default ({
   caption,
   commentSubmit
 }) => {
+  //react-input-trigger toggle
+  const [showSuggestor, setShowSuggestor] = useState(false);
+  const [left, setLeft] = useState();
+  const [top, setTop] = useState();
+  const [text, setText] = useState();
+  const [currentSelection, setCurrentSelection] = useState(0);
+  const [startPosition, setStartPosition] = useState();
+  const toggleSuggestor = (metaInformation) => {
+    const { hookType, cursor } = metaInformation;
+    if (hookType === "start") {
+      setShowSuggestor(true);
+      setLeft(cursor.left);
+      setTop(cursor.top);
+      setStartPosition(cursor.selectionStart);
+    }
+    if (hookType === "cancel") {
+      // reset the state
+      setShowSuggestor(false);
+      setLeft();
+      setTop();
+      setText();
+      setStartPosition();
+    }
+  };
+
+  const user = ["Charmander", "Squirtle", "Bulbasaur", "Pikachu"];
+
+  const handleInput = (metaInformation) => {
+    setText(metaInformation.text);
+  };
+
+  const handleKeyDown = (event) => {
+    const { which } = event;
+
+    if (which === 40) {
+      // 40 is the character code of the down arrow
+      event.preventDefault();
+      setCurrentSelection((currentSelection + 1) % user.length);
+    }
+
+    if (which === 13) {
+      // 13 is the character code for enter
+      event.preventDefault();
+
+      const userS = user[currentSelection];
+
+      const newText = `${newComment.value.slice(0, startPosition)}${userS}`;
+      // reset the state and set new text
+      newComment.setValue(newText);
+      setShowSuggestor(false);
+      setLeft();
+      setTop();
+      setText();
+      setStartPosition();
+      console.log(metaInformation);
+    }
+  };
+
   const date = moment(createdAt)
     .startOf("day")
     .fromNow();
@@ -215,13 +289,43 @@ export default ({
           </Comments>
         )}
         <Timestamp>{date}</Timestamp>
-        <TextBox>
-          <Textarea
-            onKeyPress={onKeyPress}
-            placeholder={"댓글 달기..."}
-            value={newComment.value}
-            onChange={newComment.onChange}
-          />
+        <TextBox onKeyDown={handleKeyDown}>
+          <InputTrigger
+            endTrigger={(endHandler) => {}}
+            trigger={{
+              keyCode: 50,
+              shiftKey: true
+            }}
+            onStart={(metaData) => {
+              toggleSuggestor(metaData);
+            }}
+            onCancel={(metaData) => {
+              toggleSuggestor(metaData);
+            }}
+            onType={(metaData) => {
+              handleInput(metaData);
+            }}
+          >
+            <Textarea
+              placeholder={"댓글 달기..."}
+              value={newComment.value}
+              onChange={newComment.onChange}
+            />
+          </InputTrigger>
+          <Popup showSuggestor={showSuggestor} left={left} top={top}>
+            {user
+              .filter((user) => user.indexOf(text) !== -1)
+              .map((user, index) => (
+                <UserBox
+                  key={index}
+                  index={index}
+                  currentSelection={currentSelection}
+                >
+                  {user}
+                </UserBox>
+              ))}
+          </Popup>
+
           {newComment.value === "" ? (
             <TextSubmit disabled>게시</TextSubmit>
           ) : (

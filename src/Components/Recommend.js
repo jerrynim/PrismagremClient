@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Avatar from "./Avatar";
 import { useMutation } from "react-apollo-hooks";
 import { FOLLOW, UNFOLLOW } from "./FollowButton/FollowButtonQueries";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   padding: 8px 16px;
@@ -11,7 +12,7 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const AvatarBox = styled.div`
+const AvatarBox = styled(Link)`
   margin-right: 12px;
 `;
 const RecommendText = styled.div`
@@ -47,11 +48,12 @@ const UnFollowButton = styled.button`
   outline: none;
 `;
 
-const StoryUserName = styled.div`
+const StoryUserName = styled(Link)`
   font-size: 14px;
   font-weight: 600;
   line-height: 18px;
   margin-bottom: 2px;
+  color: ${(props) => props.theme.blackColor};
 `;
 
 const Recommend = (user) => {
@@ -84,11 +86,13 @@ const Recommend = (user) => {
   const [following, setFollowing] = useState(RecommendUser.isFollowing);
   return (
     <Container>
-      <AvatarBox>
+      <AvatarBox to={`/${RecommendUser.username}`}>
         <Avatar size={"sm"} url={RecommendUser.avatar} />
       </AvatarBox>
       <RecommendText>
-        <StoryUserName>{RecommendUser.username}</StoryUserName>
+        <StoryUserName to={`/${RecommendUser.username}`}>
+          {RecommendUser.username}
+        </StoryUserName>
         <RecommendType>Instagram 신규 가입</RecommendType>
       </RecommendText>
       {following === false && (
