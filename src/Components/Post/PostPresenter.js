@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import FatText from "../FatText";
 import Avatar from "../Avatar";
@@ -100,6 +100,7 @@ const Timestamp = styled.span`
 `;
 
 const Textarea = styled.textarea`
+  white-space: nowrap;
   border: none;
   width: 100%;
   resize: none;
@@ -195,6 +196,7 @@ export default ({
       setLeft(cursor.left);
       setTop(cursor.top);
       setStartPosition(cursor.selectionStart);
+      console.log("started");
     }
     if (hookType === "cancel") {
       // reset the state
@@ -203,10 +205,12 @@ export default ({
       setTop();
       setText();
       setStartPosition();
+      console.log("canceled");
     }
   };
 
   const user = ["Charmander", "Squirtle", "Bulbasaur", "Pikachu"];
+  const endRef = useRef();
 
   const handleInput = (metaInformation) => {
     setText(metaInformation.text);
@@ -215,30 +219,38 @@ export default ({
   const handleKeyDown = (event) => {
     const { which } = event;
 
-    if (which === 40) {
-      // 40 is the character code of the down arrow
-      event.preventDefault();
-      setCurrentSelection((currentSelection + 1) % user.length);
-    }
+    if (showSuggestor) {
+      if (which === 40) {
+        // 40 is the character code of the down arrow
+        event.preventDefault();
 
-    if (which === 13) {
-      // 13 is the character code for enter
-      event.preventDefault();
+        setCurrentSelection((currentSelection + 1) % user.length);
+      }
 
-      const userS = user[currentSelection];
+      if (which === 13) {
+        event.preventDefault();
+        // 13 is the character code for enter
 
-      const newText = `${newComment.value.slice(0, startPosition)}${userS}`;
-      // reset the state and set new text
-      newComment.setValue(newText);
-      setShowSuggestor(false);
-      setLeft();
-      setTop();
-      setText();
-      setStartPosition();
-      console.log(metaInformation);
+        const userS = user[currentSelection];
+
+        const newText = `${newComment.value.slice(0, startPosition)} ${userS}`;
+        // reset the state and set new text
+        newComment.setValue(newText);
+        setShowSuggestor(false);
+        setLeft();
+        setTop();
+        setText();
+        setStartPosition();
+        if (endRef.current) {
+          endRef.current.resetState();
+        }
+      }
+    } else {
+      if (which === 13) {
+        event.preventDefault();
+      }
     }
   };
-
   const date = moment(createdAt)
     .startOf("day")
     .fromNow();
@@ -291,7 +303,7 @@ export default ({
         <Timestamp>{date}</Timestamp>
         <TextBox onKeyDown={handleKeyDown}>
           <InputTrigger
-            endTrigger={(endHandler) => {}}
+            ref={endRef}
             trigger={{
               keyCode: 50,
               shiftKey: true
