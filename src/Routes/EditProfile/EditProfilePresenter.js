@@ -7,6 +7,7 @@ import { EDIT_PROFILE, CHANGE_PASSWORD } from "./EditProfileQueries";
 import { Helmet } from "rl-react-helmet";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import Footer from "../../Components/Footer";
 const Container = styled.div`
   margin-top: 77px;
   background-color: #fafafa;
@@ -15,11 +16,15 @@ const Wrapper = styled.div`
   background-color: #fff;
   border: 1px solid #dbdbdb;
   border-radius: 3px;
-  margin: 133px auto 0;
+  margin: 133px auto 30px;
   max-width: 935px;
   overflow: hidden;
   width: 100%;
   display: flex;
+  min-height: 600px;
+  @media (max-width: 450px) {
+    margin: 0;
+  }
 `;
 const MenuBox = styled.ul`
   @media (max-width: 736px) {
@@ -88,6 +93,7 @@ const ChangeAvatar = styled.button`
   line-height: 18px;
   outline: none;
   font-weight: 600;
+  background-color: #fff;
 `;
 const EditForm = styled.form`
   display: flex;
@@ -570,6 +576,7 @@ const EditProfilePresenter = ({ action, setAction, onKeyPress, user }) => {
           </Wrapper>
         )}
       </Container>
+      <Footer />
     </>
   );
 };

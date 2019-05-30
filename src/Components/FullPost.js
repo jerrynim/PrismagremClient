@@ -1,7 +1,6 @@
 import React, { useEffect, createRef, useState } from "react";
 import styled from "styled-components";
 import { HeartEmpty, HeartFull2 } from "./Icons";
-import TextareaAutosize from "react-autosize-textarea";
 import CommentImg from "./Images/Comment.png";
 import { useMutation } from "react-apollo-hooks";
 import { ADD_COMMENT } from "./Post/PostQueries";
@@ -10,6 +9,7 @@ import FullFiles from "./FullFiles";
 import XIcon from "./Images/X.png";
 import { TOGGLE_LIKE } from "./Post/PostQueries";
 import moment from "moment";
+import CommentInput from "./CommentInput";
 const Container = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
   top: 0;
@@ -145,6 +145,7 @@ const CommentText = styled.div`
   max-width: 254px;
   color: ${(props) => props.theme.darkColor};
   font-weight: 600;
+  word-break: break-all;
 `;
 
 const TimeStamp = styled.div`
@@ -236,23 +237,7 @@ const AddCommentBox = styled.div`
   color: #999;
   height: 62px;
 `;
-const AddComment = styled.form`
-  display: flex;
-  align-items: center;
-  height: 100%;
-`;
-const AddCommentInput = styled(TextareaAutosize)`
-  border: 0;
-  color: #262626;
-  max-height: 56px;
-  outline: 0;
-  font-size: 14px;
-  width: 100%;
-  resize: none;
-  ::placeholder {
-    color: #999;
-  }
-`;
+
 const CommentIcon = styled.button`
   background-image: url(${CommentImg});
   background-size: cover;
@@ -262,22 +247,6 @@ const CommentIcon = styled.button`
   outline: 0;
   cursor: pointer;
   background-color: white;
-`;
-const AddCommentButton = styled.button`
-  border: 0;
-  font-size: 14px;
-  color: #3897f0;
-  padding: 0;
-  outline: 0;
-  font-weight: 600;
-  min-width: 25px;
-  cursor: pointer;
-
-  :disabled {
-    cursor: none;
-    pointer-events: none;
-    color: #cae3fc;
-  }
 `;
 
 const HeartButton = styled.button`
@@ -392,22 +361,7 @@ export default ({ fullPost, setFullPost }) => {
   const [hiding, setHiding] = useState("");
 
   //엔터누를실
-  const onKeyPress = async (event) => {
-    const { which } = event;
-    if (which === 13) {
-      event.preventDefault();
-      try {
-        const {
-          data: { addComment }
-        } = await addCommentMutation();
-        setSelfComments([...selfComments, addComment]);
 
-        text.setValue("");
-      } catch (e) {
-        return false;
-      }
-    }
-  };
   //게시 버튼으로 CommentAdd
   const commentSubmit = async (e) => {
     e.preventDefault();
@@ -509,6 +463,8 @@ export default ({ fullPost, setFullPost }) => {
                       <WriterAvatar bg={comment.user.avatar} />
                     </WriteAvatarWrapper>
                     <CommentText>
+                      {comment.user.username}
+                      &nbsp;
                       {comment.text}
                       <TimeStamp>
                         {moment(comment.createdAt)
@@ -573,18 +529,10 @@ export default ({ fullPost, setFullPost }) => {
                 </LikeTimeStamp>
 
                 <AddCommentBox>
-                  <AddComment>
-                    <AddCommentInput
-                      ref={InputRef}
-                      onKeyPress={onKeyPress}
-                      value={text.value}
-                      onChange={text.onChange}
-                      placeholder={"댓글 달기..."}
-                    />
-                    <AddCommentButton onClick={commentSubmit}>
-                      게시
-                    </AddCommentButton>
-                  </AddComment>
+                  <CommentInput
+                    newComment={text}
+                    commentSubmit={commentSubmit}
+                  />
                 </AddCommentBox>
               </ArticleFooter>
             </Article>
@@ -642,17 +590,10 @@ export default ({ fullPost, setFullPost }) => {
                     .fromNow()}
                 </LikeTimeStamp>
                 <AddCommentBox hiding={hiding}>
-                  <AddComment>
-                    <AddCommentInput
-                      onKeyPress={onKeyPress}
-                      value={text.value}
-                      onChange={text.onChange}
-                      placeholder={"댓글 달기..."}
-                    />
-                    <AddCommentButton onClick={commentSubmit}>
-                      게시
-                    </AddCommentButton>
-                  </AddComment>
+                  <CommentInput
+                    newComment={text}
+                    commentSubmit={commentSubmit}
+                  />
                 </AddCommentBox>
               </SmallArticleFooter>
             </SmallAriticle>

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React from "react";
 import styled from "styled-components";
 import FatText from "../FatText";
 import Avatar from "../Avatar";
@@ -8,12 +8,11 @@ import more from "../Images/more.png";
 import CommentItem from "../Images/Comment.png";
 import Files from "../../Components/Files";
 import moment from "moment";
-import InputTrigger from "react-input-trigger";
+import CommentInput from "../CommentInput";
 
 const Post = styled.div`
   border-radius: 3px;
   border: 1px solid #e6e6e6;
-  ${(props) => props.theme.whiteBox};
   width: 100%;
   max-width: 614px;
   user-select: none;
@@ -21,6 +20,7 @@ const Post = styled.div`
   a {
     color: inherit;
   }
+  background-color: #fff;
 `;
 
 const Caption = styled.div`
@@ -53,6 +53,7 @@ const MoreButton = styled.button`
   background-image: url(${more});
   background-size: cover;
   cursor: pointer;
+  background-color: white;
 `;
 
 const Location = styled.span`
@@ -67,10 +68,7 @@ const Button = styled.span`
 
 const Meta = styled.div`
   position: relative;
-  padding: 0px 16px 16px;
-  @media (max-width: 1000px) {
-    padding: 16px;
-  }
+  padding: 16px;
 `;
 
 const Buttons = styled.div`
@@ -99,17 +97,6 @@ const Timestamp = styled.span`
   border-bottom: ${(props) => props.theme.lightGreyColor} 1px solid;
 `;
 
-const Textarea = styled.textarea`
-  white-space: nowrap;
-  border: none;
-  width: 100%;
-  resize: none;
-  font-size: 14px;
-  &:focus {
-    outline: none;
-  }
-`;
-
 const Comments = styled.ul`
   margin-top: 10px;
 `;
@@ -128,45 +115,6 @@ const CommentIcon = styled.div`
   height: 24px;
 `;
 
-const TextBox = styled.div`
-  @media (max-width: 735px) {
-    display: none;
-  }
-  display: flex;
-  justify-content: space-between;
-  position: relative;
-`;
-
-const TextSubmit = styled.button`
-  border: 0;
-  color: #3897f0;
-  outline: none;
-  font-weight: 600;
-  cursor: pointer;
-  width: 40px;
-  font-weight: 600;
-  font-size: 14px;
-  :disabled {
-    cursor: none;
-    pointer-events: none;
-    color: #cae3fc;
-  }
-`;
-const Popup = styled.div`
-  position: absolute;
-  width: 200px;
-  border-radius: 6px;
-  display: ${(props) => (props.showSuggestor ? "block" : "none")};
-  top: ${(props) => props.top + 15}px;
-  left: ${(props) => props.left}px;
-`;
-
-const UserBox = styled.div`
-  padding: 10px 20px;
-  background-color: ${(props) =>
-    props.index === props.currentSelection ? "#999" : "white"};
-`;
-
 export default ({
   user: { username, avatar },
   location,
@@ -182,75 +130,6 @@ export default ({
   caption,
   commentSubmit
 }) => {
-  //react-input-trigger toggle
-  const [showSuggestor, setShowSuggestor] = useState(false);
-  const [left, setLeft] = useState();
-  const [top, setTop] = useState();
-  const [text, setText] = useState();
-  const [currentSelection, setCurrentSelection] = useState(0);
-  const [startPosition, setStartPosition] = useState();
-  const toggleSuggestor = (metaInformation) => {
-    const { hookType, cursor } = metaInformation;
-    if (hookType === "start") {
-      setShowSuggestor(true);
-      setLeft(cursor.left);
-      setTop(cursor.top);
-      setStartPosition(cursor.selectionStart);
-      console.log("started");
-    }
-    if (hookType === "cancel") {
-      // reset the state
-      setShowSuggestor(false);
-      setLeft();
-      setTop();
-      setText();
-      setStartPosition();
-      console.log("canceled");
-    }
-  };
-
-  const user = ["Charmander", "Squirtle", "Bulbasaur", "Pikachu"];
-  const endRef = useRef();
-
-  const handleInput = (metaInformation) => {
-    setText(metaInformation.text);
-  };
-
-  const handleKeyDown = (event) => {
-    const { which } = event;
-
-    if (showSuggestor) {
-      if (which === 40) {
-        // 40 is the character code of the down arrow
-        event.preventDefault();
-
-        setCurrentSelection((currentSelection + 1) % user.length);
-      }
-
-      if (which === 13) {
-        event.preventDefault();
-        // 13 is the character code for enter
-
-        const userS = user[currentSelection];
-
-        const newText = `${newComment.value.slice(0, startPosition)} ${userS}`;
-        // reset the state and set new text
-        newComment.setValue(newText);
-        setShowSuggestor(false);
-        setLeft();
-        setTop();
-        setText();
-        setStartPosition();
-        if (endRef.current) {
-          endRef.current.resetState();
-        }
-      }
-    } else {
-      if (which === 13) {
-        event.preventDefault();
-      }
-    }
-  };
   const date = moment(createdAt)
     .startOf("day")
     .fromNow();
@@ -301,49 +180,7 @@ export default ({
           </Comments>
         )}
         <Timestamp>{date}</Timestamp>
-        <TextBox onKeyDown={handleKeyDown}>
-          <InputTrigger
-            ref={endRef}
-            trigger={{
-              keyCode: 50,
-              shiftKey: true
-            }}
-            onStart={(metaData) => {
-              toggleSuggestor(metaData);
-            }}
-            onCancel={(metaData) => {
-              toggleSuggestor(metaData);
-            }}
-            onType={(metaData) => {
-              handleInput(metaData);
-            }}
-          >
-            <Textarea
-              placeholder={"댓글 달기..."}
-              value={newComment.value}
-              onChange={newComment.onChange}
-            />
-          </InputTrigger>
-          <Popup showSuggestor={showSuggestor} left={left} top={top}>
-            {user
-              .filter((user) => user.indexOf(text) !== -1)
-              .map((user, index) => (
-                <UserBox
-                  key={index}
-                  index={index}
-                  currentSelection={currentSelection}
-                >
-                  {user}
-                </UserBox>
-              ))}
-          </Popup>
-
-          {newComment.value === "" ? (
-            <TextSubmit disabled>게시</TextSubmit>
-          ) : (
-            <TextSubmit onClick={commentSubmit}>게시</TextSubmit>
-          )}
-        </TextBox>
+        <CommentInput newComment={newComment} commentSubmit={commentSubmit} />
       </Meta>
     </Post>
   );

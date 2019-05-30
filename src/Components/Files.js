@@ -5,21 +5,26 @@ import arrowTransparent2 from "../Components/Images/arrowTransparent2.png";
 
 const Container = styled.div`
   position: relative;
-  height: 600px;
-  padding-bottom: 100%;
   display: flex;
+  position: relative;
+  overflow-x: visible;
   overflow: hidden;
 `;
 
+const Container2 = styled.ul`
+  position: relative;
+  display: flex;
+  width: 100%;
+  transform: translateX(${(props) => props.showing * -100}%);
+  transition: 0.25s;
+`;
 const File = styled.div`
-  max-width: 100%;
-  min-width: 100%;
-  height: 600px;
-  top: 0;
+  width: 100%;
+  padding-bottom: 100%;
   background-size: cover;
+  background-position: center;
   background-image: url(${(props) => props.src});
-  transform: translateX(${(props) => props.showing * -612}px);
-  transition: 0.2s;
+  flex-shrink: 0;
 `;
 
 const ShowingLeftButton = styled.button`
@@ -44,6 +49,7 @@ const ShowingRightButton = styled.button`
   position: absolute;
   top: 45%;
   z-index: 5;
+
   background-size: cover;
   background-image: url(${arrowTransparent});
   background-color: transparent;
@@ -64,15 +70,15 @@ const Files = ({ files }) => {
     setShowing(showing - 1);
   };
   return (
-    <Container showing={showing}>
+    <Container>
       {showing !== 0 && <ShowingLeftButton onClick={subShowing} />}
       {showing !== files.length - 1 && (
         <ShowingRightButton onClick={addShowing} />
       )}
-      {files &&
-        files.map((file, index) => (
-          <File key={file.id} src={file.url} showing={showing} />
-        ))}
+      <Container2 showing={showing}>
+        {files &&
+          files.map((file, index) => <File key={file.id} src={file.url} />)}
+      </Container2>
     </Container>
   );
 };

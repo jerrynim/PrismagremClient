@@ -68,7 +68,6 @@ const Posts = styled.div`
   margin-right: 28px;
   max-width: 614px;
   width: 100%;
-
   justify-content: center;
 `;
 const TopStorys = styled.div`

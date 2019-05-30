@@ -105,10 +105,7 @@ const FullFiles = ({ files, showing, setShowing, heartPop }) => {
 
       {showing !== 0 && <ShowingLeftButton onClick={subShowing} />}
       {showing !== length - 1 && <ShowingRightButton onClick={addShowing} />}
-      {files &&
-        files.map((file, index) => (
-          <File key={index} src={file.url} showing={showing} />
-        ))}
+      {files && files.map((file, index) => <File key={index} />)}
     </Container>
   );
 };

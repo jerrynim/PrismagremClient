@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const Text = styled.span`
+  color: ${(props) => props.theme.blackColor};
   font-weight: 600;
 `;
 
