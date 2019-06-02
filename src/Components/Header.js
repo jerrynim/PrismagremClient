@@ -73,6 +73,13 @@ const HeaderLink = styled(Link)`
     margin-right: 30px;
   }
 `;
+const HeaderButton = styled.button`
+  margin-right: 30px;
+  outline: 0;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+`;
 
 const Bar = styled.div`
   width: 1px;
@@ -232,9 +239,9 @@ export default withRouter(({ history }) => {
           <HeaderLink to="/explore">
             <Compass />
           </HeaderLink>
-          <HeaderLink to="/">
+          <HeaderButton>
             <HeartEmpty />
-          </HeaderLink>
+          </HeaderButton>
           {!data.me ? (
             <HeaderLink to="/#">
               <User />

@@ -15,6 +15,7 @@ import SettingOverlay from "../../Components/SettingOverlay";
 import { Link } from "react-router-dom";
 import more from "../../Components/Images/more.png";
 import photograph from "../../Components/Images/photograph.png";
+import FollowButton from "../../Components/FollowButton";
 const Wrapper = styled.div``;
 
 const Main = styled.div`
@@ -109,10 +110,11 @@ const FullName = styled(FatText)`
   font-size: 16px;
 `;
 
-const Bio = styled.p`
+const Bio = styled.div`
   @media (max-width: 735px) {
     display: none;
   }
+  white-space: pre;
   margin: 10px 0px;
 `;
 const ExtendEditButton = styled(Link)`
@@ -137,15 +139,23 @@ const ExtendEditButton = styled(Link)`
   }
   cursor: pointer;
 `;
-const SmallBio = styled.div`
+const SmallName = styled.div`
   @media (min-width: 735px) {
     display: none;
   }
   width: 100%;
-  padding: 0px 16px 21px;
+  padding: 0px 16px 0px;
   font-size: 14px;
   font-weight: 600;
   line-height: 20px;
+`;
+
+const SmallBio = styled.div`
+  @media (min-width: 735px) {
+    display: none;
+  }
+  white-space: pre;
+  padding: 5px 16px 21px;
 `;
 const SmallCounts = styled.div`
   @media (min-width: 735px) {
@@ -306,11 +316,10 @@ const FirstNavText = styled.span`
   cursor: pointer;
   font-weight: 600;
 `;
-const ExtendFollowButton = styled.button`
-  padding: 0 24px;
+const ExtendFollowButton = styled.div`
   cursor: pointer;
-  background: #3897f0;
-  border-color: #3897f0;
+  padding: 0;
+  height: 28px;
   color: #fff;
   border-radius: 3px;
   border-style: solid;
@@ -322,23 +331,7 @@ const ExtendFollowButton = styled.button`
   width: 87px;
   margin-left: 16px;
 `;
-const UnderArrow = styled.div`
-  padding: 0 12px;
-  cursor: pointer;
-  background: #3897f0;
-  border-color: #3897f0;
-  color: #fff;
-  border-radius: 3px;
-  border-style: solid;
-  border-width: 1px;
-  font-size: 1px;
-  font-weight: 600;
-  outline: 0;
-  margin-left: 6px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-`;
+
 const More = styled.div`
   background-image: url(${more});
   background-size: cover;
@@ -399,7 +392,9 @@ export default ({
         followingCount,
         followersCount,
         postsCount,
-        posts
+        posts,
+        isFollowing,
+        userId
       }
     } = data;
     return (
@@ -427,8 +422,11 @@ export default ({
                     </>
                   ) : (
                     <>
-                      <ExtendFollowButton>팔로우</ExtendFollowButton>
-                      <UnderArrow>▼</UnderArrow>
+                      <ExtendFollowButton>
+                        <FollowButton isFollowing={isFollowing} id={userId}>
+                          팔로우
+                        </FollowButton>
+                      </ExtendFollowButton>
                       <More />
                     </>
                   )}
@@ -454,7 +452,8 @@ export default ({
                 </ExtendEditButton>
               </HeaderColumn>
             </Header>
-            <SmallBio>{lastName}</SmallBio>
+            <SmallName>{lastName}</SmallName>
+            <SmallBio>{bio}</SmallBio>
             <SmallCounts>
               <SmallCount>
                 <SmallCountText>게시물</SmallCountText>

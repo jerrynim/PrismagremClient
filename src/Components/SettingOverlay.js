@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import styled, { keyframes } from "styled-components";
+import { Link } from "react-router-dom";
 const Container = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
   top: 0;
@@ -36,12 +37,36 @@ const Lists = styled.ul`
   display: flex;
   flex-direction: column;
 `;
-const List = styled.button`
+const List = styled(Link)`
   &:first-child {
     border-top: none;
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
   }
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  outline: 0;
+  color: inherit;
+  background-color: transparent;
+  border-bottom: 0;
+  border-left: 0;
+  border-right: 0;
+  border-top: 1px solid #efefef;
+  cursor: pointer;
+  line-height: 1.5;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+  font-size: 14px;
+  min-height: 48px;
+  padding: 4px 8px;
+  text-align: center;
+`;
+const Logout = styled.button`
+  align-items: center;
+  display: flex;
+  justify-content: center;
   outline: 0;
   color: inherit;
   background-color: transparent;
@@ -88,19 +113,19 @@ export default ({ SetOverlay, setSetOverlay, logOut }) => {
     <Container>
       <Box ref={boxRef}>
         <Lists>
-          <List>비밀번호 변경</List>
-          <List>네임태그</List>
-          <List>허가된 앱</List>
-          <List>알림</List>
-          <List>공개범위 및 보안</List>
-          <List onClick={logOut}>로그아웃</List>
-          <List
+          <List to="/editProfile">비밀번호 변경</List>
+          <List to="/editProfile">네임태그</List>
+          <List to="/editProfile">허가된 앱</List>
+          <List to="/editProfile">알림</List>
+          <List to="/editProfile">공개범위 및 보안</List>
+          <Logout onClick={logOut}>로그아웃</Logout>
+          <Logout
             onClick={() => {
               setSetOverlay("");
             }}
           >
             취소
-          </List>
+          </Logout>
         </Lists>
       </Box>
     </Container>

@@ -476,7 +476,6 @@ const EditProfilePresenter = ({ action, setAction, onKeyPress, user }) => {
                   <Category>
                     <Label>소개</Label>
                     <BioInputWrapper
-                      onKeyPress={onKeyPress}
                       value={bio.value}
                       onChange={bio.onChange}
                     />

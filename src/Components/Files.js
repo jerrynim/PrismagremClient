@@ -20,7 +20,7 @@ const Container2 = styled.ul`
 `;
 const File = styled.div`
   width: 100%;
-  padding-bottom: 100%;
+  padding-bottom: 125%;
   background-size: cover;
   background-position: center;
   background-image: url(${(props) => props.src});

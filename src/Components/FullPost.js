@@ -1,8 +1,8 @@
-import React, { useEffect, createRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { HeartEmpty, HeartFull2 } from "./Icons";
 import CommentImg from "./Images/Comment.png";
-import { useMutation } from "react-apollo-hooks";
+import { useMutation, useQuery } from "react-apollo-hooks";
 import { ADD_COMMENT } from "./Post/PostQueries";
 import useInput from "../Hooks/useInput";
 import FullFiles from "./FullFiles";
@@ -10,6 +10,8 @@ import XIcon from "./Images/X.png";
 import { TOGGLE_LIKE } from "./Post/PostQueries";
 import moment from "moment";
 import CommentInput from "./CommentInput";
+import TextArea from "./TextArea";
+import { ME } from "../SharedQueries";
 const Container = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
   top: 0;
@@ -231,6 +233,8 @@ const AddCommentBox = styled.div`
     padding: 0;
     height: 48px;
   }
+  display: flex;
+    align-items: center;
   margin-top: 8px;
   padding: 0px 16px;
   border-top: 1px solid #efefef;
@@ -307,6 +311,9 @@ export default ({ fullPost, setFullPost }) => {
   const [showing, setShowing] = useState(0);
   //mutation을 위해
   const text = useInput("");
+  const {
+    data: { me }
+  } = useQuery(ME);
   const addCommentMutation = useMutation(ADD_COMMENT, {
     variables: {
       postId: fullPost.postId,
@@ -349,9 +356,8 @@ export default ({ fullPost, setFullPost }) => {
       setLikeCount(likeCountS + 1);
       likesS.push({
         user: {
-          avatar:
-            "https://jerrynim-instagram.s3.ap-northeast-2.amazonaws.com/af749760-8055-11e9-b954-89b6e830b3a7-02ee1b30-7c8e-11e9-96dc-956601f0823e-KakaoTalk_Photo_2019-05-17-16-46-12.jpeg",
-          username: "jerrynim"
+          avatar: me.avatar,
+          username: me.username
         }
       });
     }
@@ -399,14 +405,6 @@ export default ({ fullPost, setFullPost }) => {
       document.removeEventListener("click", handleClick);
     };
   });
-  //comment Input 의 Ref
-  const InputRef = createRef();
-  //댓글아이콘 클릭시 input에 focus
-  const InputFoucs = () => {
-    try {
-      InputRef.current.focus();
-    } catch (e) {}
-  };
 
   const {
     caption,
@@ -449,7 +447,7 @@ export default ({ fullPost, setFullPost }) => {
                     <WriterAvatar bg={user.avatar} />
                   </WriteAvatarWrapper>
                   <CommentText>
-                    {caption}
+                    <TextArea text={caption} />
                     <TimeStamp>
                       {moment(createdAt)
                         .startOf()
@@ -465,7 +463,7 @@ export default ({ fullPost, setFullPost }) => {
                     <CommentText>
                       {comment.user.username}
                       &nbsp;
-                      {comment.text}
+                      <TextArea text={comment.text} />
                       <TimeStamp>
                         {moment(comment.createdAt)
                           .startOf()
@@ -480,7 +478,7 @@ export default ({ fullPost, setFullPost }) => {
                       <WriterAvatar bg={selfComment.user.avatar} />
                     </WriteAvatarWrapper>
                     <CommentText>
-                      {selfComment.text}
+                      <TextArea text={selfComment.text} />
                       <TimeStamp>
                         {moment(selfComment.createdAt)
                           .startOf()
@@ -503,7 +501,7 @@ export default ({ fullPost, setFullPost }) => {
                       </HeartButton>
                     )}
                   </IconButton>
-                  <IconButton onClick={InputFoucs}>
+                  <IconButton>
                     <CommentIcon />
                   </IconButton>
                 </Icons>

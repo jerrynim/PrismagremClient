@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useMutation } from "react-apollo-hooks";
+import { Link } from "react-router-dom";
+
 import {
   FOLLOW,
   UNFOLLOW
@@ -22,7 +24,7 @@ const FF = styled.div`
   min-height: 198px;
 `;
 
-const FFAvatar = styled.div`
+const FFAvatar = styled(Link)`
   width: 56px;
   height: 56px;
   cursor: pointer;
@@ -31,8 +33,9 @@ const FFAvatar = styled.div`
   background-size: cover;
   display: flex;
 `;
-const FFName = styled.div`
+const FFName = styled(Link)`
   margin: 16px 0px 8px;
+  color: #262626;
 `;
 
 const FFText = styled.div`
@@ -95,8 +98,8 @@ export default ({ user }) => {
   return (
     <FFCard>
       <FF>
-        <FFAvatar bg={avatar} />
-        <FFName>{username}</FFName>
+        <FFAvatar to={`/${username}`} bg={avatar} />
+        <FFName to={`/${username}`}>{username}</FFName>
         <FFText>Instagram 신규가입</FFText>
         {!isSelf &&
           (FollowingS ? (

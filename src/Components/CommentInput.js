@@ -21,6 +21,7 @@ const TextBox = styled.div`
   display: flex;
   justify-content: space-between;
   position: relative;
+  width: 100%;
 `;
 
 const TextSubmit = styled.button`
@@ -219,6 +220,7 @@ export default ({ newComment, commentSubmit }) => {
         }}
       >
         <Textarea
+          spellCheck="false"
           rows="auto"
           placeholder={"댓글 달기..."}
           value={newComment.value}

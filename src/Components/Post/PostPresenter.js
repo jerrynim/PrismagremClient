@@ -9,6 +9,7 @@ import CommentItem from "../Images/Comment.png";
 import Files from "../../Components/Files";
 import moment from "moment";
 import CommentInput from "../CommentInput";
+import TextArea from "../TextArea";
 
 const Post = styled.div`
   border-radius: 3px;
@@ -158,23 +159,24 @@ export default ({
           </Button>
         </Buttons>
         <FatText
-          text={likeCount === 1 ? "좋아요 1개" : `좋아요${likeCount}개`}
+          text={likeCount === 1 ? "좋아요 1개" : `좋아요 ${likeCount}개`}
         />
         <Caption>
-          <FatText text={username} /> {caption}
+          <FatText text={username} />
+          <TextArea text={caption} />
         </Caption>
         {comments && (
           <Comments>
             {comments.map((comment) => (
               <Comment key={comment.id}>
                 <FatText text={comment.user.username} />
-                {comment.text}
+                <TextArea text={comment.text} />
               </Comment>
             ))}
             {selfComments.map((comment) => (
               <Comment key={comment.id}>
                 <FatText text={comment.user.username} />
-                {comment.text}
+                <TextArea text={comment.text} />
               </Comment>
             ))}
           </Comments>
