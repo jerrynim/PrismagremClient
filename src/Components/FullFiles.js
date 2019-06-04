@@ -3,6 +3,9 @@ import styled, { keyframes } from "styled-components";
 import arrowTransparent from "../Components/Images/arrowTransparent.png";
 import arrowTransparent2 from "../Components/Images/arrowTransparent2.png";
 import whiteHeart from "../Components/Images/whiteHeart.png";
+import { Player, LoadingSpinner, BigPlayButton } from "video-react";
+import "video-react/dist/video-react.css";
+
 const Container = styled.div`
   left: 0;
   right: 0;
@@ -105,7 +108,20 @@ const FullFiles = ({ files, showing, setShowing, heartPop }) => {
 
       {showing !== 0 && <ShowingLeftButton onClick={subShowing} />}
       {showing !== length - 1 && <ShowingRightButton onClick={addShowing} />}
-      {files && files.map((file, index) => <File key={index} />)}
+      {files &&
+        files.map((file, index) => {
+          if (file.url.slice(-3) === "mp4") {
+            return (
+              <Player key={index} fluid={true} aspectRatio={"1:1"}>
+                <BigPlayButton position="center" />
+                <LoadingSpinner />
+                <source src={file.url} />
+              </Player>
+            );
+          } else {
+            return <File key={file.id} src={file.url} />;
+          }
+        })}
     </Container>
   );
 };

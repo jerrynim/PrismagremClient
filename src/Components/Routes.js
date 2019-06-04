@@ -6,12 +6,14 @@ import Explore from "../Routes/Explore";
 import Search from "../Routes/Search";
 import Profile from "../Routes/Profile";
 import EditProfile from "../Routes/EditProfile";
+import Tags from "../Routes/Tags";
 const LoggedInRoutes = () => (
   <Switch>
     <Route exact path="/" component={Feed} />
     <Route exact path="/explore" component={Explore} />
     <Route exact path="/search" component={Search} />
     <Route exact path="/editProfile" component={EditProfile} />
+    <Route exact path="/tags/:tags" component={Tags} />
     <Route exact path="/:username" component={Profile} />
     <Redirect from="*" to="/" />
   </Switch>

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import arrowTransparent from "../Components/Images/arrowTransparent.png";
 import arrowTransparent2 from "../Components/Images/arrowTransparent2.png";
+import { Player, BigPlayButton, LoadingSpinner } from "video-react";
 
 const Container = styled.div`
   position: relative;
@@ -69,6 +70,7 @@ const Files = ({ files }) => {
   const subShowing = () => {
     setShowing(showing - 1);
   };
+
   return (
     <Container>
       {showing !== 0 && <ShowingLeftButton onClick={subShowing} />}
@@ -77,7 +79,19 @@ const Files = ({ files }) => {
       )}
       <Container2 showing={showing}>
         {files &&
-          files.map((file, index) => <File key={file.id} src={file.url} />)}
+          files.map((file, index) => {
+            if (file.url.slice(-3) === "mp4") {
+              return (
+                <Player key={index} fluid={true} aspectRatio={"1:1"}>
+                  <BigPlayButton position="center" />
+                  <LoadingSpinner />
+                  <source src={file.url} />
+                </Player>
+              );
+            } else {
+              return <File key={file.id} src={file.url} />;
+            }
+          })}
       </Container2>
     </Container>
   );

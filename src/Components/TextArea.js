@@ -12,9 +12,15 @@ export default ({ text }) => {
   return (
     <Span>
       {text.split(" ").map((word, index) => {
-        if (word.includes("@") || word.includes("#")) {
+        if (word.includes("@")) {
           return (
             <Link key={index} to={`/${word.replace("@", "")}`}>
+              <ColorSapn>{word}&nbsp;</ColorSapn>
+            </Link>
+          );
+        } else if (word.includes("#")) {
+          return (
+            <Link key={index} to={`/tags/${word.replace("#", "")}`}>
               <ColorSapn>{word}&nbsp;</ColorSapn>
             </Link>
           );
