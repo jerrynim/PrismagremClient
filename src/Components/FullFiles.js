@@ -119,7 +119,7 @@ const FullFiles = ({ files, showing, setShowing, heartPop }) => {
               </Player>
             );
           } else {
-            return <File key={file.id} src={file.url} />;
+            return <File key={index} src={file.url} />;
           }
         })}
     </Container>

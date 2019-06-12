@@ -26,7 +26,11 @@ export const GET_USERS = gql`
     }
   }
 `;
-
+export const UPLOAD = gql`
+  mutation singleUpload($file: Upload!) {
+    singleUpload(file: $file)
+  }
+`;
 export const GET_POSTS = gql`
   query getPosts {
     getPosts {

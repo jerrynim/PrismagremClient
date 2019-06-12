@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Avatar from "./Avatar";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import storyCircle2 from "./Images/storyCircle2.png";
+// import storyCircle2 from "./Images/storyCircle2.png";
 import { GET_USERS } from "../SharedQueries";
 import { useQuery } from "react-apollo-hooks";
 import Recommend from "./Recommend";
@@ -46,19 +46,19 @@ const FullName = styled.div`
   font-size: 12px;
   color: #999;
 `;
-const StoryBox = styled.div`
-  border-radius: 4px;
-  border: 1px solid #e6e6e6;
-  background-color: white;
-  margin-top: 4px;
-`;
+// const StoryBox = styled.div`
+//   border-radius: 4px;
+//   border: 1px solid #e6e6e6;
+//   background-color: white;
+//   margin-top: 4px;
+// `;
 
-const StoryBoxHead = styled.div`
-  padding: 4px 16px;
-  margin-top: 12px;
-  display: flex;
-  justify-content: space-between;
-`;
+// const StoryBoxHead = styled.div`
+//   padding: 4px 16px;
+//   margin-top: 12px;
+//   display: flex;
+//   justify-content: space-between;
+// `;
 const StoryText = styled.div`
   font-weight: 500;
   color: #999;
@@ -68,66 +68,66 @@ const StorySeeAll = styled(Link)`
   font-weight: 600;
   font-size: 12px;
 `;
-const StoriesWrapper = styled.div`
-  margin-top: 8px;
-`;
-const StoriesInWrapper = styled.div`
-  margin-left: 16px;
-`;
-const StoryArray = styled.div`
-  height: 182px;
-  overflow: hidden auto;
-  display: flex;
-  flex-direction: column;
-`;
-const StoryHeight = styled.div`
-  min-height: 52px;
-  text-align: left;
-  display: flex;
-  justify-content: flex-start;
-`;
+// const StoriesWrapper = styled.div`
+//   margin-top: 8px;
+// `;
+// const StoriesInWrapper = styled.div`
+//   margin-left: 16px;
+// `;
+// const StoryArray = styled.div`
+//   height: 182px;
+//   overflow: hidden auto;
+//   display: flex;
+//   flex-direction: column;
+// `;
+// const StoryHeight = styled.div`
+//   min-height: 52px;
+//   text-align: left;
+//   display: flex;
+//   justify-content: flex-start;
+// `;
 
-const StoryButton = styled.button`
-  padding: 0px;
-  display: flex;
-  width: 100%;
-  align-items: center;
-  height: 44px;
-  background-color: transparent;
-  border: 0;
-  cursor: pointer;
-  outline: none;
-`;
-const StoryPhoto = styled.div`
-  width: 44px;
-  height: 44px;
-  background-image: url(${storyCircle2});
-  background-size: cover;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-const StoryImg = styled.div`
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-`;
-const StoryDes = styled.div`
-  margin-left: 8px;
-`;
-const StoryUserName = styled.div`
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 18px;
-  margin-bottom: 2px;
-`;
-const StoryTime = styled.div`
-  font-size: 10px;
-  line-height: 12px;
-  color: #999;
-  text-align: left;
-  text-transform: uppercase;
-`;
+// const StoryButton = styled.button`
+//   padding: 0px;
+//   display: flex;
+//   width: 100%;
+//   align-items: center;
+//   height: 44px;
+//   background-color: transparent;
+//   border: 0;
+//   cursor: pointer;
+//   outline: none;
+// `;
+// const StoryPhoto = styled.div`
+//   width: 44px;
+//   height: 44px;
+//   background-image: url(${storyCircle2});
+//   background-size: cover;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+// `;
+// const StoryImg = styled.div`
+//   width: 34px;
+//   height: 34px;
+//   border-radius: 50%;
+// `;
+// const StoryDes = styled.div`
+//   margin-left: 8px;
+// `;
+// const StoryUserName = styled.div`
+//   font-size: 14px;
+//   font-weight: 600;
+//   line-height: 18px;
+//   margin-bottom: 2px;
+// `;
+// const StoryTime = styled.div`
+//   font-size: 10px;
+//   line-height: 12px;
+//   color: #999;
+//   text-align: left;
+//   text-transform: uppercase;
+// `;
 
 const RecommendBox = styled.div`
   margin: 12px 0px;
@@ -209,7 +209,7 @@ const Story = (me) => {
             <FullName>{fullName}</FullName>
           </NameBox>
         </Me>
-        <StoryBox>
+        {/* <StoryBox>
           <StoryBoxHead>
             <StoryText>스토리</StoryText>
             <StorySeeAll to={"/"}>모두 보기</StorySeeAll>
@@ -275,7 +275,7 @@ const Story = (me) => {
               </StoryArray>
             </StoriesInWrapper>
           </StoriesWrapper>
-        </StoryBox>
+        </StoryBox> */}
         <RecommendBox>
           <RecommendBoxHead>
             <StoryText>회원님을 위환 추천</StoryText>

@@ -392,9 +392,7 @@ export default ({
               </Or>
               <form onSubmit={onSubmit}>
                 <div>
-                  <InputLabel input={email}>
-                    휴대폰 번호 또는 이메일 주소
-                  </InputLabel>
+                  <InputLabel input={email}>이메일 주소</InputLabel>
                   <Input {...email} />
                 </div>
                 <div>
@@ -410,6 +408,7 @@ export default ({
                   <Input
                     type={"password"}
                     autoComplete="current-password"
+                    allowFontScaling={false}
                     required
                     {...secret}
                   />
@@ -488,6 +487,7 @@ export default ({
                       <Input
                         type={"password"}
                         autoComplete="current-password"
+                        allowFontScaling={false}
                         required
                         {...secret}
                       />
@@ -623,6 +623,7 @@ export default ({
                   <Input
                     type={"password"}
                     autoComplete="current-password"
+                    allowFontScaling={false}
                     required
                     {...secret}
                   />

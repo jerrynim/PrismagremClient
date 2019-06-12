@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 import { useQuery, useMutation } from "react-apollo-hooks";
 import ProfilePresenter from "./ProfilePresenter";
 import Footer from "../../Components/Footer";
+import Loader from "../../Components/Loader";
 
 const GET_USER = gql`
   query seeUser($username: String!) {
@@ -73,17 +74,28 @@ export default withRouter(({ match: { params: { username } } }) => {
 
   return (
     <>
-      {data && (
-        <ProfilePresenter
-          loading={loading}
-          logOut={logOut}
-          data={data}
-          fullPost={fullPost}
-          setFullPost={setFullPost}
-          SetOverlay={SetOverlay}
-          setSetOverlay={setSetOverlay}
-        />
+      {!loading ? (
+        <>
+          {data && data.seeUser ? (
+            <ProfilePresenter
+              loading={loading}
+              logOut={logOut}
+              data={data}
+              fullPost={fullPost}
+              setFullPost={setFullPost}
+              SetOverlay={SetOverlay}
+              setSetOverlay={setSetOverlay}
+            />
+          ) : (
+            <div style={{ margin: "300px" }}>
+              {username}은존재하지않는 유저입니다.
+            </div>
+          )}
+        </>
+      ) : (
+        <Loader />
       )}
+
       <Footer />
     </>
   );

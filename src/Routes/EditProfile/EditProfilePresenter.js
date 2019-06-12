@@ -333,7 +333,10 @@ const EditProfilePresenter = ({ action, setAction, onKeyPress, user }) => {
 
         formData.append("name", file.name);
         formData.append("file", file);
-        req.open("POST", "http://localhost:4000/upload");
+        req.open(
+          "POST",
+          "https://gy5gohx54e.execute-api.us-west-2.amazonaws.com/dev/upload"
+        );
         req.setRequestHeader("header", user.id);
         req.send(formData);
       });

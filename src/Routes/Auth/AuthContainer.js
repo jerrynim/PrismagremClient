@@ -145,13 +145,19 @@ export default () => {
         const emailCheck = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i.test(
           email.value
         );
-        const usernameCheck = /^[a-zA-Z0-9_]{4,16}$/.test(username.value);
+        const usernameCheck = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|*]+$/.test(
+          username.value
+        );
         //username 확인
+        if (!emailCheck) {
+          setErrorMessage("이메일을 정확하게 입력바람.");
+        }
         if (!usernameCheck) {
           setErrorMessage(
             "사용자 이름에는 문자, 숫자, 밑줄 및 마침표만 사용할 수 있습니다."
           );
         }
+        console.log(usernameCheck, emailCheck);
         //비밀번호가 6자리보다 작다면
         if (secret.value.length < 6) {
           setErrorMessage("6자 이상의 비밀번호를 만드세요.");
@@ -159,7 +165,8 @@ export default () => {
 
         if (phoneCheck) {
           //휴대폰이라면 문자전송 + action==="PhoneVerification"
-        } else if (emailCheck) {
+        } else if (emailCheck && usernameCheck && secret.value.length > 6) {
+          setErrorMessage(null);
           try {
             //유저 생성
             const {
@@ -187,7 +194,6 @@ export default () => {
           }
         } else {
           //잘못된 Input
-          setErrorMessage("Enter a valid email address Or Phonenumber");
         }
       }
     } else if (action === "logIn") {

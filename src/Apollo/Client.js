@@ -2,12 +2,12 @@ import ApolloClient from "apollo-boost";
 import { defaults, resolvers } from "./LocalState";
 
 export default new ApolloClient({
-  uri: "http://localhost:4000",
+  uri: "https://gva11fj666.execute-api.us-west-2.amazonaws.com/dev/",
   clientState: {
     defaults,
     resolvers
   },
   headers: {
-    Authorization: `Bearer ${localStorage.getItem("token")}`
+    Authorization: `${localStorage.getItem("token")}`
   }
 });

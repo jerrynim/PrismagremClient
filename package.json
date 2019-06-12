@@ -49,6 +49,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@babel/core": "^7.4.5",
     "eslint": "^5.16.0",
     "eslint-plugin-react": "^7.13.0"
   }
