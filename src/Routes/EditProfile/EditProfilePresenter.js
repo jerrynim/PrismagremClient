@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import useInput from "../../Hooks/useInput";
 import TextareaAutosize from "react-autosize-textarea";
@@ -8,6 +8,7 @@ import { Helmet } from "rl-react-helmet";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import Footer from "../../Components/Footer";
+import axios from "axios";
 const Container = styled.div`
   margin-top: 77px;
   background-color: #fafafa;
@@ -302,61 +303,24 @@ const EditProfilePresenter = ({ action, setAction, onKeyPress, user }) => {
 
   const changePsMutation = useMutation(CHANGE_PASSWORD);
 
-  //파일 input의 Ref
-  const photoRef = useRef(null);
-  const photoRef2 = useRef(null);
-  const onChange = async (ref) => {
-    const file = await ref.current.files[0];
-    const sendRequset = () => {
-      return new Promise((resolve, reject) => {
-        const req = new XMLHttpRequest();
-        //progress
-        //너무빨라서 퍼센트 보기가 힘듬
-        // req.upload.addEventListener("progress", (event) => {
-        //   if (event.lengthComputable) {
-        //     console.log("percentage");
-        //   }
-        // });
-
-        req.onreadystatechange = () => {
-          if (req.readyState === 4) {
-            resolve(req.response);
-          }
-        };
-
-        req.upload.addEventListener("error", (event) => {
-          console.log("error");
-          reject(req.response);
-        });
-
-        let formData = new FormData();
-
-        formData.append("name", file.name);
-        formData.append("file", file);
-        req.open(
-          "POST",
-          "https://gy5gohx54e.execute-api.us-west-2.amazonaws.com/dev/upload"
-        );
-        req.setRequestHeader("header", user.id);
-        req.send(formData);
-      });
-    };
-    if (file) {
-      try {
-        sendRequset(file).then(
-          (res) => {
-            //when promise filled
-            setAvatar(res);
-          },
-          (res) => {
-            // if request rejected
-            throw Error();
-          }
-        );
-      } catch (e) {
-        throw Error();
+  const onChange = (e) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("file", file);
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data",
+        header: user.id
       }
-    }
+    };
+    axios
+      .post("https://prisma-upload.herokuapp.com/upload", formData, config)
+      .then((response) => {
+        setAvatar(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   //EditProflie 버튼
@@ -426,28 +390,18 @@ const EditProfilePresenter = ({ action, setAction, onKeyPress, user }) => {
                     비밀번호 변경
                   </Menu>
                 )}
-                <Menu>허가된 앱</Menu>
-                <Menu>이메일 및 SMS</Menu>
-                <Menu>연락처 관리</Menu>
-                <Menu>공개 범위 및 보안</Menu>
               </MenuList>
             </MenuBox>
             <ContentBox>
               <Profile>
-                <PhotoInput2
-                  type="file"
-                  ref={photoRef2}
-                  onChange={() => onChange(photoRef2)}
-                  accept="image/*"
-                />
+                <PhotoInput2 type="file" onChange={onChange} accept="image/*" />
                 <Avatar bg={avatar} />
                 <UsernameBox>
                   <Username>{username.value}</Username>
                   <div>
                     <PhotoInput
                       type="file"
-                      ref={photoRef}
-                      onChange={() => onChange(photoRef)}
+                      onChange={onChange}
                       accept="image/*"
                     />
                     {action === "editProfile" && (
