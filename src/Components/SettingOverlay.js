@@ -114,10 +114,6 @@ export default ({ SetOverlay, setSetOverlay, logOut }) => {
       <Box ref={boxRef}>
         <Lists>
           <List to="/editProfile">비밀번호 변경</List>
-          <List to="/editProfile">네임태그</List>
-          <List to="/editProfile">허가된 앱</List>
-          <List to="/editProfile">알림</List>
-          <List to="/editProfile">공개범위 및 보안</List>
           <Logout onClick={logOut}>로그아웃</Logout>
           <Logout
             onClick={() => {

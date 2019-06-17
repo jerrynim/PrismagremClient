@@ -13,7 +13,6 @@ import ProfilePost from "./ProfilePost";
 import FullPost from "../../Components/FullPost";
 import SettingOverlay from "../../Components/SettingOverlay";
 import { Link } from "react-router-dom";
-import more from "../../Components/Images/more.png";
 import photograph from "../../Components/Images/photograph.png";
 import FollowButton from "../../Components/FollowButton";
 const Wrapper = styled.div``;
@@ -332,14 +331,14 @@ const ExtendFollowButton = styled.div`
   margin-left: 16px;
 `;
 
-const More = styled.div`
-  background-image: url(${more});
-  background-size: cover;
-  width: 16px;
-  height: 16px;
-  margin-left: 15px;
-  cursor: pointer;
-`;
+// const More = styled.div`
+//   background-image: url(${more});
+//   background-size: cover;
+//   width: 16px;
+//   height: 16px;
+//   margin-left: 15px;
+//   cursor: pointer;
+// `;
 
 const EmptyPost = styled.div`
   width: 100%;
@@ -427,7 +426,7 @@ export default ({
                           팔로우
                         </FollowButton>
                       </ExtendFollowButton>
-                      <More />
+                      {/* <More /> */}
                     </>
                   )}
                 </UsernameRow>
@@ -438,11 +437,11 @@ export default ({
                   </Count>
                   <Count>
                     팔로워&nbsp;
-                    <FatText text={followersCount} />
+                    <FatText text={followingCount} />
                   </Count>
                   <Count>
                     팔로우&nbsp;
-                    <FatText text={followingCount} />
+                    <FatText text={followersCount} />
                   </Count>
                 </Counts>
                 <FullName text={lastName} />

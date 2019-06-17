@@ -234,7 +234,7 @@ const AddCommentBox = styled.div`
     height: 48px;
   }
   display: flex;
-    align-items: center;
+  align-items: center;
   margin-top: 8px;
   padding: 0px 16px;
   border-top: 1px solid #efefef;
@@ -447,7 +447,7 @@ export default ({ fullPost, setFullPost }) => {
                     <WriterAvatar bg={user.avatar} />
                   </WriteAvatarWrapper>
                   <CommentText>
-                    <TextArea text={caption} />
+                    <TextArea text={caption} setFullPost={setFullPost} />
                     <TimeStamp>
                       {moment(createdAt)
                         .startOf()
@@ -463,7 +463,7 @@ export default ({ fullPost, setFullPost }) => {
                     <CommentText>
                       {comment.user.username}
                       &nbsp;
-                      <TextArea text={comment.text} />
+                      <TextArea text={comment.text} setFullPost={setFullPost} />
                       <TimeStamp>
                         {moment(comment.createdAt)
                           .startOf()
@@ -478,7 +478,10 @@ export default ({ fullPost, setFullPost }) => {
                       <WriterAvatar bg={selfComment.user.avatar} />
                     </WriteAvatarWrapper>
                     <CommentText>
-                      <TextArea text={selfComment.text} />
+                      <TextArea
+                        text={selfComment.text}
+                        setFullPost={setFullPost}
+                      />
                       <TimeStamp>
                         {moment(selfComment.createdAt)
                           .startOf()
