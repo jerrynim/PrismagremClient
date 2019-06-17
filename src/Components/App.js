@@ -6,9 +6,9 @@ import { useQuery } from "react-apollo-hooks";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import GlobalStyles from "../Styles/GlobalStyles";
-import Theme from "../Styles/Theme";
 import Routes from "./Routes";
 import Header from "./Header";
+import Theme from "../Styles/Theme";
 
 const QUERY = gql`
   {
