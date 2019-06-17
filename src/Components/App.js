@@ -8,8 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import GlobalStyles from "../Styles/GlobalStyles";
 import Routes from "./Routes";
 import Header from "./Header";
-import Theme from "../Styles/Theme";
-
+import Theme from "../Theme";
 const QUERY = gql`
   {
     isLoggedIn @client
