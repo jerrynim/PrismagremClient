@@ -33,7 +33,7 @@
     "styled-reset": "^2.0.4",
     "use-react-router": "^1.0.7",
     "video-react": "^0.13.7",
-    "yarn": "^1.16.0"
+    "yarn": "^1.22.0"
   },
   "scripts": {
     "start": "react-scripts start",
